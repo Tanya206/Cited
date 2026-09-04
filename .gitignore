@@ -1,0 +1,17 @@
+# data — papers are copyrighted, vector store and extracted text are regenerable
+data/raw_papers/
+data/extracted/
+data/chroma_db/
+
+# environment
+.env
+venv/
+__pycache__/
+*.pyc
+
+# OS/editor cruft
+.DS_Store
+.vscode/
+
+# logs
+*.log
