@@ -1,7 +1,13 @@
-# data — papers are copyrighted, vector store and extracted text are regenerable
+# data — papers are copyrighted, everything else here is regenerable from code
 data/raw_papers/
+data/test_papers/
 data/extracted/
+data/extracted_structured/
+data/extracted_test/
+data/crops/
+data/crops_test/
 data/chroma_db/
+data/chunks.jsonl
 
 # environment
 .env
