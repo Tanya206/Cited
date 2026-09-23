@@ -227,22 +227,22 @@ def extract_tables(
 
 
         all_cells = [cell for row in rows for cell in row]
-
+        #what percentage of cells are empty or whitespace only
         empty_cell_ratio = sum(
             1 for cell in all_cells if not cell or not str(cell).strip()
         ) / max(len(all_cells), 1)
-
+        #does any cell contain unusually many lines, which may indicate a multi-row cell that was not split
         max_lines_in_cell = max(
             str(cell or "").count("\n") + 1
             for cell in all_cells
         )
-
+        #decides whether extraction looks suspicious based on empty cell ratio, max lines in a cell, or whether row repair was applied
         is_suspicious = (
             empty_cell_ratio > TABLE_EMPTY_CELL_THRESHOLD
             or max_lines_in_cell > 3
             or row_repair_applied
         )
-
+        #Importantly, we do not reject suspicious tables. It keeps them but records a warning. 
         if is_suspicious:
             warnings.append(
                 f"page {page_number}, candidate {extraction_index}: "
@@ -256,10 +256,10 @@ def extract_tables(
             f"{doc_id}_p{page_number}_table{extraction_index}.png",
         )
         page.get_pixmap(
-            clip=pymupdf.Rect(table.bbox),
+            clip=pymupdf.Rect(table.bbox), #table.bbox gives table's coordinates on the page. 
             dpi=150,
         ).save(crop_path)
-
+        #storing the final table information in a dictionary. 
         tables.append(
             {
                 "element_type": "table",
@@ -292,7 +292,7 @@ def extract_figures(
     """
     figures: list[dict[str, Any]] = []
 
-    for extraction_index, image in enumerate(page.get_images(full=True), start=1):
+    for extraction_index, image in enumerate(page.get_images(full=True), start=1): #finds embedded raster images in the PDF
         xref = image[0]
         rectangles = page.get_image_rects(xref)
 
@@ -365,7 +365,7 @@ def has_equation_hint(body_text: str) -> bool:
         and MATH_TOKEN_RE.search(body_text)
     )
 
-
+#detects whether a PDF page might be a scanned page that needs OCR review. 
 def is_likely_scanned(
     page: pymupdf.Page,
     body_blocks: list[tuple[Any, ...]],
