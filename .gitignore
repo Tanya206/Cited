@@ -8,12 +8,14 @@ data/crops/
 data/crops_test/
 data/chroma_db/
 data/chunks.jsonl
+data/bm25_index/
 
 # environment
 .env
 venv/
 __pycache__/
 *.pyc
+.pytest_cache/
 
 # OS/editor cruft
 .DS_Store

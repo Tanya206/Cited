@@ -57,13 +57,13 @@ def embed_and_store(chunks_path: str, chroma_path: str, collection_name: str) ->
     except Exception:
         pass  # collection doesn't exist yet on the first-ever run — fine
 
-    collection = client.get_or_create_collection(name=collection_name)
+    collection = client.get_or_create_collection(name=collection_name, metadata={"hnsw:space": "cosine"})
 
     for i in range(0, len(chunks), BATCH_SIZE):
         batch = chunks[i:i + BATCH_SIZE]
         texts = [c["text"] for c in batch]
 
-        embeddings = model.encode(texts, show_progress_bar=False).tolist()
+        embeddings = model.encode(texts, show_progress_bar=False, normalize_embeddings=True).tolist()
 
         collection.add(
             ids=[c["chunk_id"] for c in batch],
@@ -85,18 +85,16 @@ def sanity_check(chroma_path: str, collection_name: str) -> None:
     collection = client.get_or_create_collection(name=collection_name)
     model = SentenceTransformer(MODEL_NAME)
 
-        # NOTE: queries here are embedded plain, with no instruction prefix —
-    # correct for now since the query/passage asymmetry doesn't exist until
-    # Phase 2. This previews symmetric similarity only; re-validate once
-    # the prefix is added, since that changes what "relevant" means for queries.
-
     test_queries = [
         "contrastive learning loss function",
         "mIoU results on Potsdam dataset",
     ]
 
     for query in test_queries:
-        query_embedding = model.encode([query]).tolist()
+        query_embedding = model.encode(
+            ["Represent this sentence for searching relevant passages: " + query],
+            normalize_embeddings=True,
+        ).tolist()
         results = collection.query(query_embeddings=query_embedding, n_results=3)
 
         print(f"\nQuery: \"{query}\"")
