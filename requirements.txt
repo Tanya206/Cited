@@ -1,3 +1,12 @@
+# Cited locked environment
+#
+# This file contains exact versions for reproducible installs. The intentionally
+# selected direct dependencies are documented in requirements.in. Most entries
+# below are transitive dependencies pulled in by Chroma, SentenceTransformers,
+# FastAPI, Ragas, Langfuse, and their networking/runtime libraries.
+#
+# Direct groups: API/server, PDF ingestion, retrieval/ML, chunking, UI/HTTP,
+# testing/evaluation, and observability.
 aiohappyeyeballs==2.7.1
 aiohttp==3.14.3
 aiosignal==1.4.0
@@ -6,25 +15,25 @@ annotated-types==0.8.0
 anyio==4.15.0
 attrs==26.1.0
 bcrypt==5.0.0
-bm25s==0.3.11
+bm25s==0.3.11 # BM25 lexical search for exact words, paper names, acronyms, and numbers.
 build==1.6.0
 certifi==2026.7.22
 cffi==2.1.1
 charset-normalizer==3.5.1
-chromadb==1.5.9
+chromadb==1.5.9 # Local vector database used to store and search document embeddings.
 click==8.5.0
 cloudpickle==3.1.2
 colorama==0.4.6
 cryptography==50.0.1
 distro==1.9.0
 durationpy==0.11
-fastapi==0.141.1
+fastapi==0.141.1 # Web API framework used to expose /answer, /health, paper, and evidence endpoints.
 filelock==3.32.5
 flatbuffers==25.12.19
 frozenlist==1.8.0
 fsspec==2026.7.0
 googleapis-common-protos==1.75.3
-groq==1.7.0
+groq==1.7.0  # Python client used to call the Groq LLM for final cited-answer generation.
 grpcio==1.83.1
 h11==0.16.0
 hf-xet==1.6.0
@@ -45,7 +54,7 @@ jsonschema-specifications==2025.9.1
 kubernetes==36.0.3
 langchain-core==1.6.2
 langchain-protocol==0.0.19
-langchain-text-splitters==1.1.2
+langchain-text-splitters==1.1.2 # Splits extracted paper text into overlapping retrieval chunks.
 langsmith==0.12.4
 markdown-it-py==4.2.0
 MarkupSafe==3.0.3
@@ -58,12 +67,12 @@ networkx==3.6.1
 numpy==2.5.2
 oauthlib==3.3.1
 onnxruntime==1.29.0
-opentelemetry-api==1.44.0
-opentelemetry-exporter-otlp-proto-common==1.44.0
-opentelemetry-exporter-otlp-proto-grpc==1.44.0
-opentelemetry-proto==1.44.0
-opentelemetry-sdk==1.44.0
-opentelemetry-semantic-conventions==0.65b0
+opentelemetry-api==1.45.1
+opentelemetry-exporter-otlp-proto-common==1.45.1
+opentelemetry-exporter-otlp-proto-grpc==1.45.1
+opentelemetry-proto==1.45.1
+opentelemetry-sdk==1.45.1
+opentelemetry-semantic-conventions==0.66b1
 orjson==3.12.0
 overrides==7.7.0
 packaging==26.3
@@ -78,17 +87,17 @@ pydantic==2.13.5
 pydantic-settings==2.15.0
 pydantic_core==2.46.5
 Pygments==2.21.0
-pymupdf==1.28.2
+pymupdf==1.28.2 # Reads PDF pages, extracts text, and renders highlighted evidence images.
 pypdfium2==5.13.0
 PyPika==0.51.1
 pyproject_hooks==1.2.0
 PyStemmer==3.1.0
 python-dateutil==2.9.0.post0
-python-dotenv==1.2.3
+python-dotenv==1.2.3 # Reads environment variables from the local .env file.
 PyYAML==6.0.3
 referencing==0.37.0
 regex==2026.9.3
-requests==2.34.2
+requests==2.34.2  # Sends requests from Streamlit to the FastAPI backend and from evaluation scripts to /answer.
 requests-oauthlib==2.0.0
 requests-toolbelt==1.0.0
 rich==15.0.0
@@ -96,7 +105,7 @@ rpds-py==2026.6.3
 safetensors==0.8.0
 scikit-learn==1.9.0
 scipy==1.18.1
-sentence-transformers==6.0.1
+sentence-transformers==6.0.1 # Provides SentenceTransformer embeddings and the CrossEncoder reranker.
 setuptools==84.0.0
 shellingham==1.5.4
 six==1.17.0
@@ -106,9 +115,9 @@ sympy==1.14.0
 tenacity==9.1.4
 threadpoolctl==3.6.0
 tokenizers==0.23.2
-torch==2.14.0
+torch==2.14.0 # Provides the machine-learning runtime used by SentenceTransformers.
 tqdm==4.70.0
-transformers==5.16.1
+transformers==5.16.1 # Provides the tokenizer used during chunking and model-related utilities.
 truststore==0.10.4
 typer==0.27.2
 typing-inspection==0.4.4
@@ -122,5 +131,8 @@ websockets==17.1
 xxhash==4.0.1
 yarl==1.24.5
 zstandard==0.25.0
-streamlit>=1.40
-pytest>=8.0
+streamlit>=1.40 # Provides the browser-based user interface
+pytest>=8.0 # Runs the automated test suite.
+langfuse>=4.7,<5 # Sends optional request traces to Langfuse.
+ragas>=0.3,<0.4 # Evaluates faithfulness, answer relevancy, context precision, and context recall.
+openai>=1,<3 # Provides the OpenAI-compatible client used by Ragas with the Groq endpoint.

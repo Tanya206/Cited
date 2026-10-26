@@ -13,6 +13,7 @@ from sentence_transformers import SentenceTransformer
 
 from app.core.bm25_index import load_index
 from app.core.generation import GenerationError, generate_cited_answer
+from app.core.observability import answer_trace, flush_traces
 from app.core.query_validation import is_actionable_question
 from app.core.reranker import Reranker
 from app.core.retrieval import (
@@ -129,40 +130,53 @@ def answer(payload: AnswerRequest, request: Request) -> AnswerResponse:
             refused=True,
         )
 
-    services: Services = request.app.state.services
-    retrieved = hybrid_retrieve(
-        payload.query,
-        services.collection,
-        services.embed_model,
-        services.bm25_retriever,
-        services.chunk_id_map,
-        k_per_retriever=payload.retrieve_k,
-        k_final=payload.retrieve_k,
-    )
-    reranked = services.reranker.rerank(payload.query, retrieved, payload.rerank_k)
-
+    trace = answer_trace(payload.query)
+    trace.__enter__()
     try:
-        answer_text, citation_ids, refused = generate_cited_answer(payload.query, reranked)
-    except GenerationError as error:
-        raise HTTPException(status_code=502, detail=str(error)) from error
-
-    by_id = {chunk["chunk_id"]: chunk for chunk in reranked}
-    citations = [
-        Citation(
-            chunk_id=chunk_id,
-            doc_id=by_id[chunk_id]["doc_id"],
-            page_number=int(by_id[chunk_id]["page_number"]),
-            chunk_type=by_id[chunk_id]["chunk_type"],
-            source_image_path=by_id[chunk_id].get("source_image_path"),
-            paper_path=f"/papers/{quote(by_id[chunk_id]['doc_id'], safe='')}#page={by_id[chunk_id]['page_number']}",
-            highlight_path=f"/evidence/{quote(chunk_id, safe='')}/highlight",
+        services: Services = request.app.state.services
+        retrieved = hybrid_retrieve(
+            payload.query,
+            services.collection,
+            services.embed_model,
+            services.bm25_retriever,
+            services.chunk_id_map,
+            k_per_retriever=payload.retrieve_k,
+            k_final=payload.retrieve_k,
         )
-        for chunk_id in citation_ids
-    ]
-    return AnswerResponse(
-        answer=answer_text,
-        citations=citations,
-        retrieved_count=len(retrieved),
-        reranked_count=len(reranked),
-        refused=refused,
-    )
+        trace.update(metadata={"retrieved_count": len(retrieved)})
+        reranked = services.reranker.rerank(payload.query, retrieved, payload.rerank_k)
+        trace.update(metadata={"reranked_count": len(reranked), "chunk_ids": [c["chunk_id"] for c in reranked]})
+
+        try:
+            answer_text, citation_ids, refused = generate_cited_answer(payload.query, reranked)
+        except GenerationError as error:
+            trace.update(output={"error": str(error)}, level="ERROR")
+            raise HTTPException(status_code=502, detail=str(error)) from error
+
+        by_id = {chunk["chunk_id"]: chunk for chunk in reranked}
+        citations = [
+            Citation(
+                chunk_id=chunk_id,
+                doc_id=by_id[chunk_id]["doc_id"],
+                page_number=int(by_id[chunk_id]["page_number"]),
+                chunk_type=by_id[chunk_id]["chunk_type"],
+                source_image_path=by_id[chunk_id].get("source_image_path"),
+                paper_path=f"/papers/{quote(by_id[chunk_id]['doc_id'], safe='')}#page={by_id[chunk_id]['page_number']}",
+                highlight_path=f"/evidence/{quote(chunk_id, safe='')}/highlight",
+            )
+            for chunk_id in citation_ids
+        ]
+        response = AnswerResponse(
+            answer=answer_text,
+            citations=citations,
+            retrieved_count=len(retrieved),
+            reranked_count=len(reranked),
+            refused=refused,
+            retrieved_chunk_ids=[chunk["chunk_id"] for chunk in retrieved],
+            reranked_chunk_ids=[chunk["chunk_id"] for chunk in reranked],
+        )
+        trace.update(output={"answer": answer_text, "citation_ids": citation_ids, "refused": refused})
+        return response
+    finally:
+        trace.__exit__(None, None, None)
+        flush_traces()

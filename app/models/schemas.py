@@ -25,3 +25,5 @@ class AnswerResponse(BaseModel):
     retrieved_count: int
     reranked_count: int
     refused: bool = False
+    retrieved_chunk_ids: list[str] = Field(default_factory=list)
+    reranked_chunk_ids: list[str] = Field(default_factory=list)

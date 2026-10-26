@@ -16,6 +16,11 @@ venv/
 __pycache__/
 *.pyc
 .pytest_cache/
+.pip-cache/
+.pip-temp/
+eval/baseline_retrieval*.json
+eval/answer_runs.jsonl
+eval/ragas_results.json
 
 # OS/editor cruft
 .DS_Store

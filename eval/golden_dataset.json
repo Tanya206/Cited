@@ -1,0 +1,1129 @@
+{
+  "version": "0.3-evidence",
+  "verification_status": "answerable items have indexed source quotes; still a human-reviewed eval set, not an automatic quality gate",
+  "purpose": "Evaluation set for Cited. Each answerable item must be manually linked to exact indexed chunks and verbatim evidence before it can gate regressions.",
+  "items": [
+    {
+      "id": "G01",
+      "category": "definition",
+      "question": "What is semantic segmentation?",
+      "reference_answer": "In the FCN paper, semantic segmentation labels each pixel with the class of its enclosing object or region.",
+      "expected_doc_ids": [
+        "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 1,
+          "quote": "each pixel is labeled with the class of its enclosing object or region"
+        }
+      ]
+    },
+    {
+      "id": "G02",
+      "category": "method",
+      "question": "What is the central idea of fully convolutional networks for segmentation?",
+      "reference_answer": "FCNs replace fully connected classification layers with convolutional layers so dense, pixel-wise predictions can be produced for arbitrary image sizes.",
+      "expected_doc_ids": [
+        "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 1,
+          "quote": "fully convolutional\" networks that take input of arbitrary size and produce correspondingly-sized output"
+        }
+      ]
+    },
+    {
+      "id": "G03",
+      "category": "method",
+      "question": "How does U-Net recover spatial detail during segmentation?",
+      "reference_answer": "U-Net uses an expanding path with upsampling, then combines high-resolution features from the contracting path with the upsampled output for localization.",
+      "expected_doc_ids": [
+        "Reference 2 U Net"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 2 U Net",
+          "page_number": 2,
+          "quote": "In order to localize, high resolution features from the contracting path are combined with the upsampled"
+        }
+      ]
+    },
+    {
+      "id": "G04",
+      "category": "method",
+      "question": "What do atrous convolutions provide in DeepLab?",
+      "reference_answer": "Atrous convolutions enlarge the receptive field without reducing feature-map resolution or increasing the number of parameters proportionally.",
+      "expected_doc_ids": [
+        "Reference 3 Atrous Convolution for Semantic Segmentation"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 3 Atrous Convolution for Semantic Segmentation",
+          "page_number": 1,
+          "quote": "Atrous convolution, also known as dilated convolution, allows us to repurpose ImageNet"
+        },
+        {
+          "doc_id": "Reference 3 Atrous Convolution for Semantic Segmentation",
+          "page_number": 1,
+          "quote": "extract denser feature maps by removing the downsampling operations from the last few layers"
+        }
+      ]
+    },
+    {
+      "id": "G05",
+      "category": "benchmark",
+      "question": "What kind of task does the Inria Aerial Image Labeling Benchmark evaluate?",
+      "reference_answer": "It evaluates semantic labeling of aerial imagery, especially the ability of methods to generalize across different cities.",
+      "expected_doc_ids": [
+        "Reference 4 AerialImageLabelingDataset_4"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 4 AerialImageLabelingDataset_4",
+          "page_number": 2,
+          "quote": "pixel classification methods that, once trained on a certain dataset, generalize to other areas of the earth"
+        }
+      ]
+    },
+    {
+      "id": "G06",
+      "category": "method",
+      "question": "What is the goal of normalized cuts in image segmentation?",
+      "reference_answer": "Normalized cuts measure a partition's disassociation as its cut cost relative to each group's total connection to the graph, avoiding bias toward isolating small sets.",
+      "expected_doc_ids": [
+        "Reference 5 Normalized cuts and image segmentation"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 5 Normalized cuts and image segmentation",
+          "page_number": 2,
+          "quote": "our measure computes the cut cost as a fraction of the total edge connections to all the nodes in the graph"
+        }
+      ]
+    },
+    {
+      "id": "G07",
+      "category": "method",
+      "question": "What are the main stages of spectral clustering?",
+      "reference_answer": "Spectral clustering builds a similarity graph, computes a spectral embedding from a graph matrix, then clusters points in that embedding.",
+      "expected_doc_ids": [
+        "Reference 6 spectral-clustering-analysis-and-an-algorithm-Paper"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 6 spectral-clustering-analysis-and-an-algorithm-Paper",
+          "page_number": 1,
+          "quote": "algorithms that cluster points using eigenvectors of matrices derived from the data"
+        },
+        {
+          "doc_id": "Reference 6 spectral-clustering-analysis-and-an-algorithm-Paper",
+          "page_number": 2,
+          "quote": "cluster them into k clusters via K-means or any other algorithm"
+        }
+      ]
+    },
+    {
+      "id": "G08",
+      "category": "definition",
+      "question": "How does SimCLR learn representations without labels?",
+      "reference_answer": "SimCLR contrasts two augmented views of the same image against views of other images to learn visual representations.",
+      "expected_doc_ids": [
+        "Reference 7 SimCLR Contrastive learning"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "SimCLR learns representations by maximizing agreement between differently augmented views of the same data example via a contrastive loss"
+        }
+      ]
+    },
+    {
+      "id": "G09",
+      "category": "method",
+      "question": "What are the key components of the SimCLR framework?",
+      "reference_answer": "SimCLR uses stochastic data augmentation, an encoder, a projection head, and a contrastive loss over positive and negative pairs.",
+      "expected_doc_ids": [
+        "Reference 7 SimCLR Contrastive learning"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "A stochastic data augmentation module that transforms any given data example randomly resulting in two correlated views"
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "A neural network base encoder f(·) that extracts representation vectors"
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "A small neural network projection head g(·) that maps representations to the space where contrastive loss is applied"
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "A contrastive loss function defined for a contrastive prediction task"
+        }
+      ]
+    },
+    {
+      "id": "G10",
+      "category": "method",
+      "question": "How does MoCo maintain a large set of negative keys?",
+      "reference_answer": "MoCo uses a queue of encoded keys and updates its key encoder with a momentum update from the query encoder.",
+      "expected_doc_ids": [
+        "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper",
+          "page_number": 1,
+          "quote": "we build a dynamic dictionary with a queue and a moving-averaged encoder"
+        },
+        {
+          "doc_id": "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper",
+          "page_number": 1,
+          "quote": "The keys are encoded by a slowly progressing encoder, driven by a momentum update with the query encoder"
+        }
+      ]
+    },
+    {
+      "id": "G11",
+      "category": "method",
+      "question": "What is SwAV contrasting during self-supervised learning?",
+      "reference_answer": "SwAV contrasts cluster assignments of different augmented views instead of directly contrasting image features.",
+      "expected_doc_ids": [
+        "Reference 9 SwAV - Unsupervised learning of Visual features by contrasting cluster assignments"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 9 SwAV - Unsupervised learning of Visual features by contrasting cluster assignments",
+          "page_number": 1,
+          "quote": "enforcing consistency between cluster assignments produced for different augmentations (or “views”) of the same image, instead of comparing features directly"
+        }
+      ]
+    },
+    {
+      "id": "G12",
+      "category": "method",
+      "question": "How does VQ-VAE create discrete latent representations?",
+      "reference_answer": "VQ-VAE maps encoder outputs to entries in a learned codebook and decodes the quantized latent representation.",
+      "expected_doc_ids": [
+        "Reference 10 VQVAE Neural Discrete Representational Learning"
+      ],
+      "expected_pages": [
+        1,
+        3
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 10 VQVAE Neural Discrete Representational Learning",
+          "page_number": 1,
+          "quote": "the encoder network outputs discrete, rather than continuous, codes"
+        },
+        {
+          "doc_id": "Reference 10 VQVAE Neural Discrete Representational Learning",
+          "page_number": 3,
+          "quote": "the samples drawn from these distributions index an embedding table"
+        }
+      ]
+    },
+    {
+      "id": "G13",
+      "category": "method",
+      "question": "What does SegSort use to produce semantic segments?",
+      "reference_answer": "SegSort learns pixel embeddings and groups them through discriminative sorting of image segments.",
+      "expected_doc_ids": [
+        "Reference 12 SegSort"
+      ],
+      "expected_pages": [
+        1,
+        3
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 12 SegSort",
+          "page_number": 1,
+          "quote": "SegSort: Segmentation by Discriminative Sorting of Segments"
+        },
+        {
+          "doc_id": "Reference 12 SegSort",
+          "page_number": 3,
+          "quote": "Let V = {vi} = {φ(xi)} be the set of pixel embeddings"
+        }
+      ]
+    },
+    {
+      "id": "G14",
+      "category": "application",
+      "question": "What does unsupervised single-scene semantic segmentation aim to do for Earth observation?",
+      "reference_answer": "It aims to discover meaningful semantic regions in a single Earth-observation image without ground-truth labels.",
+      "expected_doc_ids": [
+        "Reference 13 Unsupervised_Single-Scene_Semantic_Segmentation_fo (1)"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 13 Unsupervised_Single-Scene_Semantic_Segmentation_fo (1)",
+          "page_number": 2,
+          "quote": "a self-supervised segmentation method that does not require any annotated data and can be trained using single unlabeled Earth observation scene"
+        }
+      ]
+    },
+    {
+      "id": "G15",
+      "category": "method",
+      "question": "What does Segment Anything produce from prompts?",
+      "reference_answer": "Segment Anything predicts object masks from prompts such as points, boxes, masks, or text-related inputs.",
+      "expected_doc_ids": [
+        "Reference 15 2023_Segment_Anything_2304.02643v1"
+      ],
+      "expected_pages": [
+        2,
+        5
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 15 2023_Segment_Anything_2304.02643v1",
+          "page_number": 2,
+          "quote": "return a valid segmentation mask given any segmentation prompt"
+        },
+        {
+          "doc_id": "Reference 15 2023_Segment_Anything_2304.02643v1",
+          "page_number": 5,
+          "quote": "We consider two sets of prompts: sparse (points, boxes, text) and dense (masks)"
+        }
+      ]
+    },
+    {
+      "id": "G16",
+      "category": "application",
+      "question": "Why are superpixels useful for unsupervised hyperspectral image segmentation?",
+      "reference_answer": "Superpixels group locally coherent pixels, reducing noise and providing spatial units for clustering hyperspectral information.",
+      "expected_doc_ids": [
+        "Reference 16 2024_Unsupervised_Segmentation_of_Hyperspectral_Remote_sensing_Satellite_images_with_Superpixels2204.12296v2"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 16 2024_Unsupervised_Segmentation_of_Hyperspectral_Remote_sensing_Satellite_images_with_Superpixels2204.12296v2",
+          "page_number": 2,
+          "quote": "The use of clustered information reduces the effect of noise, typical in hyperspectral remote sensing images"
+        },
+        {
+          "doc_id": "Reference 16 2024_Unsupervised_Segmentation_of_Hyperspectral_Remote_sensing_Satellite_images_with_Superpixels2204.12296v2",
+          "page_number": 1,
+          "quote": "takes as input a preliminary hyperspectral superpixels segmentation together with the spectral pixel information"
+        }
+      ]
+    },
+    {
+      "id": "G17",
+      "category": "application",
+      "question": "What does the 2025 urban satellite-imagery clustering study seek to reveal?",
+      "reference_answer": "It uses unsupervised deep clustering of high-resolution satellite imagery to reveal phenotypes of urban development in Sub-Saharan Africa.",
+      "expected_doc_ids": [
+        "Reference 17 2025_Unsupervised deep clustering of high-resolution satellite imagery reveals"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 17 2025_Unsupervised deep clustering of high-resolution satellite imagery reveals",
+          "page_number": 1,
+          "quote": "Unsupervised deep clustering of high-resolution satellite imagery reveals phenotypes of urban development in Sub-Saharan Africa"
+        }
+      ]
+    },
+    {
+      "id": "G18",
+      "category": "method",
+      "question": "What is the main idea behind SLIC superpixels?",
+      "reference_answer": "SLIC adapts k-means clustering in a combined color and image-space domain to efficiently produce compact superpixels.",
+      "expected_doc_ids": [
+        "Reference 18 SLIC"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 18 SLIC",
+          "page_number": 1,
+          "quote": "clusters pixels in the combined five-dimensional color and image plane space to efficiently generate compact, nearly uniform superpixels"
+        }
+      ]
+    },
+    {
+      "id": "G19",
+      "category": "method",
+      "question": "What does Invariant Information Clustering optimize?",
+      "reference_answer": "IIC maximizes mutual information between cluster assignments of paired transformed inputs.",
+      "expected_doc_ids": [
+        "1807.06653v4"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1807.06653v4",
+          "page_number": 1,
+          "quote": "The objective is simply to maximise mutual information between the class assignments of each pair"
+        }
+      ]
+    },
+    {
+      "id": "G20",
+      "category": "method",
+      "question": "How does PiCIE use invariance and equivariance?",
+      "reference_answer": "PiCIE learns unsupervised semantic segmentation by encouraging invariance to photometric changes and equivariance to geometric transformations during clustering.",
+      "expected_doc_ids": [
+        "2103.17070v1"
+      ],
+      "expected_pages": [
+        4
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2103.17070v1",
+          "page_number": 4,
+          "quote": "invariance to photometric transformations and equivariance to geometric transformations"
+        }
+      ]
+    },
+    {
+      "id": "G21",
+      "category": "method",
+      "question": "What is STEGO distilled from?",
+      "reference_answer": "STEGO distills feature correspondences from self-supervised visual features to obtain unsupervised semantic segmentation.",
+      "expected_doc_ids": [
+        "2203.08414v1"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 1,
+          "quote": "UNSUPERVISED SEMANTIC SEGMENTATION BY DISTILLING FEATURE CORRESPONDENCES"
+        },
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 1,
+          "quote": "current unsupervised feature learning frameworks already generate dense features whose correlations are semantically consistent"
+        }
+      ]
+    },
+    {
+      "id": "G22",
+      "category": "method",
+      "question": "How does W-Net support fully unsupervised image segmentation?",
+      "reference_answer": "W-Net uses a two-part encoder-decoder architecture that jointly learns a soft segmentation and reconstructs the input image without labels.",
+      "expected_doc_ids": [
+        "1711.08506v1"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 1,
+          "quote": "The first FCN encodes an input image, using fully convolutional layers, into a k-way soft segmentation"
+        },
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 1,
+          "quote": "The second FCN reverses this process, going from the segmentation layer back to a reconstructed image"
+        }
+      ]
+    },
+    {
+      "id": "G23",
+      "category": "method",
+      "question": "What is differentiable feature clustering used for in unsupervised image segmentation?",
+      "reference_answer": "It jointly learns pixel features and cluster assignments through a differentiable clustering objective without semantic labels.",
+      "expected_doc_ids": [
+        "2007.09990v1"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2007.09990v1",
+          "page_number": 1,
+          "quote": "a joint learning approach is presented that predicts, for an arbitrary image input, unknown cluster labels and learns the optimal CNN parameters for the image pixel clustering"
+        }
+      ]
+    },
+    {
+      "id": "G24",
+      "category": "method",
+      "question": "What is the central assumption behind SCAN?",
+      "reference_answer": "SCAN assumes that semantically similar images should receive the same cluster assignment and learns from nearest-neighbor consistency.",
+      "expected_doc_ids": [
+        "2005.12320v2"
+      ],
+      "expected_pages": [
+        3
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2005.12320v2",
+          "page_number": 3,
+          "quote": "we propose to mine the nearest neighbors of each image based on feature similarity"
+        },
+        {
+          "doc_id": "2005.12320v2",
+          "page_number": 3,
+          "quote": "these nearest neighbors belong to the same semantic class"
+        }
+      ]
+    },
+    {
+      "id": "G25",
+      "category": "method",
+      "question": "What does unsupervised semantic segmentation by contrasting object mask proposals use as supervision?",
+      "reference_answer": "It uses object mask proposals to construct contrastive learning signals without semantic labels.",
+      "expected_doc_ids": [
+        "2102.06191v3"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2102.06191v3",
+          "page_number": 2,
+          "quote": "we use a contrastive framework to learn pixel embeddings. The object mask proposals are employed as a prior"
+        }
+      ]
+    },
+    {
+      "id": "G26",
+      "category": "method",
+      "question": "What does DeepCluster alternate between during training?",
+      "reference_answer": "DeepCluster alternates between clustering image features and using the resulting cluster assignments as pseudo-labels for representation learning.",
+      "expected_doc_ids": [
+        "1807.05520v2"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1807.05520v2",
+          "page_number": 2,
+          "quote": "we iteratively cluster deep features and use the cluster assignments as pseudo-labels to learn the parameters of the convnet"
+        }
+      ]
+    },
+    {
+      "id": "G27",
+      "category": "method",
+      "question": "What is the teacher-student mechanism in DINO?",
+      "reference_answer": "DINO trains a student network to match the output distribution of a teacher network updated with an exponential moving average of the student.",
+      "expected_doc_ids": [
+        "2104.14294v2"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2104.14294v2",
+          "page_number": 2,
+          "quote": "directly predicting the output of a teacher network—built with a momentum encoder"
+        },
+        {
+          "doc_id": "2104.14294v2",
+          "page_number": 2,
+          "quote": "The teacher parameters are updated with an exponential moving average (ema) of the student parameters"
+        }
+      ]
+    },
+    {
+      "id": "G28",
+      "category": "comparison",
+      "question": "How does BYOL avoid using negative pairs?",
+      "reference_answer": "BYOL trains an online network to predict the representation of a slowly updated target network, so it does not require explicit negative pairs.",
+      "expected_doc_ids": [
+        "2006.07733v3"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2006.07733v3",
+          "page_number": 1,
+          "quote": "we train the online network to predict the target network representation of the same image under a different augmented view"
+        },
+        {
+          "doc_id": "2006.07733v3",
+          "page_number": 2,
+          "quote": "without using negative pairs"
+        }
+      ]
+    },
+    {
+      "id": "G29",
+      "category": "method",
+      "question": "What is the pretext task in masked autoencoders?",
+      "reference_answer": "MAE masks a large portion of image patches and learns to reconstruct the missing pixels from the visible patches.",
+      "expected_doc_ids": [
+        "2111.06377v3"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2111.06377v3",
+          "page_number": 1,
+          "quote": "we mask random patches of the input image and reconstruct the missing pixels"
+        }
+      ]
+    },
+    {
+      "id": "G30",
+      "category": "definition",
+      "question": "How does a Vision Transformer represent an image?",
+      "reference_answer": "ViT splits an image into fixed-size patches, linearly embeds them as tokens, and processes the token sequence with a Transformer.",
+      "expected_doc_ids": [
+        "2010.11929v2"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2010.11929v2",
+          "page_number": 1,
+          "quote": "we split an image into patches and provide the sequence of linear embeddings of these patches as an input to a Trans- former"
+        }
+      ]
+    },
+    {
+      "id": "G31",
+      "category": "method",
+      "question": "What problem do residual connections address in ResNet?",
+      "reference_answer": "Residual connections address the degradation problem in very deep networks by learning residual functions through shortcut connections.",
+      "expected_doc_ids": [
+        "1512.03385v1"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1512.03385v1",
+          "page_number": 1,
+          "quote": "a degradation problem has been exposed: with the network depth increasing, accuracy gets saturated"
+        },
+        {
+          "doc_id": "1512.03385v1",
+          "page_number": 2,
+          "quote": "we address the degradation problem by introducing a deep residual learning framework"
+        }
+      ]
+    },
+    {
+      "id": "G32",
+      "category": "method",
+      "question": "What does a variational autoencoder optimize?",
+      "reference_answer": "A VAE optimizes a variational lower bound that balances reconstruction quality with a regularized latent distribution.",
+      "expected_doc_ids": [
+        "1312.6114v11"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1312.6114v11",
+          "page_number": 1,
+          "quote": "a reparameterization of the variational lower bound yields a lower bound estimator that can be straightforwardly optimized"
+        }
+      ]
+    },
+    {
+      "id": "G33",
+      "category": "method",
+      "question": "What does Deep Embedded Clustering optimize after initialization?",
+      "reference_answer": "DEC refines an embedding and cluster centroids by minimizing divergence between soft assignments and an auxiliary target distribution.",
+      "expected_doc_ids": [
+        "1511.06335v2"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1511.06335v2",
+          "page_number": 1,
+          "quote": "iteratively refine clusters with an auxiliary target distribution derived from the current soft cluster assignment"
+        }
+      ]
+    },
+    {
+      "id": "G34",
+      "category": "definition",
+      "question": "What is the objective of k-means clustering?",
+      "reference_answer": "MacQueen frames k-means as constructing partitions that are efficient in terms of within-class variance.",
+      "expected_doc_ids": [
+        "macqueen"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "macqueen",
+          "page_number": 1,
+          "quote": "The process, which is called 'k-means,' appears to give partitions which are reasonably efficient in the sense of within-class variance"
+        }
+      ]
+    },
+    {
+      "id": "G35",
+      "category": "method",
+      "question": "Why are fully connected CRFs difficult to use directly for image labeling?",
+      "reference_answer": "They connect all pixel pairs, creating an enormous inference problem that requires an efficient approximation.",
+      "expected_doc_ids": [
+        "1210.5644v1"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1210.5644v1",
+          "page_number": 1,
+          "quote": "The resulting graphs have billions of edges, making traditional inference algorithms impractical"
+        },
+        {
+          "doc_id": "1210.5644v1",
+          "page_number": 1,
+          "quote": "a highly efficient approximate inference algorithm for fully connected CRF models"
+        }
+      ]
+    },
+    {
+      "id": "G36",
+      "category": "method",
+      "question": "What graph property does efficient graph-based image segmentation use to decide whether to merge regions?",
+      "reference_answer": "It compares inter-region edge differences with each component's internal variation using a scale-dependent threshold.",
+      "expected_doc_ids": [
+        "efficient-graph-based-image-segmentation-tyi8hqdokm"
+      ],
+      "expected_pages": [
+        5
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "efficient-graph-based-image-segmentation-tyi8hqdokm",
+          "page_number": 5,
+          "quote": "the minimum internal difference, MInt, is defined as"
+        },
+        {
+          "doc_id": "efficient-graph-based-image-segmentation-tyi8hqdokm",
+          "page_number": 5,
+          "quote": "in practice k sets a scale of observation"
+        }
+      ]
+    },
+    {
+      "id": "G37",
+      "category": "method",
+      "question": "What is VQ-VAE-2 designed to improve over VQ-VAE?",
+      "reference_answer": "VQ-VAE-2 uses a hierarchical discrete latent architecture to generate more diverse, higher-fidelity images.",
+      "expected_doc_ids": [
+        "1906.00446v1"
+      ],
+      "expected_pages": [
+        4
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1906.00446v1",
+          "page_number": 4,
+          "quote": "we use a hierarchy of vector quantized codes to model large images"
+        }
+      ]
+    },
+    {
+      "id": "G38",
+      "category": "application",
+      "question": "What kinds of satellite information does SatMAE pre-train on?",
+      "reference_answer": "SatMAE pre-trains Transformers for temporal and multispectral satellite imagery.",
+      "expected_doc_ids": [
+        "2207.08051v3"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2207.08051v3",
+          "page_number": 1,
+          "quote": "SatMAE: Pre-training Transformers for Temporal and Multi-Spectral Satellite Imagery"
+        }
+      ]
+    },
+    {
+      "id": "G39",
+      "category": "numeric_table",
+      "question": "How much higher is STEGO's unsupervised accuracy than IIC's on Potsdam-3?",
+      "reference_answer": "STEGO reaches 77.0% unsupervised accuracy versus 65.1% for IIC, a difference of 11.9 percentage points (about 12 points).",
+      "expected_doc_ids": [
+        "2203.08414v1"
+      ],
+      "expected_pages": [
+        15
+      ],
+      "expects_refusal": false,
+      "known_limitation": "borderless_table",
+      "evidence": [
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 15,
+          "quote": "IIC (Ji et al., 2019) 65.1 STEGO (Ours) 77.0"
+        }
+      ]
+    },
+    {
+      "id": "G40",
+      "category": "in_domain_refusal",
+      "question": "What mIoU do the indexed papers report on the Potsdam dataset?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G41",
+      "category": "comparison",
+      "question": "How do SimCLR and MoCo differ in handling negative examples?",
+      "reference_answer": "SimCLR commonly relies on negatives from the current batch, whereas MoCo maintains a queue of keys and a momentum encoder to supply a large, consistent dictionary.",
+      "expected_doc_ids": [
+        "Reference 7 SimCLR Contrastive learning",
+        "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper"
+      ],
+      "expected_pages": [
+        1,
+        3
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 3,
+          "quote": "To keep it simple, we do not train the model with a memory bank"
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 3,
+          "quote": "A batch size of 8192 gives us 16382 negative examples per positive pair from both augmentation views"
+        },
+        {
+          "doc_id": "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper",
+          "page_number": 1,
+          "quote": "The dictionary is built as a queue, with the current mini-batch enqueued and the oldest mini-batch dequeued, decoupling it from the mini-batch size"
+        }
+      ]
+    },
+    {
+      "id": "G42",
+      "category": "comparison",
+      "question": "How do SimCLR and BYOL differ in their use of negative pairs?",
+      "reference_answer": "SimCLR uses contrastive negative pairs, while BYOL learns by predicting a target-network representation and does not require explicit negatives.",
+      "expected_doc_ids": [
+        "Reference 7 SimCLR Contrastive learning",
+        "2006.07733v3"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "SimCLR learns representations by maximizing agreement between differently augmented views of the same data example via a contrastive loss"
+        },
+        {
+          "doc_id": "2006.07733v3",
+          "page_number": 2,
+          "quote": "which achieves state-of-the-art results under the linear evaluation protocol on ImageNet without using negative pairs"
+        }
+      ]
+    },
+    {
+      "id": "G43",
+      "category": "comparison",
+      "question": "How do FCN and U-Net both support dense prediction?",
+      "reference_answer": "Both are fully convolutional and combine coarse semantic features with fine high-resolution ones through skip connections; FCN sums upsampled features, while U-Net concatenates them along a symmetric expanding path.",
+      "expected_doc_ids": [
+        "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+        "Reference 2 U Net"
+      ],
+      "expected_pages": [
+        2,
+        4,
+        6
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 4,
+          "quote": "we add skips between layers to fuse coarse, semantic and local, appearance information"
+        },
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 6,
+          "quote": "by adding a 2× upsampling layer and summing"
+        },
+        {
+          "doc_id": "Reference 2 U Net",
+          "page_number": 2,
+          "quote": "In order to localize, high resolution features from the contracting path are combined with the upsampled"
+        }
+      ]
+    },
+    {
+      "id": "G44",
+      "category": "comparison",
+      "question": "How do PiCIE and STEGO approach unsupervised semantic segmentation differently?",
+      "reference_answer": "PiCIE learns clustering with invariance and equivariance constraints, whereas STEGO distills feature correspondences from pretrained self-supervised representations.",
+      "expected_doc_ids": [
+        "2103.17070v1",
+        "2203.08414v1"
+      ],
+      "expected_pages": [
+        1,
+        2,
+        4
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2103.17070v1",
+          "page_number": 4,
+          "quote": "invariance to photometric transformations and equivariance to geometric transformations"
+        },
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 1,
+          "quote": "DISTILLING FEATURE CORRESPONDENCES"
+        },
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 2,
+          "quote": "STEGO treats pretrained self-supervised features as input"
+        }
+      ]
+    },
+    {
+      "id": "G45",
+      "category": "comparison",
+      "question": "How does MAE differ from SimCLR as a self-supervised learning objective?",
+      "reference_answer": "MAE reconstructs masked image content, while SimCLR contrasts representations of augmented image views.",
+      "expected_doc_ids": [
+        "2111.06377v3",
+        "Reference 7 SimCLR Contrastive learning"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2111.06377v3",
+          "page_number": 1,
+          "quote": "we mask random patches of the input image and reconstruct the missing pixels"
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "maximizing agreement between differently augmented views of the same data example via a contrastive loss"
+        }
+      ]
+    },
+    {
+      "id": "G46",
+      "category": "numeric",
+      "question": "What ImageNet top-1 accuracy does the SimCLR paper report for its best model under linear evaluation?",
+      "reference_answer": "The SimCLR paper reports 76.5% ImageNet top-1 accuracy under linear evaluation for its best model.",
+      "expected_doc_ids": [
+        "Reference 7 SimCLR Contrastive learning"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 1,
+          "quote": "A linear classifier trained on self-supervised representations learned by Sim- CLR achieves 76.5% top-1 accuracy"
+        }
+      ]
+    },
+    {
+      "id": "G47",
+      "category": "numeric",
+      "question": "What fraction of image patches does MAE mask in its asymmetric encoder-decoder design?",
+      "reference_answer": "MAE masks 75% of image patches.",
+      "expected_doc_ids": [
+        "2111.06377v3"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2111.06377v3",
+          "page_number": 1,
+          "quote": "a large random subset of image patches (e.g., 75%) is masked out"
+        }
+      ]
+    },
+    {
+      "id": "G48",
+      "category": "numeric",
+      "question": "What patch size is named in the title of the Vision Transformer paper?",
+      "reference_answer": "The title names 16x16 image patches.",
+      "expected_doc_ids": [
+        "2010.11929v2"
+      ],
+      "expected_pages": [
+        3
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2010.11929v2",
+          "page_number": 3,
+          "quote": "We split an image into fixed-size patches, linearly embed each of them"
+        }
+      ]
+    },
+    {
+      "id": "G49",
+      "category": "refusal",
+      "question": "What is the current population of Paris?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G50",
+      "category": "clarification",
+      "question": "satellite imagery",
+      "reference_answer": "Please ask a complete research question so I can retrieve the right evidence.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "clarification"
+    }
+  ]
+}
