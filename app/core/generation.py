@@ -72,12 +72,26 @@ Evidence:
 {_context(chunks)}"""
 
     client = Groq(api_key=api_key)
-    response = client.chat.completions.create(
-        model=os.getenv("GROQ_MODEL", DEFAULT_MODEL),
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0,
-        response_format={"type": "json_object"},
-    )
+    request = {
+        "model": os.getenv("GROQ_MODEL", DEFAULT_MODEL),
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 0,
+    }
+    try:
+        response = client.chat.completions.create(
+            **request,
+            response_format={"type": "json_object"},
+        )
+    except Exception as error:
+        # Some provider/model responses fail structured-output validation before
+        # returning content. Retry with local JSON parsing as a fallback.
+        try:
+            response = client.chat.completions.create(**request)
+        except Exception as retry_error:
+            raise GenerationError(
+                f"The answer provider failed after a JSON retry: {retry_error}"
+            ) from retry_error
+
     payload = _parse_json(response.choices[0].message.content or "")
     answer = str(payload.get("answer", "")).strip()
     citation_ids = payload.get("citation_chunk_ids", [])

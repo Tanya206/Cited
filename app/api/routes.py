@@ -58,12 +58,37 @@ def paper_path(doc_id: str) -> Path:
     return path
 
 
-def highlight_rectangles(page: pymupdf.Page, text: str) -> list[pymupdf.Rect]:
-    """Find several readable excerpts from a chunk on its original PDF page."""
+_HIGHLIGHT_STOPWORDS = {
+    "a", "an", "and", "by", "for", "from", "in", "is", "me", "of",
+    "paper", "the", "to", "what", "which", "with",
+}
+
+
+def _query_phrases(query: str) -> list[str]:
+    """Return distinctive query phrases before falling back to chunk text."""
+    phrases: list[str] = []
+    for match in re.findall(r"[A-Z][A-Za-z0-9-]*(?:\s+[A-Z][A-Za-z0-9-]*)+|[A-Z]{2,}[A-Za-z0-9-]*", query):
+        phrases.append(match.strip())
+    for token in re.findall(r"[A-Za-z][A-Za-z0-9-]{2,}", query):
+        if token.lower() not in _HIGHLIGHT_STOPWORDS:
+            phrases.append(token)
+    return list(dict.fromkeys(sorted(phrases, key=lambda value: (-len(value.split()), -len(value)))))
+
+
+def highlight_rectangles(page: pymupdf.Page, text: str, query: str = "") -> list[pymupdf.Rect]:
+    """Highlight query-matching evidence instead of arbitrary long sentences."""
     normalized = re.sub(r"\s+", " ", text).replace("ﬁ", "fi").replace("ﬂ", "fl")
-    sentences = re.findall(r"[^.!?]{35,220}[.!?]", normalized)
     rectangles: list[pymupdf.Rect] = []
 
+    for phrase in _query_phrases(query):
+        matches = page.search_for(phrase)
+        if matches:
+            rectangles.extend(matches)
+        if len(rectangles) >= 8:
+            return rectangles[:8]
+
+    # If the query terms are absent from the page, use readable chunk excerpts.
+    sentences = re.findall(r"[^.!?]{35,220}[.!?]", normalized)
     for sentence in sorted(sentences, key=len, reverse=True):
         matches = page.search_for(sentence)
         if matches:
@@ -81,7 +106,6 @@ def highlight_rectangles(page: pymupdf.Page, text: str) -> list[pymupdf.Rect]:
                 break
     return rectangles[:8]
 
-
 @router.get("/health")
 def health(request: Request) -> dict[str, str]:
     return {"status": "ok", "chunks": str(request.app.state.services.collection.count())}
@@ -94,7 +118,7 @@ def open_paper(doc_id: str) -> FileResponse:
 
 
 @router.get("/evidence/{chunk_id}/highlight")
-def highlight_evidence(chunk_id: str, request: Request) -> Response:
+def highlight_evidence(chunk_id: str, request: Request, q: str = "") -> Response:
     """Render a cited page and mark excerpts that match the evidence chunk."""
     services: Services = request.app.state.services
     chunk = next(
@@ -106,7 +130,7 @@ def highlight_evidence(chunk_id: str, request: Request) -> Response:
 
     with pymupdf.open(paper_path(chunk["doc_id"])) as document:
         page = document[chunk["page_number"] - 1]
-        for rectangle in highlight_rectangles(page, chunk["text"]):
+        for rectangle in highlight_rectangles(page, chunk["text"], q):
             annotation = page.add_highlight_annot(rectangle)
             # paleturquoise (#AFEEEE), translucent like a physical highlighter.
             annotation.set_colors(stroke=(175 / 255, 238 / 255, 238 / 255))
@@ -162,7 +186,7 @@ def answer(payload: AnswerRequest, request: Request) -> AnswerResponse:
                 chunk_type=by_id[chunk_id]["chunk_type"],
                 source_image_path=by_id[chunk_id].get("source_image_path"),
                 paper_path=f"/papers/{quote(by_id[chunk_id]['doc_id'], safe='')}#page={by_id[chunk_id]['page_number']}",
-                highlight_path=f"/evidence/{quote(chunk_id, safe='')}/highlight",
+                highlight_path=f"/evidence/{quote(chunk_id, safe='')}/highlight?q={quote(payload.query, safe='')}",
             )
             for chunk_id in citation_ids
         ]

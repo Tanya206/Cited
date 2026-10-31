@@ -4,6 +4,7 @@ QUESTION_STARTS = (
     "what ", "how ", "why ", "when ", "where ", "who ", "which ",
     "is ", "are ", "can ", "does ", "do ", "explain ", "define ",
     "describe ", "compare ", "summarize ", "list ", "give ", "tell me ",
+    "find ", "search ", "show ", "locate ",
 )
 
 

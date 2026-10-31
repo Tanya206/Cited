@@ -19,6 +19,36 @@ class _NoopSpan:
         return None
 
 
+class _LangfuseSpan:
+    """Adapt Langfuse's context manager to the route's span interface."""
+
+    def __init__(self, context_manager):
+        self._context_manager = context_manager
+        self._observation = None
+
+    def __enter__(self):
+        try:
+            self._observation = self._context_manager.__enter__()
+        except Exception:
+            self._observation = None
+        return self
+
+    def __exit__(self, *args):
+        try:
+            return self._context_manager.__exit__(*args)
+        except Exception:
+            return False
+
+    def update(self, **kwargs):
+        if self._observation is None:
+            return None
+        try:
+            self._observation.update(**kwargs)
+        except Exception:
+            return None
+        return None
+
+
 def answer_trace(query: str):
     if os.getenv("LANGFUSE_ENABLED", "true").lower() not in {"1", "true", "yes"}:
         return _NoopSpan()
@@ -28,10 +58,12 @@ def answer_trace(query: str):
         from langfuse import get_client
 
         client = get_client()
-        return client.start_as_current_observation(
-            as_type="span",
-            name="cited.answer",
-            input={"query": query},
+        return _LangfuseSpan(
+            client.start_as_current_observation(
+                as_type="span",
+                name="cited.answer",
+                input={"query": query},
+            )
         )
     except Exception:
         return _NoopSpan()
