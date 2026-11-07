@@ -41,6 +41,11 @@ evaluator LLM, needs credentials, and is not deterministic enough for every
 commit. The saved `eval/answer_runs.jsonl` and `eval/ragas_results.json` are
 local evaluation artifacts and must not be committed.
 
+The evaluator uses `raise_exceptions=True`. This is intentional: Ragas can
+otherwise suppress provider or parser failures and write `NaN`, which is not a
+quality score. A failed run must expose the underlying error so the provider,
+model, prompt, or quota can be fixed before interpreting the results.
+
 ## Langfuse tracing
 
 Set `LANGFUSE_ENABLED=true`, `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and

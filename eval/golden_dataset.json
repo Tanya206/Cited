@@ -52,7 +52,6 @@
         "Reference 2 U Net"
       ],
       "expected_pages": [
-        1,
         2
       ],
       "expects_refusal": false,
@@ -68,7 +67,7 @@
       "id": "G04",
       "category": "method",
       "question": "What do atrous convolutions provide in DeepLab?",
-      "reference_answer": "Atrous convolutions enlarge the receptive field without reducing feature-map resolution or increasing the number of parameters proportionally.",
+      "reference_answer": "Atrous convolutions enlarge the filter field of view, produce denser feature maps, and control response resolution without requiring extra learned parameters.",
       "expected_doc_ids": [
         "Reference 3 Atrous Convolution for Semantic Segmentation"
       ],
@@ -85,7 +84,12 @@
         {
           "doc_id": "Reference 3 Atrous Convolution for Semantic Segmentation",
           "page_number": 1,
-          "quote": "extract denser feature maps by removing the downsampling operations from the last few layers"
+          "quote": "extract denser feature maps by removing the downsampling operations from the last few layers and upsampling the corresponding filter kernels, equivalent to inserting holes"
+        },
+        {
+          "doc_id": "Reference 3 Atrous Convolution for Semantic Segmentation",
+          "page_number": 1,
+          "quote": "responses are computed within DCNNs without requiring learning extra parameters"
         }
       ]
     },
@@ -118,7 +122,6 @@
         "Reference 5 Normalized cuts and image segmentation"
       ],
       "expected_pages": [
-        1,
         2
       ],
       "expects_refusal": false,
@@ -172,7 +175,7 @@
         {
           "doc_id": "Reference 7 SimCLR Contrastive learning",
           "page_number": 2,
-          "quote": "SimCLR learns representations by maximizing agreement between differently augmented views of the same data example via a contrastive loss"
+          "quote": "we treat the other 2(N −1) augmented examples within a minibatch as negative examples"
         }
       ]
     },
@@ -185,7 +188,6 @@
         "Reference 7 SimCLR Contrastive learning"
       ],
       "expected_pages": [
-        1,
         2
       ],
       "expects_refusal": false,
@@ -814,7 +816,7 @@
         {
           "doc_id": "efficient-graph-based-image-segmentation-tyi8hqdokm",
           "page_number": 5,
-          "quote": "the minimum internal difference, MInt, is defined as"
+          "quote": "The region comparison predicate evaluates if there is evidence for a boundary between a pair or components by checking if the difference between the components, Dif(C1, C2), is large relative to the internal difference within at least one of the components"
         },
         {
           "doc_id": "efficient-graph-based-image-segmentation-tyi8hqdokm",
@@ -867,7 +869,7 @@
       "id": "G39",
       "category": "numeric_table",
       "question": "How much higher is STEGO's unsupervised accuracy than IIC's on Potsdam-3?",
-      "reference_answer": "STEGO reaches 77.0% unsupervised accuracy versus 65.1% for IIC, a difference of 11.9 percentage points (about 12 points).",
+      "reference_answer": "STEGO reaches 77.0% unsupervised accuracy, compared with 65.1% for IIC (the paper also reports this as about +12%).",
       "expected_doc_ids": [
         "2203.08414v1"
       ],
@@ -876,6 +878,10 @@
       ],
       "expects_refusal": false,
       "known_limitation": "borderless_table",
+      "required_numbers": [
+        "65.1",
+        "77.0"
+      ],
       "evidence": [
         {
           "doc_id": "2203.08414v1",
@@ -1009,7 +1015,7 @@
         {
           "doc_id": "2203.08414v1",
           "page_number": 1,
-          "quote": "DISTILLING FEATURE CORRESPONDENCES"
+          "quote": "STEGO distills pretrained unsupervised visual features into semantic clusters using a novel"
         },
         {
           "doc_id": "2203.08414v1",
@@ -1057,6 +1063,9 @@
         1
       ],
       "expects_refusal": false,
+      "required_numbers": [
+        "76.5"
+      ],
       "evidence": [
         {
           "doc_id": "Reference 7 SimCLR Contrastive learning",
@@ -1077,6 +1086,9 @@
         1
       ],
       "expects_refusal": false,
+      "required_numbers": [
+        "75%"
+      ],
       "evidence": [
         {
           "doc_id": "2111.06377v3",
@@ -1094,16 +1106,236 @@
         "2010.11929v2"
       ],
       "expected_pages": [
-        3
+        1
       ],
       "expects_refusal": false,
+      "required_numbers": [
+        "16X16"
+      ],
       "evidence": [
         {
           "doc_id": "2010.11929v2",
-          "page_number": 3,
-          "quote": "We split an image into fixed-size patches, linearly embed each of them"
+          "page_number": 1,
+          "quote": "AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE"
         }
       ]
+    },
+    {
+      "id": "G51",
+      "category": "application",
+      "question": "What pipeline does the multispectral satellite segmentation study propose?",
+      "reference_answer": "It combines superpixel preprocessing, a VQ-VAE, and self-supervised contrastive learning; it clusters latent features with a GMM to produce pseudo-segmentation masks.",
+      "expected_doc_ids": ["2025362135"],
+      "expected_pages": [1],
+      "expects_refusal": false,
+      "evidence": [
+        {"doc_id": "2025362135", "page_number": 1, "quote": "This study proposes a deep learning pipeline combining superpixel-based preprocessing, Vector Quantized Variational Autoencoder (VQ-VAE), and self-supervised contrastive learning"},
+        {"doc_id": "2025362135", "page_number": 1, "quote": "Gaussian Mixture Model (GMM) clustering generates pseudo segmentation masks"}
+      ]
+    },
+    {
+      "id": "G52",
+      "category": "definition",
+      "question": "Why does the MS-SSIM paper study alternatives to the usual squared-error loss?",
+      "reference_answer": "It studies perceptually motivated losses because squared error correlates poorly with human-perceived image quality.",
+      "expected_doc_ids": ["Reference 14 MS-SSIM"],
+      "expected_pages": [1],
+      "expects_refusal": false,
+      "evidence": [
+        {"doc_id": "Reference 14 MS-SSIM", "page_number": 1, "quote": "we bring attention to alternative choices for image restoration"},
+        {"doc_id": "Reference 14 MS-SSIM", "page_number": 1, "quote": "ℓ2 correlates poorly with image quality as perceived by a human observer"}
+      ]
+    },
+    {
+      "id": "G53",
+      "category": "application",
+      "question": "How does contrastive pretraining help label-limited land-use classification?",
+      "reference_answer": "The study adapts contrastive methods to learn generic multi-resolution features and reports that MoCo with temporal positives can reach five times the accuracy of training from scratch with about four examples per class on RESISC45.",
+      "expected_doc_ids": ["2210.06786v1"],
+      "expected_pages": [1, 2],
+      "expects_refusal": false,
+      "evidence": [
+        {"doc_id": "2210.06786v1", "page_number": 1, "quote": "in this paper we study self-supervised visual representation learning through the lens of label efficiency"},
+        {"doc_id": "2210.06786v1", "page_number": 2, "quote": "with only about 4 examples per class, we reach 5× the accuracy of a classifier trained from scratch"}
+      ]
+    },
+    {
+      "id": "G54",
+      "category": "application",
+      "question": "Why is self-supervised pretraining useful for satellite vehicle detection?",
+      "reference_answer": "Labeled examples are expensive and rare in defense-related remote sensing, while many unlabeled images are available, making label-efficient pretraining useful.",
+      "expected_doc_ids": ["2210.11815v1"],
+      "expected_pages": [1],
+      "expects_refusal": false,
+      "evidence": [
+        {"doc_id": "2210.11815v1", "page_number": 1, "quote": "supervised learning requires a huge number of labeled examples to reach operational performances"},
+        {"doc_id": "2210.11815v1", "page_number": 1, "quote": "This limited labeling capability, as well as the large number of unlabeled images available"}
+      ]
+    },
+    {
+      "id": "G55",
+      "category": "application",
+      "question": "What problem does domain-adaptable self-supervised learning address in satellite imagery?",
+      "reference_answer": "It addresses representation learning and knowledge transfer across remote-sensing visual domains while reducing reliance on human annotations.",
+      "expected_doc_ids": ["2304.09874v1"],
+      "expected_pages": [1],
+      "expects_refusal": false,
+      "evidence": [
+        {"doc_id": "2304.09874v1", "page_number": 1, "quote": "This work presents a novel domain adaption paradigm for studying contrastive self-supervised representation learning and knowledge transfer using remote sensing satellite data"}
+      ]
+    },
+    {
+      "id": "G56",
+      "category": "method",
+      "question": "Why does the remote-sensing prompt-learning paper modify SAM?",
+      "reference_answer": "It develops an automated instance-segmentation approach that incorporates semantic category information because standard SAM relies heavily on manually supplied points, boxes, or coarse masks.",
+      "expected_doc_ids": ["2306.16269v1"],
+      "expected_pages": [1],
+      "expects_refusal": false,
+      "evidence": [
+        {"doc_id": "2306.16269v1", "page_number": 1, "quote": "SAM heavily depends on prior manual guidance involving points, boxes, and coarse-grained masks"},
+        {"doc_id": "2306.16269v1", "page_number": 1, "quote": "we consider designing an automated instance segmentation approach for remote sensing images based on the SAM foundation model, incorporating semantic category information"}
+      ]
+    },
+    {
+      "id": "G57",
+      "category": "method",
+      "question": "What kinds of prompts can SAM use in remote-sensing applications?",
+      "reference_answer": "The paper describes bounding boxes, single points, and prompt text as possible minimal inputs for segmentation.",
+      "expected_doc_ids": ["2306.16623v2"],
+      "expected_pages": [1],
+      "expects_refusal": false,
+      "evidence": [
+        {"doc_id": "2306.16623v2", "page_number": 1, "quote": "requiring only a bounding box or a single point as a reference, or even a prompt text"}
+      ]
+    },
+    {
+      "id": "G58",
+      "category": "definition",
+      "question": "What is semantic segmentation in aerial imagery?",
+      "reference_answer": "It assigns the most likely class label to every image pixel from a finite set of object categories.",
+      "expected_doc_ids": ["Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs"],
+      "expected_pages": [1],
+      "expects_refusal": false,
+      "evidence": [
+        {"doc_id": "Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs", "page_number": 1, "quote": "Its aim is to determine, at every image pixel, the most likely class label from a finite set of possible labels"}
+      ]
+    },
+    {
+      "id": "G59",
+      "category": "numeric_table",
+      "question": "What ODS segmentation score does W-Net report in the SC column of its comparison table?",
+      "reference_answer": "W-Net reports an ODS score of 0.57 in the SC column.",
+      "expected_doc_ids": ["1711.08506v1"],
+      "expected_pages": [8],
+      "expects_refusal": false,
+      "required_numbers": ["0.57"],
+      "evidence": [
+        {"doc_id": "1711.08506v1", "page_number": 8, "quote": "W-Net (ours) | 0.57 | 0.62 | 0.81 | 0.84 | 1.76 | 1.60"}
+      ]
+    },
+    {
+      "id": "G60",
+      "category": "numeric_table",
+      "question": "How many images and classes does the SIRI-WHU dataset have in the domain-adaptation study?",
+      "reference_answer": "The table lists 2,400 images and 12 classes for SIRI-WHU.",
+      "expected_doc_ids": ["2304.09874v1"],
+      "expected_pages": [2],
+      "expects_refusal": false,
+      "required_numbers": ["2400", "12"],
+      "evidence": [
+        {"doc_id": "2304.09874v1", "page_number": 2, "quote": "SIRI-WHU | 2400 | 12"}
+      ]
+    },
+    {
+      "id": "G61",
+      "category": "numeric_table",
+      "question": "What batch size and learning rate are listed for the pretext task in the domain-adaptation study?",
+      "reference_answer": "It lists a batch size of 256 and a learning rate of 0.0005.",
+      "expected_doc_ids": ["2304.09874v1"],
+      "expected_pages": [4],
+      "expects_refusal": false,
+      "required_numbers": ["256", "0.0005"],
+      "evidence": [
+        {"doc_id": "2304.09874v1", "page_number": 4, "quote": "Batch size | 256"},
+        {"doc_id": "2304.09874v1", "page_number": 4, "quote": "Learning Rate | 0.0005"}
+      ]
+    },
+    {
+      "id": "G62",
+      "category": "numeric_table",
+      "question": "What top-5 test error does the table report for ResNet on ILSVRC 2015?",
+      "reference_answer": "The table reports a top-5 test error of 3.57 for ResNet.",
+      "expected_doc_ids": ["1512.03385v1"],
+      "expected_pages": [6],
+      "expects_refusal": false,
+      "required_numbers": ["3.57"],
+      "evidence": [
+        {"doc_id": "1512.03385v1", "page_number": 6, "quote": "ResNet (ILSVRC’15) | 3.57"}
+      ]
+    },
+    {
+      "id": "G63",
+      "category": "numeric_table",
+      "question": "Which DINO configuration in the table reaches 85.5 accuracy?",
+      "reference_answer": "DINO with ViT-B/8 reaches 85.5 accuracy in the listed configuration.",
+      "expected_doc_ids": ["2104.14294v2"],
+      "expected_pages": [6],
+      "expects_refusal": false,
+      "required_numbers": ["85.5"],
+      "evidence": [
+        {"doc_id": "2104.14294v2", "page_number": 6, "quote": "DINO | ViT-B/8 | 1536 | 3202 | 85.5"}
+      ]
+    },
+    {
+      "id": "G64",
+      "category": "in_domain_refusal",
+      "question": "What MS-SSIM mIoU does W-Net report on COCO?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G65",
+      "category": "in_domain_refusal",
+      "question": "How many annotated training pixels does W-Net require?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G66",
+      "category": "in_domain_refusal",
+      "question": "What Potsdam mIoU does SatMAE report?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G67",
+      "category": "in_domain_refusal",
+      "question": "What GPU inference latency does the MS-SSIM paper report on ImageNet?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G68",
+      "category": "in_domain_refusal",
+      "question": "What cloud-cover percentage does SatMAE report for each satellite image?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
     },
     {
       "id": "G49",

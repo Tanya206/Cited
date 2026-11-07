@@ -4,7 +4,9 @@ import json
 import os
 import re
 
-from groq import Groq
+from openai import OpenAI
+
+from app.core.llm_client import create_llm_client
 
 
 # Groq retired the previous Llama default for developer-tier accounts.
@@ -44,14 +46,34 @@ def _parse_json(content: str) -> dict:
     return payload
 
 
+def _request_payload(client: OpenAI, request: dict) -> dict:
+    """Call an OpenAI-compatible provider, with local JSON parsing fallback."""
+    try:
+        response = client.chat.completions.create(
+            **request,
+            response_format={"type": "json_object"},
+        )
+    except Exception:
+        # Some provider/model responses fail structured-output validation before
+        # returning content. Retry without response_format and parse locally.
+        try:
+            response = client.chat.completions.create(**request)
+        except Exception as retry_error:
+            raise GenerationError(
+                f"The answer provider failed after a JSON retry: {retry_error}"
+            ) from retry_error
+    return _parse_json(response.choices[0].message.content or "")
+
+
 def generate_cited_answer(query: str, chunks: list[dict]) -> tuple[str, list[str], bool]:
     """Return an answer and only citation IDs that exist in ``chunks``."""
     if not chunks:
         return NO_ANSWER, [], True
 
-    api_key = os.getenv("GROQ_API_KEY")
+    client, settings = create_llm_client()
+    api_key = settings.api_key
     if not api_key:
-        raise GenerationError("GROQ_API_KEY is not configured.")
+        raise GenerationError("LLM_API_KEY is not configured.")
 
     prompt = f"""You answer questions only from the supplied research-paper evidence.
 If the evidence does not support an answer, return the exact refusal text:
@@ -71,28 +93,13 @@ Question: {query}
 Evidence:
 {_context(chunks)}"""
 
-    client = Groq(api_key=api_key)
     request = {
-        "model": os.getenv("GROQ_MODEL", DEFAULT_MODEL),
+        "model": settings.model,
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0,
+        "max_tokens": settings.max_tokens,
     }
-    try:
-        response = client.chat.completions.create(
-            **request,
-            response_format={"type": "json_object"},
-        )
-    except Exception as error:
-        # Some provider/model responses fail structured-output validation before
-        # returning content. Retry with local JSON parsing as a fallback.
-        try:
-            response = client.chat.completions.create(**request)
-        except Exception as retry_error:
-            raise GenerationError(
-                f"The answer provider failed after a JSON retry: {retry_error}"
-            ) from retry_error
-
-    payload = _parse_json(response.choices[0].message.content or "")
+    payload = _request_payload(client, request)
     answer = str(payload.get("answer", "")).strip()
     citation_ids = payload.get("citation_chunk_ids", [])
     valid_ids = {chunk["chunk_id"] for chunk in chunks}
@@ -106,5 +113,31 @@ Evidence:
 
     citations = [str(chunk_id) for chunk_id in citation_ids]
     if any(chunk_id not in valid_ids for chunk_id in citations):
-        raise GenerationError("The model cited evidence that was not retrieved.")
+        allowed_ids = ", ".join(sorted(valid_ids))
+        repair_request = {
+            **request,
+            "messages": [{
+                "role": "user",
+                "content": (
+                    f"{prompt}\n\n"
+                    "Your previous response cited an unavailable chunk. "
+                    "Return JSON again and use only these allowed citation IDs: "
+                    f"{allowed_ids}. If the evidence is insufficient, return the "
+                    f"exact refusal text: {NO_ANSWER}"
+                ),
+            }],
+        }
+        repaired = _request_payload(client, repair_request)
+        repaired_answer = str(repaired.get("answer", "")).strip()
+        repaired_ids = repaired.get("citation_chunk_ids", [])
+        if repaired_answer == NO_ANSWER:
+            return NO_ANSWER, [], True
+        if isinstance(repaired_ids, list):
+            repaired_citations = [str(chunk_id) for chunk_id in repaired_ids]
+            if repaired_answer and repaired_citations and all(
+                chunk_id in valid_ids for chunk_id in repaired_citations
+            ):
+                return repaired_answer, list(dict.fromkeys(repaired_citations)), False
+        # A refusal is safer than returning an answer with unverifiable sources.
+        return NO_ANSWER, [], True
     return answer, list(dict.fromkeys(citations)), False

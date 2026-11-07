@@ -135,4 +135,5 @@ streamlit>=1.40 # Provides the browser-based user interface
 pytest>=8.0 # Runs the automated test suite.
 langfuse>=4.7,<5 # Sends optional request traces to Langfuse.
 ragas>=0.3,<0.4 # Evaluates faithfulness, answer relevancy, context precision, and context recall.
+langchain-openai==1.1.9 # LangChain-compatible evaluator adapter for Ragas over Groq's OpenAI-compatible API.
 openai>=1,<3 # Provides the OpenAI-compatible client used by Ragas with the Groq endpoint.

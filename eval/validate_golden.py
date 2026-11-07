@@ -52,6 +52,9 @@ def validate(dataset_path: Path, chunks_path: Path, strict: bool) -> int:
             pending += 1
             continue
         evidence_docs: set[str] = set()
+        required_numbers = item.get("required_numbers", [])
+        if required_numbers and not isinstance(required_numbers, list):
+            errors.append(f"{item_id}: required_numbers must be a list")
         for source in evidence:
             doc_id = source.get("doc_id")
             page_number = source.get("page_number")
@@ -67,6 +70,15 @@ def validate(dataset_path: Path, chunks_path: Path, strict: bool) -> int:
             ]
             if not hits:
                 errors.append(f"{item_id}: quote not found on {doc_id} p.{page_number}")
+        if required_numbers:
+            evidence_text = " ".join(source.get("quote", "") for source in evidence)
+            normalized_evidence = match_key(evidence_text)
+            missing_numbers = [
+                number for number in required_numbers
+                if match_key(str(number)) not in normalized_evidence
+            ]
+            if missing_numbers:
+                errors.append(f"{item_id}: required numbers missing from evidence: {missing_numbers}")
         if evidence:
             missing_docs = set(item["expected_doc_ids"]) - evidence_docs
             if missing_docs:
