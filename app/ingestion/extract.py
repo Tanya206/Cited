@@ -18,7 +18,7 @@ import pymupdf
 logger = logging.getLogger(__name__)
 
 CAPTION_RE = re.compile(
-    r"^(Fig(?:ure)?\.?|Table)\s+(\d+)[.:]\s*(.+)",
+    r"^(Fig(?:ure)?\.?|Table)\s+(\d+|[IVXLC]+)[.:]\s*(.+)",
     re.IGNORECASE,
 )
 EQUATION_NUMBER_RE = re.compile(r"\(\d{1,3}\)\s*$", re.MULTILINE)
@@ -30,6 +30,26 @@ MATH_TOKEN_RE = re.compile(
 
 TABLE_EMPTY_CELL_THRESHOLD = 0.30
 
+ROMAN_VALUES = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100}
+
+# A text block is treated as table content only if at least this share of it
+# lies inside a usable table's box. Blocks that merely touch a table box
+# (captions, neighbouring rows, cut-off columns) stay in the body.
+TABLE_BLOCK_INSIDE_RATIO = 0.8
+
+def parse_caption_number(label: str) -> int:
+    """Convert '3' or 'IV' to an int."""
+    if label.isdigit():
+        return int(label)
+    total, previous = 0, 0
+    for character in reversed(label.upper()):
+        value = ROMAN_VALUES[character]
+        if value < previous:
+            total -= value      # the I in IV
+        else:
+            total += value
+            previous = value
+    return total
 
 def boxes_overlap(
     first: tuple[float, float, float, float],
@@ -46,6 +66,18 @@ def boxes_overlap(
         or by1 <= ay0
     )
 
+def overlap_fraction(
+    block_box: tuple[float, float, float, float],
+    table_box: tuple[float, float, float, float],
+) -> float:
+    """Share of the text block's area that lies inside the table box."""
+    ax0, ay0, ax1, ay1 = block_box
+    bx0, by0, bx1, by1 = table_box
+    width = min(ax1, bx1) - max(ax0, bx0)
+    height = min(ay1, by1) - max(ay0, by0)
+    if width <= 0 or height <= 0:
+        return 0.0
+    return (width * height) / max((ax1 - ax0) * (ay1 - ay0), 1e-6)
 
 def clean_text(text: str) -> str:
     """Remove unprintable control characters while preserving line breaks."""
@@ -182,6 +214,7 @@ def expand_multiline_rows(rows: list[list[Any]]) -> tuple[list[list[Any]], bool]
 
     return repaired_rows, repair_applied
 
+
 def extract_tables(
     page: pymupdf.Page,
     doc_id: str,
@@ -224,6 +257,12 @@ def extract_tables(
             continue
 
         rows, row_repair_applied = expand_multiline_rows(rows)
+        # A real table has words in its header row (column names). A header made only
+        # of numbers means detection captured the data columns but missed the labels.
+        header_is_numeric = not any(
+            re.search(r"[A-Za-z]{2,}", str(cell or "")) for cell in rows[0]
+        )
+
 
 
         all_cells = [cell for row in rows for cell in row]
@@ -241,6 +280,7 @@ def extract_tables(
             empty_cell_ratio > TABLE_EMPTY_CELL_THRESHOLD
             or max_lines_in_cell > 3
             or row_repair_applied
+            or header_is_numeric
         )
         #Importantly, we do not reject suspicious tables. It keeps them but records a warning. 
         if is_suspicious:
@@ -344,7 +384,7 @@ def extract_captions_and_body(
                     if match.group(1).lower().startswith("fig")
                     else "table"
                 ),
-                "number": int(match.group(2)),
+                "number": parse_caption_number(match.group(2)),
                 "text": text,
                 "bbox": [block[0], block[1], block[2], block[3]],
             }
@@ -405,16 +445,16 @@ def extract_document(
                 page_number=page_number,
                 crop_dir=crop_dir,
             )
-            table_bboxes = [table["bbox"] for table in tables]
-
+            # Only remove text that a *usable* table chunk will replace. Suspicious
+            # tables are never embedded, so their text must stay in the body.
+            table_bboxes = [table["bbox"] for table in tables if not table["is_suspicious"]]
+            
             non_table_blocks = [
                 block
                 for block in raw_blocks
                 if not any(
-                    boxes_overlap(
-                        (block[0], block[1], block[2], block[3]),
-                        table_bbox,
-                    )
+                    overlap_fraction((block[0], block[1], block[2], block[3]), table_bbox)
+                    >= TABLE_BLOCK_INSIDE_RATIO
                     for table_bbox in table_bboxes
                 )
             ]

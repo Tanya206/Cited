@@ -1,0 +1,1144 @@
+{
+  "dataset": "eval\\golden_dataset.json",
+  "k": 20,
+  "overall": {
+    "count": 60,
+    "doc_hit": 1.0,
+    "page_hit": 0.9333,
+    "doc_reciprocal_rank": 0.9062,
+    "page_reciprocal_rank": 0.5122
+  },
+  "by_category": {
+    "application": {
+      "count": 8,
+      "doc_hit": 1.0,
+      "page_hit": 1.0,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.8375
+    },
+    "benchmark": {
+      "count": 1,
+      "doc_hit": 1.0,
+      "page_hit": 1.0,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.5
+    },
+    "comparison": {
+      "count": 6,
+      "doc_hit": 1.0,
+      "page_hit": 1.0,
+      "doc_reciprocal_rank": 0.8889,
+      "page_reciprocal_rank": 0.654
+    },
+    "definition": {
+      "count": 6,
+      "doc_hit": 1.0,
+      "page_hit": 1.0,
+      "doc_reciprocal_rank": 0.7153,
+      "page_reciprocal_rank": 0.2847
+    },
+    "method": {
+      "count": 30,
+      "doc_hit": 1.0,
+      "page_hit": 0.8667,
+      "doc_reciprocal_rank": 0.9083,
+      "page_reciprocal_rank": 0.4471
+    },
+    "numeric": {
+      "count": 3,
+      "doc_hit": 1.0,
+      "page_hit": 1.0,
+      "doc_reciprocal_rank": 0.8333,
+      "page_reciprocal_rank": 0.1611
+    },
+    "numeric_table": {
+      "count": 6,
+      "doc_hit": 1.0,
+      "page_hit": 1.0,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.6667
+    }
+  },
+  "items": [
+    {
+      "id": "G01",
+      "category": "definition",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 0.16666666666666666,
+      "page_reciprocal_rank": 0.16666666666666666,
+      "first_doc_rank": 6,
+      "first_page_rank": 6,
+      "reranked": {
+        "doc_hit": false,
+        "page_hit": false,
+        "doc_reciprocal_rank": 0.0,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": null,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G02",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 0.5,
+      "page_reciprocal_rank": 0.5,
+      "first_doc_rank": 2,
+      "first_page_rank": 2,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G03",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": false,
+      "doc_reciprocal_rank": 0.25,
+      "page_reciprocal_rank": 0.0,
+      "first_doc_rank": 4,
+      "first_page_rank": null,
+      "reranked": {
+        "doc_hit": false,
+        "page_hit": false,
+        "doc_reciprocal_rank": 0.0,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": null,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G04",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G05",
+      "category": "benchmark",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.5,
+      "first_doc_rank": 1,
+      "first_page_rank": 2,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G06",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.5,
+        "first_doc_rank": 1,
+        "first_page_rank": 2
+      }
+    },
+    {
+      "id": "G07",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.3333333333333333,
+        "first_doc_rank": 1,
+        "first_page_rank": 3
+      }
+    },
+    {
+      "id": "G08",
+      "category": "definition",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.3333333333333333,
+      "first_doc_rank": 1,
+      "first_page_rank": 3,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 0.5,
+        "page_reciprocal_rank": 0.2,
+        "first_doc_rank": 2,
+        "first_page_rank": 5
+      }
+    },
+    {
+      "id": "G09",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.5,
+      "first_doc_rank": 1,
+      "first_page_rank": 2,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G10",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 0.5,
+      "page_reciprocal_rank": 0.2,
+      "first_doc_rank": 2,
+      "first_page_rank": 5,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 0.5,
+        "page_reciprocal_rank": 0.3333333333333333,
+        "first_doc_rank": 2,
+        "first_page_rank": 3
+      }
+    },
+    {
+      "id": "G11",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.058823529411764705,
+      "first_doc_rank": 1,
+      "first_page_rank": 17,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": false,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": 1,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G12",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.5,
+      "first_doc_rank": 1,
+      "first_page_rank": 2,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.3333333333333333,
+        "first_doc_rank": 1,
+        "first_page_rank": 3
+      }
+    },
+    {
+      "id": "G13",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.5,
+      "first_doc_rank": 1,
+      "first_page_rank": 2,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.25,
+        "first_doc_rank": 1,
+        "first_page_rank": 4
+      }
+    },
+    {
+      "id": "G14",
+      "category": "application",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.2,
+      "first_doc_rank": 1,
+      "first_page_rank": 5,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": false,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": 1,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G15",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.25,
+      "first_doc_rank": 1,
+      "first_page_rank": 4,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G16",
+      "category": "application",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G17",
+      "category": "application",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G18",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.14285714285714285,
+      "first_doc_rank": 1,
+      "first_page_rank": 7,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 0.5,
+        "page_reciprocal_rank": 0.5,
+        "first_doc_rank": 2,
+        "first_page_rank": 2
+      }
+    },
+    {
+      "id": "G19",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.25,
+      "first_doc_rank": 1,
+      "first_page_rank": 4,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.3333333333333333,
+        "first_doc_rank": 1,
+        "first_page_rank": 3
+      }
+    },
+    {
+      "id": "G20",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.3333333333333333,
+      "first_doc_rank": 1,
+      "first_page_rank": 3,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 0.5,
+        "page_reciprocal_rank": 0.2,
+        "first_doc_rank": 2,
+        "first_page_rank": 5
+      }
+    },
+    {
+      "id": "G21",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.25,
+      "first_doc_rank": 1,
+      "first_page_rank": 4,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G22",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G23",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G24",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": false,
+      "doc_reciprocal_rank": 0.5,
+      "page_reciprocal_rank": 0.0,
+      "first_doc_rank": 2,
+      "first_page_rank": null,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": false,
+        "doc_reciprocal_rank": 0.3333333333333333,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": 3,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G25",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.16666666666666666,
+        "first_doc_rank": 1,
+        "first_page_rank": 6
+      }
+    },
+    {
+      "id": "G26",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": false,
+      "doc_reciprocal_rank": 0.5,
+      "page_reciprocal_rank": 0.0,
+      "first_doc_rank": 2,
+      "first_page_rank": null,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": false,
+        "doc_reciprocal_rank": 0.2,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": 5,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G27",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.25,
+      "first_doc_rank": 1,
+      "first_page_rank": 4,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G28",
+      "category": "comparison",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G29",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.5,
+      "first_doc_rank": 1,
+      "first_page_rank": 2,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 0.3333333333333333,
+        "page_reciprocal_rank": 0.25,
+        "first_doc_rank": 3,
+        "first_page_rank": 4
+      }
+    },
+    {
+      "id": "G30",
+      "category": "definition",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.5,
+      "first_doc_rank": 1,
+      "first_page_rank": 2,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.25,
+        "first_doc_rank": 1,
+        "first_page_rank": 4
+      }
+    },
+    {
+      "id": "G31",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.2,
+      "first_doc_rank": 1,
+      "first_page_rank": 5,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.5,
+        "first_doc_rank": 1,
+        "first_page_rank": 2
+      }
+    },
+    {
+      "id": "G32",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.25,
+      "first_doc_rank": 1,
+      "first_page_rank": 4,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 0.5,
+        "page_reciprocal_rank": 0.5,
+        "first_doc_rank": 2,
+        "first_page_rank": 2
+      }
+    },
+    {
+      "id": "G33",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.2,
+        "first_doc_rank": 1,
+        "first_page_rank": 5
+      }
+    },
+    {
+      "id": "G34",
+      "category": "definition",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 0.125,
+      "page_reciprocal_rank": 0.125,
+      "first_doc_rank": 8,
+      "first_page_rank": 8,
+      "reranked": {
+        "doc_hit": false,
+        "page_hit": false,
+        "doc_reciprocal_rank": 0.0,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": null,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G35",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G36",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": false,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.0,
+      "first_doc_rank": 1,
+      "first_page_rank": null,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": false,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": 1,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G37",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.5,
+      "first_doc_rank": 1,
+      "first_page_rank": 2,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.5,
+        "first_doc_rank": 1,
+        "first_page_rank": 2
+      }
+    },
+    {
+      "id": "G38",
+      "category": "application",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G39",
+      "category": "numeric_table",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G41",
+      "category": "comparison",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 0.3333333333333333,
+      "page_reciprocal_rank": 0.3333333333333333,
+      "first_doc_rank": 3,
+      "first_page_rank": 3,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": false,
+        "doc_reciprocal_rank": 0.16666666666666666,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": 6,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G42",
+      "category": "comparison",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.09090909090909091,
+      "first_doc_rank": 1,
+      "first_page_rank": 11,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G43",
+      "category": "comparison",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.25,
+        "first_doc_rank": 1,
+        "first_page_rank": 4
+      }
+    },
+    {
+      "id": "G44",
+      "category": "comparison",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.5,
+      "first_doc_rank": 1,
+      "first_page_rank": 2,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G45",
+      "category": "comparison",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 0.5,
+        "page_reciprocal_rank": 0.5,
+        "first_doc_rank": 2,
+        "first_page_rank": 2
+      }
+    },
+    {
+      "id": "G46",
+      "category": "numeric",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.06666666666666667,
+      "first_doc_rank": 1,
+      "first_page_rank": 15,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": false,
+        "doc_reciprocal_rank": 0.16666666666666666,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": 6,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G47",
+      "category": "numeric",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 0.5,
+      "page_reciprocal_rank": 0.25,
+      "first_doc_rank": 2,
+      "first_page_rank": 4,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.5,
+        "first_doc_rank": 1,
+        "first_page_rank": 2
+      }
+    },
+    {
+      "id": "G48",
+      "category": "numeric",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.16666666666666666,
+      "first_doc_rank": 1,
+      "first_page_rank": 6,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": false,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": 1,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G51",
+      "category": "application",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G52",
+      "category": "definition",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.25,
+      "first_doc_rank": 1,
+      "first_page_rank": 4,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G53",
+      "category": "application",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G54",
+      "category": "application",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.5,
+        "first_doc_rank": 1,
+        "first_page_rank": 2
+      }
+    },
+    {
+      "id": "G55",
+      "category": "application",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.5,
+      "first_doc_rank": 1,
+      "first_page_rank": 2,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.5,
+        "first_doc_rank": 1,
+        "first_page_rank": 2
+      }
+    },
+    {
+      "id": "G56",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.16666666666666666,
+      "first_doc_rank": 1,
+      "first_page_rank": 6,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.16666666666666666,
+        "first_doc_rank": 1,
+        "first_page_rank": 6
+      }
+    },
+    {
+      "id": "G57",
+      "category": "method",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.0625,
+      "first_doc_rank": 1,
+      "first_page_rank": 16,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": false,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.0,
+        "first_doc_rank": 1,
+        "first_page_rank": null
+      }
+    },
+    {
+      "id": "G58",
+      "category": "definition",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.3333333333333333,
+      "first_doc_rank": 1,
+      "first_page_rank": 3,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G59",
+      "category": "numeric_table",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G60",
+      "category": "numeric_table",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.5,
+      "first_doc_rank": 1,
+      "first_page_rank": 2,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G61",
+      "category": "numeric_table",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.16666666666666666,
+      "first_doc_rank": 1,
+      "first_page_rank": 6,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 0.5,
+        "first_doc_rank": 1,
+        "first_page_rank": 2
+      }
+    },
+    {
+      "id": "G62",
+      "category": "numeric_table",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 0.3333333333333333,
+      "first_doc_rank": 1,
+      "first_page_rank": 3,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 1.0,
+        "page_reciprocal_rank": 1.0,
+        "first_doc_rank": 1,
+        "first_page_rank": 1
+      }
+    },
+    {
+      "id": "G63",
+      "category": "numeric_table",
+      "doc_hit": true,
+      "page_hit": true,
+      "doc_reciprocal_rank": 1.0,
+      "page_reciprocal_rank": 1.0,
+      "first_doc_rank": 1,
+      "first_page_rank": 1,
+      "reranked": {
+        "doc_hit": true,
+        "page_hit": true,
+        "doc_reciprocal_rank": 0.5,
+        "page_reciprocal_rank": 0.25,
+        "first_doc_rank": 2,
+        "first_page_rank": 4
+      }
+    }
+  ]
+}
