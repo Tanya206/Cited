@@ -28,3 +28,5 @@ eval/ragas_results.json
 
 # logs
 *.log
+
+CLAUDE.md
