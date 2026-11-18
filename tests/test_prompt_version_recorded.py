@@ -24,6 +24,7 @@ def test_api_response_names_the_prompt(monkeypatch):
     assert body["refused"] is True
     assert body["prompt_version"] == "answer_v1"
     assert body["prompt_sha256"] == load_prompt("answer_v1").sha256
+    assert body["generator_model"]  # from LLM_MODEL or the default
 
 
 def test_validation_refusal_sends_no_prompt_and_says_so(monkeypatch):
