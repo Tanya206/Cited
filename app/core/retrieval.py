@@ -93,8 +93,11 @@ def hybrid_retrieve(
     k_per_retriever: int = 20,
     k_final: int = 10,
     rrf_k: int = 10,
+    expand: bool = True,
 ) -> list[dict]:
-    search_query = expand_query(query)
+    # expand=False exists for the retrieval comparison ladder (eval/run_ladder.py), which
+    # measures what query expansion adds. The served path always expands.
+    search_query = expand_query(query) if expand else query
     vector_results = vector_search(collection, embed_model, search_query, k=k_per_retriever)
     bm25_results = bm25_search(bm25_retriever, chunk_id_map, search_query, k=k_per_retriever)
     fused = reciprocal_rank_fusion([vector_results, bm25_results], k=rrf_k)
