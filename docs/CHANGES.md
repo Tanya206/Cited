@@ -70,3 +70,29 @@ public repo.
 **Alternatives rejected:** keeping handoff notes in `CLAUDE.md` (it is the brief, not a log,
 and it is not committed); GitHub Issues or a project board (extra overhead, and the assistant
 cannot write to GitHub).
+
+---
+
+## 2026-11-14: Workstream 0 re-audit against the revised CLAUDE.md (read-only)
+
+**Verified (commands run 2026-11-14):**
+- `python -m pytest -q`: 18 passed. `python -m eval.validate_golden`: 68 items, 0 errors, 0 pending.
+- Key scan over all revisions (10 prefixes plus a key-shape regex): no keys. The only prefix
+  hits are the pattern names written in this file on 2026-11-13. `.env` never committed.
+- Section 4 claims confirmed from `data/`: 14 captions in `2007.09990v1`; 16 of 44 papers detect
+  zero tables; 2,771 chunks (2,209 body, 538 caption, 24 table); 8 tables flagged only by
+  `header_is_numeric`, 4 of them DEC (`1511.06335v2`); overlap fix at `extract.py:450-459`.
+- New fact: PyMuPDF detected 178 tables, 155 (87%) flagged suspicious, 23 usable.
+- Not verifiable: SimCLR +970 words and the 38 deleted blocks (no pre-fix extraction saved).
+- CI still fails at `pip install`, including on merged PR #4 (run 43467098245).
+
+Full gap list with evidence: `docs/GAPS.md`.
+
+## 2026-11-18: G1 ratified
+
+The owner ratified the Definition of Done (`docs/DEFINITION_OF_DONE.md`) with two additions:
+H2 and M1 are fixed inside 5A, and the retrieval comparison ladder runs first in 5B.
+Owner answers: end date 2026-11-19; hardware Ryzen 7 7735U, about 16 GB RAM, no CUDA GPU;
+D3 confirmed; public deployment on AWS is must-have; no PDFs served publicly; rederive skill
+files ignored; NVIDIA NIM as judge candidate with a different free provider for the generator;
+MIT licence for the code.
