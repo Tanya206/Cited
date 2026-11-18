@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-19",
+  "item": "G09",
+  "context_index": 0,
+  "results": [
+    {
+      "model": "mistralai/mistral-large-4-1t-a52b",
+      "seconds": 37.4,
+      "prompt_tokens": 627,
+      "completion_tokens": 1200,
+      "json_ok": false
+    },
+    {
+      "model": "nvidia/nemotron-3-ultra-550b-a55b",
+      "seconds": 11.3,
+      "prompt_tokens": 635,
+      "completion_tokens": 1200,
+      "json_ok": false
+    },
+    {
+      "model": "moonshotai/kimi-k3.1-pro",
+      "seconds": 180.0,
+      "error": "APITimeoutError: Request timed out."
+    },
+    {
+      "model": "google/gemma-4-31b-it",
+      "seconds": 43.6,
+      "prompt_tokens": 609,
+      "completion_tokens": 412,
+      "json_ok": true,
+      "statements": 6,
+      "supported": 6
+    },
+    {
+      "model": "z-ai/glm-5.3-flash",
+      "seconds": 180.0,
+      "error": "APITimeoutError: Request timed out."
+    },
+    {
+      "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "seconds": 7.0,
+      "prompt_tokens": 635,
+      "completion_tokens": 1200,
+      "json_ok": false
+    }
+  ],
+  "rerun": {
+    "model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "max_tokens": 4096,
+    "seconds": 15.9,
+    "prompt_tokens": 635,
+    "completion_tokens": 1711,
+    "finish_reason": "stop",
+    "reasoning_in_separate_field": true,
+    "json_ok": true,
+    "statements": 6,
+    "supported": 5
+  },
+  "max_tokens": 1200
+}
