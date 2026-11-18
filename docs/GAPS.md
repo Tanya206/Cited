@@ -27,7 +27,7 @@ Source: workstream 0 audit, 2026-11-14 (see `docs/CHANGES.md`).
 | L5 | Low | Stale worktree and `claude-audit` branch | `git worktree list`, `git branch` | owner | open |
 | L6 | Low | 24,000-character context cap can drop reranked chunks while their IDs stay valid | `app/core/generation.py:22` | 5C | open |
 | L7 | Low | GitHub description and topics empty | GitHub API | owner (G5) | open |
-| S1 | High | Schedule: about 12.5 working days of planned work against an end date of 2026-11-19 | `docs/DEFINITION_OF_DONE.md` | owner | open |
-| S2 | Med | Deployment on AWS conflicts with rule 11 if sign-up needs a card | rule 11; to verify on AWS pages before 5G | 5G / owner | open |
-| S3 | Med | scikit-network 0.33.5 has no Linux cp314 wheel; CI builds it from source, unproven until the first run | PyPI file list for scikit-network 0.33.5 | 5A | open |
+| S1 | High | Schedule: about 12.5 working days of planned work against an end date of 2026-11-19 | `docs/DEFINITION_OF_DONE.md` | owner | closed 2026-11-18: owner dropped the cut-off; scope not cut for a date |
+| S2 | Med | Deployment on AWS conflicts with rule 11 if sign-up needs a card | rule 11; to verify on AWS pages before 5G | 5G / owner | resolved 2026-11-18: rule 11 amended (AWS free trial, billing alarm, budget cap); terms verified before 5G |
+| S3 | Med | scikit-network 0.33.5 has no Linux cp314 wheel; CI builds it from source, unproven until the first run | PyPI file list for scikit-network 0.33.5 | 5A | resolved: CI run on 548832a passed (2026-11-18) |
 | S4 | Low | OpenAI SDK retries 429s up to 2 times by default before our handler sees them | openai SDK default `max_retries=2` | 5B | open |

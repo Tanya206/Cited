@@ -169,3 +169,18 @@ Walkthrough with commands: `docs/walkthrough/5a-hygiene.md`.
 
 **Numbers:** tests 18 -> 34 passed. `pip check` 2 conflicts -> 0. Retrieval baseline
 unchanged (no index rebuilt).
+
+---
+
+## 2026-11-18: Plan changes from the owner (after 5A merged as PR #5)
+
+- First green CI run: commit 548832a (`ws/5a-hygiene`). scikit-network built from source on
+  Linux / Python 3.14, so risk S3 is closed.
+- End date 2026-11-19 dropped; scope is not cut for a date. New date to be estimated from the
+  measured pace after 5C and the retrieval ladder.
+- Rule 11 amended in `CLAUDE.md` (local file): AWS hosting allowed within the owner's free
+  trial, with a billing alarm and budget cap; terms and instance size verified and cited
+  before 5G. DoD deployment line updated to match.
+- Judge: NVIDIA NIM (owner has an account; key goes in the local `.env` only, never in chat).
+  One other free provider surveyed for the generator. Only the 5-item pilot runs until the
+  owner approves more (G2).
