@@ -9,7 +9,7 @@ Source: workstream 0 audit, 2026-11-14 (see `docs/CHANGES.md`).
 | H1 | High | CI has never passed: fails at `pip install` | GitHub Actions runs 43467098245, 43272484945 and earlier; `requirements.txt:134-139` ranges; CI Python 3.11 vs local 3.14 | 5A | fixed on branch; first CI run pending (S3) |
 | H2 | High | LLM answer rendered as raw HTML in the UI | `frontend/streamlit_app.py:51` (`unsafe_allow_html=True` with `data['answer']`) | 5A | fixed on branch |
 | H3 | High | Eval collects answers at a config that is not served; saved answers stale and unlabelled | `eval/collect_answer_runs.py:119` (50/12 vs API 20/6); `eval/answer_runs.jsonl` dated 2026-11-03, before the 11-12 rebuild | 5B | open |
-| H4 | High | Reranker benefit unknown; hybrid@6 never measured | `eval/baseline_before_docling.json`: reranked@6 page hit 0.80 vs hybrid@20 0.933 (different k) | 5B ladder | open |
+| H4 | High | Reranker benefit unknown; hybrid@6 never measured | `eval/baseline_before_docling.json`: reranked@6 page hit 0.80 vs hybrid@20 0.933 (different k) | 5B ladder | measured 2026-11-19: rerank@6 2 gained / 4 lost (p=0.69), MRR CI includes 0; no evidence of benefit. Decision deferred to v2 + answer quality + latency |
 | M1 | Med | Any provider error (incl. 429) retried without JSON mode, doubling calls; quota errors returned as 502 | `app/core/generation.py:51-63`; `app/api/routes.py` 502 on `GenerationError` | 5A | fixed on branch |
 | M2 | Med | Positional chunk IDs renumber on any rebuild | `app/core/chunking.py:45` (`{doc_id}_c{idx:04d}`) | 5F | open |
 | M3 | Med | Validation and evidence refusals share one flag; validation refusals not traced | `app/api/routes.py` (`answer`, early return before `answer_trace`) | 5B/5D | open |
@@ -33,3 +33,5 @@ Source: workstream 0 audit, 2026-11-14 (see `docs/CHANGES.md`).
 | S4 | Low | OpenAI SDK retries 429s up to 2 times by default before our handler sees them | openai SDK default `max_retries=2` | 5B | open |
 | S5 | Med | If `RAGAS_API_KEY` is set but `RAGAS_BASE_URL` is empty, `run_ragas.py` sends the judge key to the generator's base URL (Groq) | `eval/run_ragas.py` (`base_url=os.getenv("RAGAS_BASE_URL") or llm_settings.base_url`) | 5B | open; owner told to set all three RAGAS_* together |
 | S6 | Low | Unknown whether Langfuse merges or replaces metadata across `trace.update` calls; prompt version is therefore also written to the trace output | `app/api/routes.py` | 5D | open |
+| S7 | Med | Query expansion rules fire on only 1 of 60 golden questions (G07); their effect is unmeasured, and they are corpus-tuned | ladder results 2026-11-19 (`questions_changed_by_expansion`) | 5B v2 | open: add questions that trigger expansion in v2, or remove the rules |
+| S8 | Low | Ladder p-values are uncorrected for 10 comparisons; none survives Bonferroni (0.005) | `eval/results/ladder_golden_v1_2026-11-19.md` | 5B | documented as a caveat |
