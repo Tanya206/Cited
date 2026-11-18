@@ -52,8 +52,20 @@ with no card.
 **Recommendation**
 
 - **Generator: stay on Groq.** It is the only verified free option allowed behind a public demo.
-  Its retention policy is good. Its real constraint is the daily token budget. TODO(owner): read
-  the free-plan TPD for `openai/gpt-oss-20b` on the Groq limits page.
+  Its retention policy is good. Its real constraint is the daily token budget.
+  **Owner's Groq limits page (read by the owner, 2026-11-19), chat completions:**
+  `openai/gpt-oss-20b` 30 RPM, 1K RPD, 8K TPM, 200K TPD (same for `openai/gpt-oss-120b` and
+  `qwen/qwen3.8-27b`; each model has its own budget). These equal the public Developer-plan
+  table.
+
+  What that means, using the measured prompt size of the 5 pilot items (about 2,100-2,500
+  prompt tokens per answer, 8.5K-10K characters; output including reasoning tokens not yet
+  measured, so 3,000-4,500 tokens per answer is an estimate):
+  - **Tokens per minute is the tight limit:** 8K TPM allows about 2 answers per minute.
+  - **Daily:** 200K TPD is about 45-65 answers per day. The 90 answerable v2 items need about
+    2 days of budget, and repair calls (which re-send the whole prompt) add to that.
+  - **The public demo shares this same budget.** The request cap in 5G must leave room for it,
+    or the demo and evaluation must run on different days.
 - **Judge: NVIDIA NIM**, on a separate budget, so evaluation no longer competes with the demo.
 - **Fallback if a free tier disappears:** local Ollama for evaluation runs (slow on CPU; the
   installed models are old and small, and small models are often weak judges, so a judge
