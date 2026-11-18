@@ -13,15 +13,35 @@ def _key(item: dict) -> tuple[str, int]:
     return str(item["doc_id"]), int(item["page_number"])
 
 
-def score_query(results: Iterable[dict], expected_doc_ids: list[str], expected_pages: list[int], k: int) -> dict:
+def score_query(
+    results: Iterable[dict],
+    expected_doc_ids: list[str],
+    expected_pages: list[int],
+    k: int,
+    expected_locations: list[dict] | None = None,
+) -> dict:
+    """Score one ranked list.
+
+    Golden v1 gives pages that apply to any expected document, so for a two-paper item a
+    page number from the wrong paper still counts. Golden v2 can give ``expected_locations``
+    as (doc_id, page) pairs; when present, a page hit must match a pair.
+    """
     ranked = list(results)[:k]
     expected_docs = set(expected_doc_ids)
     expected_pages_set = set(expected_pages)
+    locations = (
+        {(str(loc["doc_id"]), int(loc["page_number"])) for loc in expected_locations}
+        if expected_locations else None
+    )
+
+    def is_page_hit(item: dict) -> bool:
+        doc, page = item.get("doc_id"), int(item.get("page_number", -1))
+        if locations is not None:
+            return (doc, page) in locations
+        return doc in expected_docs and page in expected_pages_set
+
     doc_ranks = [i for i, item in enumerate(ranked, 1) if item.get("doc_id") in expected_docs]
-    page_ranks = [
-        i for i, item in enumerate(ranked, 1)
-        if item.get("doc_id") in expected_docs and int(item.get("page_number", -1)) in expected_pages_set
-    ]
+    page_ranks = [i for i, item in enumerate(ranked, 1) if is_page_hit(item)]
     return {
         "doc_hit": bool(doc_ranks),
         "page_hit": bool(page_ranks),

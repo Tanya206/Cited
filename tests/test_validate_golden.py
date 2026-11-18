@@ -35,3 +35,19 @@ def test_structure_only_rejects_evidence_outside_expected_pages(tmp_path):
 
 def test_structure_only_rejects_empty_quote(tmp_path):
     assert validate(_write(tmp_path, [_item("G1", quote="")]), None, strict=False) == 1
+
+
+def test_expected_location_must_match_evidence(tmp_path):
+    item = _item("G1")
+    item["expected_locations"] = [{"doc_id": "paper-a", "page_number": 3}]
+    assert validate(_write(tmp_path, [item]), None, strict=False) == 0
+    item["expected_locations"] = [{"doc_id": "paper-b", "page_number": 3}]
+    assert validate(_write(tmp_path, [item]), None, strict=False) == 1
+
+
+def test_new_items_need_provenance_fields(tmp_path):
+    item = _item("G1")
+    item["provenance"] = {"authored_by": "claude-code"}
+    assert validate(_write(tmp_path, [item]), None, strict=False) == 1
+    item["provenance"]["reviewed_by_owner"] = False
+    assert validate(_write(tmp_path, [item]), None, strict=False) == 0

@@ -8,7 +8,7 @@ from fastapi.testclient import TestClient
 
 from app.api import routes
 from app.core.prompts import load_prompt
-from eval.run_ragas import attach_run_metadata, sample_fields
+from eval.run_ragas import sample_fields
 
 
 def test_api_response_names_the_prompt(monkeypatch):
@@ -24,6 +24,7 @@ def test_api_response_names_the_prompt(monkeypatch):
     assert body["refused"] is True
     assert body["prompt_version"] == "answer_v1"
     assert body["prompt_sha256"] == load_prompt("answer_v1").sha256
+    assert body["generator_model"]  # from LLM_MODEL or the default
 
 
 def test_validation_refusal_sends_no_prompt_and_says_so(monkeypatch):
@@ -48,19 +49,40 @@ def test_ragas_samples_get_only_scored_fields():
     }
 
 
-def test_ragas_results_carry_id_and_prompt_version():
-    out = attach_run_metadata([{"user_input": "q", "faithfulness": 1.0}], [ROW])
-    assert out == [{
-        "id": "G01", "prompt_version": "answer_v1", "prompt_sha256": "abc",
-        "user_input": "q", "faithfulness": 1.0,
-    }]
+# --- Judge configuration and resume (eval/run_ragas.py) -----------------------------------
+
+from types import SimpleNamespace as _NS  # noqa: E402
+
+from eval.run_ragas import completed_pairs, resolve_judge, select_metrics  # noqa: E402
+
+GENERATOR = _NS(api_key="gen-key", base_url="https://generator.test/v1", model="gen-model")
 
 
-def test_old_runs_without_a_version_stay_unknown():
-    old = {key: value for key, value in ROW.items() if not key.startswith("prompt")}
-    assert attach_run_metadata([{"faithfulness": 0.5}], [old])[0]["prompt_version"] is None
+def test_partial_judge_config_is_refused_so_keys_never_cross_providers():
+    with pytest.raises(SystemExit, match="RAGAS_BASE_URL"):
+        resolve_judge({"RAGAS_API_KEY": "judge-key"}, GENERATOR)
 
 
-def test_result_count_mismatch_is_an_error():
-    with pytest.raises(ValueError):
-        attach_run_metadata([], [ROW])
+def test_full_judge_config_is_used_and_separate_from_the_generator():
+    env = {"RAGAS_API_KEY": "judge-key", "RAGAS_BASE_URL": "https://judge.test/v1", "RAGAS_MODEL": "judge-model"}
+    judge = resolve_judge(env, GENERATOR)
+    assert judge == {"api_key": "judge-key", "base_url": "https://judge.test/v1",
+                     "model": "judge-model", "shares_generator_quota": False}
+
+
+def test_no_judge_config_falls_back_and_says_it_shares_quota():
+    judge = resolve_judge({}, GENERATOR)
+    assert judge["model"] == "gen-model" and judge["shares_generator_quota"] is True
+
+
+def test_resume_skips_scored_item_metric_pairs(tmp_path):
+    path = tmp_path / "runs.jsonl"
+    path.write_text('{"id": "G09", "metric": "faithfulness", "score": 1.0}\n', encoding="utf-8")
+    assert completed_pairs(path) == {("G09", "faithfulness")}
+    assert completed_pairs(tmp_path / "missing.jsonl") == set()
+
+
+def test_metrics_run_in_the_documented_order():
+    assert select_metrics("context_recall,faithfulness") == ["faithfulness", "context_recall"]
+    with pytest.raises(SystemExit):
+        select_metrics("bleu")

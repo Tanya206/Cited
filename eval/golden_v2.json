@@ -1,0 +1,2848 @@
+{
+  "version": "v2",
+  "derived_from": {
+    "file": "eval/golden_v1.json",
+    "content_sha256": "e55b4060c6adae7487c968ba55258f4dea89e69efe77d0a0add7210188bd34a1"
+  },
+  "created": "2026-11-19",
+  "notes": "Fixes to v1 items are listed per item in changed_in_v2 and in eval/GOLDEN_REVIEW.md. New items (G101+) were written by claude-code from the extracted text and PDFs, without an LLM, and are unreviewed by the owner until provenance.reviewed_by_owner is true. Because the author of new items is itself an LLM-based assistant, report the owner-reviewed subset separately.",
+  "purpose": "Evaluation set for Cited. Each answerable item must be manually linked to exact indexed chunks and verbatim evidence before it can gate regressions.",
+  "items": [
+    {
+      "id": "G01",
+      "category": "definition",
+      "question": "What is semantic segmentation?",
+      "reference_answer": "Semantic segmentation assigns a class label to every pixel of an image: the FCN paper describes labelling each pixel with the class of its enclosing object or region.",
+      "expected_doc_ids": [
+        "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+        "Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 1,
+          "quote": "each pixel is labeled with the class of its enclosing object or region"
+        },
+        {
+          "doc_id": "Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs",
+          "page_number": 1,
+          "quote": "Its aim is to determine, at every image pixel, the most likely class label from a finite set of possible labels"
+        }
+      ],
+      "expected_locations": [
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 1
+        },
+        {
+          "doc_id": "Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs",
+          "page_number": 1
+        }
+      ],
+      "changed_in_v2": [
+        "question names no paper; the aerial-segmentation paper's p1 definition is an equally valid source"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
+      }
+    },
+    {
+      "id": "G02",
+      "category": "method",
+      "question": "What is the central idea of fully convolutional networks for segmentation?",
+      "reference_answer": "FCNs replace fully connected classification layers with convolutional layers so dense, pixel-wise predictions can be produced for arbitrary image sizes.",
+      "expected_doc_ids": [
+        "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper"
+      ],
+      "expected_pages": [
+        1,
+        3
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 1,
+          "quote": "fully convolutional\" networks that take input of arbitrary size and produce correspondingly-sized output"
+        },
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 3,
+          "quote": "Transforming fully connected layers into convolution layers enables a classiﬁcation net to output a heatmap"
+        }
+      ],
+      "changed_in_v2": [
+        "reference answer's FC-to-conv claim was unsupported by the p1 quote; added p3 evidence"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G03",
+      "category": "method",
+      "question": "How does U-Net recover spatial detail during segmentation?",
+      "reference_answer": "U-Net uses an expanding path with upsampling, then combines high-resolution features from the contracting path with the upsampled output for localization.",
+      "expected_doc_ids": [
+        "Reference 2 U Net"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 2 U Net",
+          "page_number": 2,
+          "quote": "In order to localize, high resolution features from the contracting path are combined with the upsampled"
+        },
+        {
+          "doc_id": "Reference 2 U Net",
+          "page_number": 1,
+          "quote": "a contracting path to capture context and a symmetric expanding path that enables precise localiza- tion"
+        }
+      ],
+      "changed_in_v2": [
+        "p1 abstract also answers the question (expanding path for precise localization); labelled p2 only"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
+      }
+    },
+    {
+      "id": "G04",
+      "category": "method",
+      "question": "What do atrous convolutions provide in DeepLab?",
+      "reference_answer": "Atrous convolutions enlarge the filter field of view, produce denser feature maps, and control response resolution without requiring extra learned parameters.",
+      "expected_doc_ids": [
+        "Reference 3 Atrous Convolution for Semantic Segmentation"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 3 Atrous Convolution for Semantic Segmentation",
+          "page_number": 1,
+          "quote": "Atrous convolution, also known as dilated convolution, allows us to repurpose ImageNet"
+        },
+        {
+          "doc_id": "Reference 3 Atrous Convolution for Semantic Segmentation",
+          "page_number": 1,
+          "quote": "extract denser feature maps by removing the downsampling operations from the last few layers and upsampling the corresponding filter kernels, equivalent to inserting holes"
+        },
+        {
+          "doc_id": "Reference 3 Atrous Convolution for Semantic Segmentation",
+          "page_number": 1,
+          "quote": "responses are computed within DCNNs without requiring learning extra parameters"
+        }
+      ]
+    },
+    {
+      "id": "G05",
+      "category": "benchmark",
+      "question": "What kind of task does the Inria Aerial Image Labeling Benchmark evaluate?",
+      "reference_answer": "It evaluates semantic labeling of aerial imagery, especially the ability of methods to generalize across different cities.",
+      "expected_doc_ids": [
+        "Reference 4 AerialImageLabelingDataset_4"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 4 AerialImageLabelingDataset_4",
+          "page_number": 2,
+          "quote": "pixel classification methods that, once trained on a certain dataset, generalize to other areas of the earth"
+        }
+      ]
+    },
+    {
+      "id": "G06",
+      "category": "method",
+      "question": "What is the goal of normalized cuts in image segmentation?",
+      "reference_answer": "Normalized cuts measure a partition's disassociation as its cut cost relative to each group's total connection to the graph, avoiding bias toward isolating small sets.",
+      "expected_doc_ids": [
+        "Reference 5 Normalized cuts and image segmentation"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 5 Normalized cuts and image segmentation",
+          "page_number": 2,
+          "quote": "our measure computes the cut cost as a fraction of the total edge connections to all the nodes in the graph"
+        }
+      ]
+    },
+    {
+      "id": "G07",
+      "category": "method",
+      "question": "What are the main stages of spectral clustering?",
+      "reference_answer": "Spectral clustering builds a similarity graph, computes a spectral embedding from a graph matrix, then clusters points in that embedding.",
+      "expected_doc_ids": [
+        "Reference 6 spectral-clustering-analysis-and-an-algorithm-Paper"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 6 spectral-clustering-analysis-and-an-algorithm-Paper",
+          "page_number": 1,
+          "quote": "algorithms that cluster points using eigenvectors of matrices derived from the data"
+        },
+        {
+          "doc_id": "Reference 6 spectral-clustering-analysis-and-an-algorithm-Paper",
+          "page_number": 2,
+          "quote": "cluster them into k clusters via K-means or any other algorithm"
+        }
+      ]
+    },
+    {
+      "id": "G08",
+      "category": "method",
+      "question": "How does SimCLR learn representations without labels?",
+      "reference_answer": "SimCLR contrasts two augmented views of the same image against views of other images to learn visual representations.",
+      "expected_doc_ids": [
+        "Reference 7 SimCLR Contrastive learning"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "we treat the other 2(N −1) augmented examples within a minibatch as negative examples"
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "SimCLR learns representations by maximizing agreement between differently augmented views of the same data example via a contrastive loss"
+        }
+      ],
+      "changed_in_v2": [
+        "category definition -> method; added the p2 quote that supports the reference answer"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G09",
+      "category": "method",
+      "question": "What are the key components of the SimCLR framework?",
+      "reference_answer": "SimCLR uses stochastic data augmentation, an encoder, a projection head, and a contrastive loss over positive and negative pairs.",
+      "expected_doc_ids": [
+        "Reference 7 SimCLR Contrastive learning"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "A stochastic data augmentation module that transforms any given data example randomly resulting in two correlated views"
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "A neural network base encoder f(·) that extracts representation vectors"
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "A small neural network projection head g(·) that maps representations to the space where contrastive loss is applied"
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "A contrastive loss function defined for a contrastive prediction task"
+        }
+      ]
+    },
+    {
+      "id": "G10",
+      "category": "method",
+      "question": "How does MoCo maintain a large set of negative keys?",
+      "reference_answer": "MoCo uses a queue of encoded keys and updates its key encoder with a momentum update from the query encoder.",
+      "expected_doc_ids": [
+        "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper",
+          "page_number": 1,
+          "quote": "we build a dynamic dictionary with a queue and a moving-averaged encoder"
+        },
+        {
+          "doc_id": "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper",
+          "page_number": 1,
+          "quote": "The keys are encoded by a slowly progressing encoder, driven by a momentum update with the query encoder"
+        }
+      ]
+    },
+    {
+      "id": "G11",
+      "category": "method",
+      "question": "What is SwAV contrasting during self-supervised learning?",
+      "reference_answer": "SwAV contrasts cluster assignments of different augmented views instead of directly contrasting image features.",
+      "expected_doc_ids": [
+        "Reference 9 SwAV - Unsupervised learning of Visual features by contrasting cluster assignments"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 9 SwAV - Unsupervised learning of Visual features by contrasting cluster assignments",
+          "page_number": 1,
+          "quote": "enforcing consistency between cluster assignments produced for different augmentations (or “views”) of the same image, instead of comparing features directly"
+        }
+      ]
+    },
+    {
+      "id": "G12",
+      "category": "method",
+      "question": "How does VQ-VAE create discrete latent representations?",
+      "reference_answer": "VQ-VAE maps encoder outputs to entries in a learned codebook and decodes the quantized latent representation.",
+      "expected_doc_ids": [
+        "Reference 10 VQVAE Neural Discrete Representational Learning"
+      ],
+      "expected_pages": [
+        1,
+        3
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 10 VQVAE Neural Discrete Representational Learning",
+          "page_number": 1,
+          "quote": "the encoder network outputs discrete, rather than continuous, codes"
+        },
+        {
+          "doc_id": "Reference 10 VQVAE Neural Discrete Representational Learning",
+          "page_number": 3,
+          "quote": "the samples drawn from these distributions index an embedding table"
+        }
+      ]
+    },
+    {
+      "id": "G13",
+      "category": "method",
+      "question": "What does SegSort use to produce semantic segments?",
+      "reference_answer": "SegSort learns pixel embeddings and groups them through discriminative sorting of image segments.",
+      "expected_doc_ids": [
+        "Reference 12 SegSort"
+      ],
+      "expected_pages": [
+        1,
+        3
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 12 SegSort",
+          "page_number": 1,
+          "quote": "SegSort: Segmentation by Discriminative Sorting of Segments"
+        },
+        {
+          "doc_id": "Reference 12 SegSort",
+          "page_number": 3,
+          "quote": "Let V = {vi} = {φ(xi)} be the set of pixel embeddings"
+        }
+      ]
+    },
+    {
+      "id": "G14",
+      "category": "application",
+      "question": "What does unsupervised single-scene semantic segmentation aim to do for Earth observation?",
+      "reference_answer": "It aims to discover meaningful semantic regions in a single Earth-observation image without ground-truth labels.",
+      "expected_doc_ids": [
+        "Reference 13 Unsupervised_Single-Scene_Semantic_Segmentation_fo (1)"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 13 Unsupervised_Single-Scene_Semantic_Segmentation_fo (1)",
+          "page_number": 2,
+          "quote": "a self-supervised segmentation method that does not require any annotated data and can be trained using single unlabeled Earth observation scene"
+        }
+      ]
+    },
+    {
+      "id": "G15",
+      "category": "method",
+      "question": "What does Segment Anything produce from prompts?",
+      "reference_answer": "Segment Anything predicts object masks from prompts such as points, boxes, masks, or text-related inputs.",
+      "expected_doc_ids": [
+        "Reference 15 2023_Segment_Anything_2304.02643v1"
+      ],
+      "expected_pages": [
+        2,
+        5
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 15 2023_Segment_Anything_2304.02643v1",
+          "page_number": 2,
+          "quote": "return a valid segmentation mask given any segmentation prompt"
+        },
+        {
+          "doc_id": "Reference 15 2023_Segment_Anything_2304.02643v1",
+          "page_number": 5,
+          "quote": "We consider two sets of prompts: sparse (points, boxes, text) and dense (masks)"
+        }
+      ]
+    },
+    {
+      "id": "G16",
+      "category": "application",
+      "question": "Why are superpixels useful for unsupervised hyperspectral image segmentation?",
+      "reference_answer": "Superpixels group locally coherent pixels, reducing noise and providing spatial units for clustering hyperspectral information.",
+      "expected_doc_ids": [
+        "Reference 16 2024_Unsupervised_Segmentation_of_Hyperspectral_Remote_sensing_Satellite_images_with_Superpixels2204.12296v2"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 16 2024_Unsupervised_Segmentation_of_Hyperspectral_Remote_sensing_Satellite_images_with_Superpixels2204.12296v2",
+          "page_number": 2,
+          "quote": "The use of clustered information reduces the effect of noise, typical in hyperspectral remote sensing images"
+        },
+        {
+          "doc_id": "Reference 16 2024_Unsupervised_Segmentation_of_Hyperspectral_Remote_sensing_Satellite_images_with_Superpixels2204.12296v2",
+          "page_number": 1,
+          "quote": "takes as input a preliminary hyperspectral superpixels segmentation together with the spectral pixel information"
+        }
+      ]
+    },
+    {
+      "id": "G17",
+      "category": "application",
+      "question": "What does the 2025 urban satellite-imagery clustering study seek to reveal?",
+      "reference_answer": "It uses unsupervised deep clustering of high-resolution satellite imagery to reveal phenotypes of urban development in Sub-Saharan Africa.",
+      "expected_doc_ids": [
+        "Reference 17 2025_Unsupervised deep clustering of high-resolution satellite imagery reveals"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 17 2025_Unsupervised deep clustering of high-resolution satellite imagery reveals",
+          "page_number": 1,
+          "quote": "Unsupervised deep clustering of high-resolution satellite imagery reveals phenotypes of urban development in Sub-Saharan Africa"
+        }
+      ],
+      "answer_in_title": true,
+      "changed_in_v2": [
+        "flagged: answerable from the paper title alone (kept, tagged)"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G18",
+      "category": "method",
+      "question": "What is the main idea behind SLIC superpixels?",
+      "reference_answer": "SLIC clusters pixels in a combined five-dimensional color and image-plane space to efficiently generate compact, nearly uniform superpixels.",
+      "expected_doc_ids": [
+        "Reference 18 SLIC"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 18 SLIC",
+          "page_number": 1,
+          "quote": "clusters pixels in the combined five-dimensional color and image plane space to efficiently generate compact, nearly uniform superpixels"
+        }
+      ],
+      "changed_in_v2": [
+        "reference answer claimed 'adapts k-means', which the p1 evidence does not say; trimmed to the evidence"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G19",
+      "category": "method",
+      "question": "What does Invariant Information Clustering optimize?",
+      "reference_answer": "IIC maximizes mutual information between cluster assignments of paired transformed inputs.",
+      "expected_doc_ids": [
+        "1807.06653v4"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1807.06653v4",
+          "page_number": 1,
+          "quote": "The objective is simply to maximise mutual information between the class assignments of each pair"
+        }
+      ]
+    },
+    {
+      "id": "G20",
+      "category": "method",
+      "question": "How does PiCIE use invariance and equivariance?",
+      "reference_answer": "PiCIE learns unsupervised semantic segmentation by encouraging invariance to photometric changes and equivariance to geometric transformations during clustering.",
+      "expected_doc_ids": [
+        "2103.17070v1"
+      ],
+      "expected_pages": [
+        4
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2103.17070v1",
+          "page_number": 4,
+          "quote": "invariance to photometric transformations and equivariance to geometric transformations"
+        }
+      ]
+    },
+    {
+      "id": "G21",
+      "category": "method",
+      "question": "What does STEGO distill to produce unsupervised semantic segments?",
+      "reference_answer": "STEGO distills feature correspondences from self-supervised visual features to obtain unsupervised semantic segmentation.",
+      "expected_doc_ids": [
+        "2203.08414v1"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 1,
+          "quote": "UNSUPERVISED SEMANTIC SEGMENTATION BY DISTILLING FEATURE CORRESPONDENCES"
+        },
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 1,
+          "quote": "current unsupervised feature learning frameworks already generate dense features whose correlations are semantically consistent"
+        }
+      ],
+      "changed_in_v2": [
+        "question wording: STEGO distills features, it is not distilled from something"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G22",
+      "category": "method",
+      "question": "How does W-Net support fully unsupervised image segmentation?",
+      "reference_answer": "W-Net uses a two-part encoder-decoder architecture that jointly learns a soft segmentation and reconstructs the input image without labels.",
+      "expected_doc_ids": [
+        "1711.08506v1"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 1,
+          "quote": "The first FCN encodes an input image, using fully convolutional layers, into a k-way soft segmentation"
+        },
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 1,
+          "quote": "The second FCN reverses this process, going from the segmentation layer back to a reconstructed image"
+        }
+      ]
+    },
+    {
+      "id": "G23",
+      "category": "method",
+      "question": "What is differentiable feature clustering used for in unsupervised image segmentation?",
+      "reference_answer": "It jointly learns pixel features and cluster assignments through a differentiable clustering objective without semantic labels.",
+      "expected_doc_ids": [
+        "2007.09990v1"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2007.09990v1",
+          "page_number": 1,
+          "quote": "a joint learning approach is presented that predicts, for an arbitrary image input, unknown cluster labels and learns the optimal CNN parameters for the image pixel clustering"
+        }
+      ]
+    },
+    {
+      "id": "G24",
+      "category": "method",
+      "question": "What is the central assumption behind SCAN?",
+      "reference_answer": "SCAN assumes that semantically similar images should receive the same cluster assignment and learns from nearest-neighbor consistency.",
+      "expected_doc_ids": [
+        "2005.12320v2"
+      ],
+      "expected_pages": [
+        3
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2005.12320v2",
+          "page_number": 3,
+          "quote": "we propose to mine the nearest neighbors of each image based on feature similarity"
+        },
+        {
+          "doc_id": "2005.12320v2",
+          "page_number": 3,
+          "quote": "these nearest neighbors belong to the same semantic class"
+        }
+      ]
+    },
+    {
+      "id": "G25",
+      "category": "method",
+      "question": "What does unsupervised semantic segmentation by contrasting object mask proposals use as supervision?",
+      "reference_answer": "It uses object mask proposals to construct contrastive learning signals without semantic labels.",
+      "expected_doc_ids": [
+        "2102.06191v3"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2102.06191v3",
+          "page_number": 2,
+          "quote": "we use a contrastive framework to learn pixel embeddings. The object mask proposals are employed as a prior"
+        }
+      ]
+    },
+    {
+      "id": "G26",
+      "category": "method",
+      "question": "What does DeepCluster alternate between during training?",
+      "reference_answer": "DeepCluster alternates between clustering image features and using the resulting cluster assignments as pseudo-labels for representation learning.",
+      "expected_doc_ids": [
+        "1807.05520v2"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1807.05520v2",
+          "page_number": 2,
+          "quote": "we iteratively cluster deep features and use the cluster assignments as pseudo-labels to learn the parameters of the convnet"
+        },
+        {
+          "doc_id": "1807.05520v2",
+          "page_number": 1,
+          "quote": "DeepCluster it- eratively groups the features with a standard clustering algorithm, k- means, and uses the subsequent assignments as supervision"
+        }
+      ],
+      "changed_in_v2": [
+        "p1 abstract fully answers the question; labelled p2 only"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
+      }
+    },
+    {
+      "id": "G27",
+      "category": "method",
+      "question": "What is the teacher-student mechanism in DINO?",
+      "reference_answer": "DINO trains a student network to match the output distribution of a teacher network updated with an exponential moving average of the student.",
+      "expected_doc_ids": [
+        "2104.14294v2"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2104.14294v2",
+          "page_number": 2,
+          "quote": "directly predicting the output of a teacher network—built with a momentum encoder"
+        },
+        {
+          "doc_id": "2104.14294v2",
+          "page_number": 2,
+          "quote": "The teacher parameters are updated with an exponential moving average (ema) of the student parameters"
+        }
+      ]
+    },
+    {
+      "id": "G28",
+      "category": "method",
+      "question": "How does BYOL avoid using negative pairs?",
+      "reference_answer": "BYOL trains an online network to predict the representation of a slowly updated target network, so it does not require explicit negative pairs.",
+      "expected_doc_ids": [
+        "2006.07733v3"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2006.07733v3",
+          "page_number": 1,
+          "quote": "we train the online network to predict the target network representation of the same image under a different augmented view"
+        },
+        {
+          "doc_id": "2006.07733v3",
+          "page_number": 2,
+          "quote": "without using negative pairs"
+        }
+      ],
+      "changed_in_v2": [
+        "category comparison -> method (single paper)"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G29",
+      "category": "method",
+      "question": "What is the pretext task in masked autoencoders?",
+      "reference_answer": "MAE masks a large portion of image patches and learns to reconstruct the missing pixels from the visible patches.",
+      "expected_doc_ids": [
+        "2111.06377v3"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2111.06377v3",
+          "page_number": 1,
+          "quote": "we mask random patches of the input image and reconstruct the missing pixels"
+        }
+      ]
+    },
+    {
+      "id": "G30",
+      "category": "definition",
+      "question": "How does a Vision Transformer represent an image?",
+      "reference_answer": "ViT splits an image into fixed-size patches, linearly embeds them as tokens, and processes the token sequence with a Transformer.",
+      "expected_doc_ids": [
+        "2010.11929v2"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2010.11929v2",
+          "page_number": 1,
+          "quote": "we split an image into patches and provide the sequence of linear embeddings of these patches as an input to a Trans- former"
+        }
+      ]
+    },
+    {
+      "id": "G31",
+      "category": "method",
+      "question": "What problem do residual connections address in ResNet?",
+      "reference_answer": "Residual connections address the degradation problem in very deep networks by learning residual functions through shortcut connections.",
+      "expected_doc_ids": [
+        "1512.03385v1"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1512.03385v1",
+          "page_number": 1,
+          "quote": "a degradation problem has been exposed: with the network depth increasing, accuracy gets saturated"
+        },
+        {
+          "doc_id": "1512.03385v1",
+          "page_number": 2,
+          "quote": "we address the degradation problem by introducing a deep residual learning framework"
+        }
+      ]
+    },
+    {
+      "id": "G32",
+      "category": "method",
+      "question": "What does a variational autoencoder optimize?",
+      "reference_answer": "A VAE optimizes a variational lower bound that balances reconstruction quality with a regularized latent distribution.",
+      "expected_doc_ids": [
+        "1312.6114v11"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1312.6114v11",
+          "page_number": 1,
+          "quote": "a reparameterization of the variational lower bound yields a lower bound estimator that can be straightforwardly optimized"
+        }
+      ]
+    },
+    {
+      "id": "G33",
+      "category": "method",
+      "question": "What does Deep Embedded Clustering optimize after initialization?",
+      "reference_answer": "DEC refines an embedding and cluster centroids by minimizing divergence between soft assignments and an auxiliary target distribution.",
+      "expected_doc_ids": [
+        "1511.06335v2"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1511.06335v2",
+          "page_number": 1,
+          "quote": "iteratively refine clusters with an auxiliary target distribution derived from the current soft cluster assignment"
+        }
+      ]
+    },
+    {
+      "id": "G34",
+      "category": "definition",
+      "question": "What is the objective of k-means clustering?",
+      "reference_answer": "MacQueen frames k-means as constructing partitions that are efficient in terms of within-class variance.",
+      "expected_doc_ids": [
+        "macqueen"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "macqueen",
+          "page_number": 1,
+          "quote": "The process, which is called 'k-means,' appears to give partitions which are reasonably efficient in the sense of within-class variance"
+        }
+      ]
+    },
+    {
+      "id": "G35",
+      "category": "method",
+      "question": "Why are fully connected CRFs difficult to use directly for image labeling?",
+      "reference_answer": "They connect all pixel pairs, creating an enormous inference problem that requires an efficient approximation.",
+      "expected_doc_ids": [
+        "1210.5644v1"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1210.5644v1",
+          "page_number": 1,
+          "quote": "The resulting graphs have billions of edges, making traditional inference algorithms impractical"
+        },
+        {
+          "doc_id": "1210.5644v1",
+          "page_number": 1,
+          "quote": "a highly efficient approximate inference algorithm for fully connected CRF models"
+        }
+      ]
+    },
+    {
+      "id": "G36",
+      "category": "method",
+      "question": "What graph property does efficient graph-based image segmentation use to decide whether to merge regions?",
+      "reference_answer": "It compares inter-region edge differences with each component's internal variation using a scale-dependent threshold.",
+      "expected_doc_ids": [
+        "efficient-graph-based-image-segmentation-tyi8hqdokm"
+      ],
+      "expected_pages": [
+        5
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "efficient-graph-based-image-segmentation-tyi8hqdokm",
+          "page_number": 5,
+          "quote": "The region comparison predicate evaluates if there is evidence for a boundary between a pair or components by checking if the difference between the components, Dif(C1, C2), is large relative to the internal difference within at least one of the components"
+        },
+        {
+          "doc_id": "efficient-graph-based-image-segmentation-tyi8hqdokm",
+          "page_number": 5,
+          "quote": "in practice k sets a scale of observation"
+        }
+      ]
+    },
+    {
+      "id": "G37",
+      "category": "method",
+      "question": "What is VQ-VAE-2 designed to improve over VQ-VAE?",
+      "reference_answer": "VQ-VAE-2 uses a hierarchical discrete latent architecture to generate more diverse, higher-fidelity images.",
+      "expected_doc_ids": [
+        "1906.00446v1"
+      ],
+      "expected_pages": [
+        1,
+        4
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1906.00446v1",
+          "page_number": 4,
+          "quote": "we use a hierarchy of vector quantized codes to model large images"
+        },
+        {
+          "doc_id": "1906.00446v1",
+          "page_number": 1,
+          "quote": "Generating Diverse High-Fidelity Images with VQ-VAE-2"
+        }
+      ],
+      "changed_in_v2": [
+        "reference answer's 'more diverse, higher-fidelity' is supported only by the p1 title; added it"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G38",
+      "category": "application",
+      "question": "What kinds of satellite information does SatMAE pre-train on?",
+      "reference_answer": "SatMAE pre-trains Transformers for temporal and multispectral satellite imagery.",
+      "expected_doc_ids": [
+        "2207.08051v3"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2207.08051v3",
+          "page_number": 1,
+          "quote": "SatMAE: Pre-training Transformers for Temporal and Multi-Spectral Satellite Imagery"
+        }
+      ],
+      "answer_in_title": true,
+      "changed_in_v2": [
+        "flagged: answerable from the paper title alone (kept, tagged)"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G39",
+      "category": "numeric_table",
+      "question": "How much higher is STEGO's unsupervised accuracy than IIC's on Potsdam-3?",
+      "reference_answer": "STEGO reaches 77.0% unsupervised accuracy, compared with 65.1% for IIC (the paper also reports this as about +12%).",
+      "expected_doc_ids": [
+        "2203.08414v1"
+      ],
+      "expected_pages": [
+        15
+      ],
+      "expects_refusal": false,
+      "known_limitation": "borderless_table",
+      "required_numbers": [
+        "65.1",
+        "77.0"
+      ],
+      "evidence": [
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 15,
+          "quote": "IIC (Ji et al., 2019) 65.1 STEGO (Ours) 77.0"
+        }
+      ]
+    },
+    {
+      "id": "G40",
+      "category": "in_domain_refusal",
+      "question": "What mIoU do the indexed papers report on the Potsdam dataset?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G41",
+      "category": "comparison",
+      "question": "How do SimCLR and MoCo differ in handling negative examples?",
+      "reference_answer": "SimCLR commonly relies on negatives from the current batch, whereas MoCo maintains a queue of keys and a momentum encoder to supply a large, consistent dictionary.",
+      "expected_doc_ids": [
+        "Reference 7 SimCLR Contrastive learning",
+        "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper"
+      ],
+      "expected_pages": [
+        1,
+        3
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 3,
+          "quote": "To keep it simple, we do not train the model with a memory bank"
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 3,
+          "quote": "A batch size of 8192 gives us 16382 negative examples per positive pair from both augmentation views"
+        },
+        {
+          "doc_id": "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper",
+          "page_number": 1,
+          "quote": "The dictionary is built as a queue, with the current mini-batch enqueued and the oldest mini-batch dequeued, decoupling it from the mini-batch size"
+        }
+      ],
+      "expected_locations": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 3
+        },
+        {
+          "doc_id": "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper",
+          "page_number": 1
+        }
+      ],
+      "changed_in_v2": [
+        "pages tied to papers with expected_locations (multi-paper item)"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G42",
+      "category": "comparison",
+      "question": "How do SimCLR and BYOL differ in their use of negative pairs?",
+      "reference_answer": "SimCLR uses contrastive negative pairs, while BYOL learns by predicting a target-network representation and does not require explicit negatives.",
+      "expected_doc_ids": [
+        "Reference 7 SimCLR Contrastive learning",
+        "2006.07733v3"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "SimCLR learns representations by maximizing agreement between differently augmented views of the same data example via a contrastive loss"
+        },
+        {
+          "doc_id": "2006.07733v3",
+          "page_number": 2,
+          "quote": "which achieves state-of-the-art results under the linear evaluation protocol on ImageNet without using negative pairs"
+        }
+      ],
+      "expected_locations": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2
+        },
+        {
+          "doc_id": "2006.07733v3",
+          "page_number": 2
+        }
+      ],
+      "changed_in_v2": [
+        "pages tied to papers with expected_locations (multi-paper item)"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G43",
+      "category": "comparison",
+      "question": "How do FCN and U-Net both support dense prediction?",
+      "reference_answer": "Both are fully convolutional and combine coarse semantic features with fine high-resolution ones through skip connections; FCN sums upsampled features, while U-Net concatenates them along a symmetric expanding path.",
+      "expected_doc_ids": [
+        "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+        "Reference 2 U Net"
+      ],
+      "expected_pages": [
+        2,
+        4,
+        6
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 4,
+          "quote": "we add skips between layers to fuse coarse, semantic and local, appearance information"
+        },
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 6,
+          "quote": "by adding a 2× upsampling layer and summing"
+        },
+        {
+          "doc_id": "Reference 2 U Net",
+          "page_number": 2,
+          "quote": "In order to localize, high resolution features from the contracting path are combined with the upsampled"
+        }
+      ],
+      "expected_locations": [
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 4
+        },
+        {
+          "doc_id": "Reference 1  Long_Fully_Convolutional_Networks_2015_CVPR_paper",
+          "page_number": 6
+        },
+        {
+          "doc_id": "Reference 2 U Net",
+          "page_number": 2
+        }
+      ],
+      "changed_in_v2": [
+        "pages tied to papers with expected_locations (multi-paper item)"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G44",
+      "category": "comparison",
+      "question": "How do PiCIE and STEGO approach unsupervised semantic segmentation differently?",
+      "reference_answer": "PiCIE learns clustering with invariance and equivariance constraints, whereas STEGO distills feature correspondences from pretrained self-supervised representations.",
+      "expected_doc_ids": [
+        "2103.17070v1",
+        "2203.08414v1"
+      ],
+      "expected_pages": [
+        1,
+        2,
+        4
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2103.17070v1",
+          "page_number": 4,
+          "quote": "invariance to photometric transformations and equivariance to geometric transformations"
+        },
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 1,
+          "quote": "STEGO distills pretrained unsupervised visual features into semantic clusters using a novel"
+        },
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 2,
+          "quote": "STEGO treats pretrained self-supervised features as input"
+        }
+      ],
+      "expected_locations": [
+        {
+          "doc_id": "2103.17070v1",
+          "page_number": 4
+        },
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 1
+        },
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 2
+        }
+      ],
+      "changed_in_v2": [
+        "pages tied to papers with expected_locations (multi-paper item)"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G45",
+      "category": "comparison",
+      "question": "How does MAE differ from SimCLR as a self-supervised learning objective?",
+      "reference_answer": "MAE reconstructs masked image content, while SimCLR contrasts representations of augmented image views.",
+      "expected_doc_ids": [
+        "2111.06377v3",
+        "Reference 7 SimCLR Contrastive learning"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2111.06377v3",
+          "page_number": 1,
+          "quote": "we mask random patches of the input image and reconstruct the missing pixels"
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2,
+          "quote": "maximizing agreement between differently augmented views of the same data example via a contrastive loss"
+        }
+      ],
+      "expected_locations": [
+        {
+          "doc_id": "2111.06377v3",
+          "page_number": 1
+        },
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 2
+        }
+      ],
+      "changed_in_v2": [
+        "pages tied to papers with expected_locations (multi-paper item)"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G46",
+      "category": "numeric",
+      "question": "What ImageNet top-1 accuracy does the SimCLR paper report for its best model under linear evaluation?",
+      "reference_answer": "The SimCLR paper reports 76.5% ImageNet top-1 accuracy under linear evaluation for its best model.",
+      "expected_doc_ids": [
+        "Reference 7 SimCLR Contrastive learning"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "required_numbers": [
+        "76.5"
+      ],
+      "evidence": [
+        {
+          "doc_id": "Reference 7 SimCLR Contrastive learning",
+          "page_number": 1,
+          "quote": "A linear classifier trained on self-supervised representations learned by Sim- CLR achieves 76.5% top-1 accuracy"
+        }
+      ]
+    },
+    {
+      "id": "G47",
+      "category": "numeric",
+      "question": "What fraction of image patches does MAE mask in its asymmetric encoder-decoder design?",
+      "reference_answer": "MAE masks 75% of image patches.",
+      "expected_doc_ids": [
+        "2111.06377v3"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "required_numbers": [
+        "75%"
+      ],
+      "evidence": [
+        {
+          "doc_id": "2111.06377v3",
+          "page_number": 1,
+          "quote": "a large random subset of image patches (e.g., 75%) is masked out"
+        }
+      ]
+    },
+    {
+      "id": "G48",
+      "category": "numeric",
+      "question": "What patch size is named in the title of the Vision Transformer paper?",
+      "reference_answer": "The title names 16x16 image patches.",
+      "expected_doc_ids": [
+        "2010.11929v2"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "required_numbers": [
+        "16X16"
+      ],
+      "evidence": [
+        {
+          "doc_id": "2010.11929v2",
+          "page_number": 1,
+          "quote": "AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE"
+        }
+      ],
+      "answer_in_title": true,
+      "changed_in_v2": [
+        "flagged: answerable from the paper title alone (kept, tagged)"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G51",
+      "category": "application",
+      "question": "What pipeline does the multispectral satellite segmentation study propose?",
+      "reference_answer": "It combines superpixel preprocessing, a VQ-VAE, and self-supervised contrastive learning; it clusters latent features with a GMM to produce pseudo-segmentation masks.",
+      "expected_doc_ids": [
+        "2025362135"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2025362135",
+          "page_number": 1,
+          "quote": "This study proposes a deep learning pipeline combining superpixel-based preprocessing, Vector Quantized Variational Autoencoder (VQ-VAE), and self-supervised contrastive learning"
+        },
+        {
+          "doc_id": "2025362135",
+          "page_number": 1,
+          "quote": "Gaussian Mixture Model (GMM) clustering generates pseudo segmentation masks"
+        }
+      ]
+    },
+    {
+      "id": "G52",
+      "category": "method",
+      "question": "Why does the MS-SSIM paper study alternatives to the usual squared-error loss?",
+      "reference_answer": "It studies perceptually motivated losses because squared error correlates poorly with human-perceived image quality.",
+      "expected_doc_ids": [
+        "Reference 14 MS-SSIM"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 14 MS-SSIM",
+          "page_number": 1,
+          "quote": "we bring attention to alternative choices for image restoration"
+        },
+        {
+          "doc_id": "Reference 14 MS-SSIM",
+          "page_number": 1,
+          "quote": "ℓ2 correlates poorly with image quality as perceived by a human observer"
+        }
+      ],
+      "changed_in_v2": [
+        "category definition -> method (asks for motivation)"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G53",
+      "category": "application",
+      "question": "How does contrastive pretraining help label-limited land-use classification?",
+      "reference_answer": "The study adapts contrastive methods to learn generic multi-resolution features and reports that MoCo with temporal positives can reach five times the accuracy of training from scratch with about four examples per class on RESISC45.",
+      "expected_doc_ids": [
+        "2210.06786v1"
+      ],
+      "expected_pages": [
+        1,
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2210.06786v1",
+          "page_number": 1,
+          "quote": "in this paper we study self-supervised visual representation learning through the lens of label efficiency"
+        },
+        {
+          "doc_id": "2210.06786v1",
+          "page_number": 2,
+          "quote": "with only about 4 examples per class, we reach 5× the accuracy of a classifier trained from scratch"
+        }
+      ]
+    },
+    {
+      "id": "G54",
+      "category": "application",
+      "question": "Why is self-supervised pretraining useful for satellite vehicle detection?",
+      "reference_answer": "Labeled examples are expensive and rare in defense-related remote sensing, while many unlabeled images are available, making label-efficient pretraining useful.",
+      "expected_doc_ids": [
+        "2210.11815v1"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2210.11815v1",
+          "page_number": 1,
+          "quote": "supervised learning requires a huge number of labeled examples to reach operational performances"
+        },
+        {
+          "doc_id": "2210.11815v1",
+          "page_number": 1,
+          "quote": "This limited labeling capability, as well as the large number of unlabeled images available"
+        }
+      ]
+    },
+    {
+      "id": "G55",
+      "category": "application",
+      "question": "What problem does domain-adaptable self-supervised learning address in satellite imagery?",
+      "reference_answer": "It addresses representation learning and knowledge transfer across remote-sensing visual domains while reducing reliance on human annotations.",
+      "expected_doc_ids": [
+        "2304.09874v1"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 1,
+          "quote": "This work presents a novel domain adaption paradigm for studying contrastive self-supervised representation learning and knowledge transfer using remote sensing satellite data"
+        }
+      ]
+    },
+    {
+      "id": "G56",
+      "category": "method",
+      "question": "Why does the remote-sensing prompt-learning paper modify SAM?",
+      "reference_answer": "It develops an automated instance-segmentation approach that incorporates semantic category information because standard SAM relies heavily on manually supplied points, boxes, or coarse masks.",
+      "expected_doc_ids": [
+        "2306.16269v1"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2306.16269v1",
+          "page_number": 1,
+          "quote": "SAM heavily depends on prior manual guidance involving points, boxes, and coarse-grained masks"
+        },
+        {
+          "doc_id": "2306.16269v1",
+          "page_number": 1,
+          "quote": "we consider designing an automated instance segmentation approach for remote sensing images based on the SAM foundation model, incorporating semantic category information"
+        }
+      ]
+    },
+    {
+      "id": "G57",
+      "category": "method",
+      "question": "What kinds of prompts can SAM use in remote-sensing applications?",
+      "reference_answer": "The paper describes bounding boxes, single points, and prompt text as possible minimal inputs for segmentation.",
+      "expected_doc_ids": [
+        "2306.16623v2"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2306.16623v2",
+          "page_number": 1,
+          "quote": "requiring only a bounding box or a single point as a reference, or even a prompt text"
+        }
+      ]
+    },
+    {
+      "id": "G58",
+      "category": "definition",
+      "question": "What is semantic segmentation in aerial imagery?",
+      "reference_answer": "It assigns the most likely class label to every image pixel from a finite set of object categories.",
+      "expected_doc_ids": [
+        "Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs",
+          "page_number": 1,
+          "quote": "Its aim is to determine, at every image pixel, the most likely class label from a finite set of possible labels"
+        }
+      ]
+    },
+    {
+      "id": "G59",
+      "category": "numeric_table",
+      "question": "What ODS segmentation covering (SC) score does W-Net report on BSDS500?",
+      "reference_answer": "On BSDS500 W-Net reports an SC ODS of 0.57 (0.58 on BSDS300).",
+      "expected_doc_ids": [
+        "1711.08506v1"
+      ],
+      "expected_pages": [
+        8
+      ],
+      "expects_refusal": false,
+      "required_numbers": [
+        "0.57"
+      ],
+      "evidence": [
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 8,
+          "quote": "W-Net (ours) | 0.57 | 0.62 | 0.81 | 0.84 | 1.76 | 1.60"
+        },
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 8,
+          "quote": "Table 1 and Table 2 summarize the performance of the proposed method noted as W-Net on BSDS300 and BSDS500 respectively"
+        }
+      ],
+      "changed_in_v2": [
+        "ambiguous: page 8 has two tables (BSDS300: 0.58, BSDS500: 0.57); question now names BSDS500"
+      ],
+      "provenance": {
+        "authored_by": "owner",
+        "fixed_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
+      }
+    },
+    {
+      "id": "G60",
+      "category": "numeric_table",
+      "question": "How many images and classes does the SIRI-WHU dataset have in the domain-adaptation study?",
+      "reference_answer": "The table lists 2,400 images and 12 classes for SIRI-WHU.",
+      "expected_doc_ids": [
+        "2304.09874v1"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "required_numbers": [
+        "2400",
+        "12"
+      ],
+      "evidence": [
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 2,
+          "quote": "SIRI-WHU | 2400 | 12"
+        }
+      ]
+    },
+    {
+      "id": "G61",
+      "category": "numeric_table",
+      "question": "What batch size and learning rate are listed for the pretext task in the domain-adaptation study?",
+      "reference_answer": "It lists a batch size of 256 and a learning rate of 0.0005.",
+      "expected_doc_ids": [
+        "2304.09874v1"
+      ],
+      "expected_pages": [
+        4
+      ],
+      "expects_refusal": false,
+      "required_numbers": [
+        "256",
+        "0.0005"
+      ],
+      "evidence": [
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "Batch size | 256"
+        },
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "Learning Rate | 0.0005"
+        }
+      ]
+    },
+    {
+      "id": "G62",
+      "category": "numeric_table",
+      "question": "What top-5 test error does the table report for ResNet on ILSVRC 2015?",
+      "reference_answer": "The table reports a top-5 test error of 3.57 for ResNet.",
+      "expected_doc_ids": [
+        "1512.03385v1"
+      ],
+      "expected_pages": [
+        6
+      ],
+      "expects_refusal": false,
+      "required_numbers": [
+        "3.57"
+      ],
+      "evidence": [
+        {
+          "doc_id": "1512.03385v1",
+          "page_number": 6,
+          "quote": "ResNet (ILSVRC’15) | 3.57"
+        }
+      ]
+    },
+    {
+      "id": "G63",
+      "category": "numeric_table",
+      "question": "Which DINO configuration in the table reaches 85.5 accuracy?",
+      "reference_answer": "DINO with ViT-B/8 reaches 85.5 accuracy in the listed configuration.",
+      "expected_doc_ids": [
+        "2104.14294v2"
+      ],
+      "expected_pages": [
+        6
+      ],
+      "expects_refusal": false,
+      "required_numbers": [
+        "85.5"
+      ],
+      "evidence": [
+        {
+          "doc_id": "2104.14294v2",
+          "page_number": 6,
+          "quote": "DINO | ViT-B/8 | 1536 | 3202 | 85.5"
+        }
+      ]
+    },
+    {
+      "id": "G64",
+      "category": "in_domain_refusal",
+      "question": "What MS-SSIM mIoU does W-Net report on COCO?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G65",
+      "category": "in_domain_refusal",
+      "question": "How many annotated training pixels does W-Net require?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G66",
+      "category": "in_domain_refusal",
+      "question": "What Potsdam mIoU does SatMAE report?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G67",
+      "category": "in_domain_refusal",
+      "question": "What GPU inference latency does the MS-SSIM paper report on ImageNet?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G68",
+      "category": "in_domain_refusal",
+      "question": "What cloud-cover percentage does SatMAE report for each satellite image?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G49",
+      "category": "refusal",
+      "question": "What is the current population of Paris?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal"
+    },
+    {
+      "id": "G50",
+      "category": "clarification",
+      "question": "satellite imagery",
+      "reference_answer": "Please ask a complete research question so I can retrieve the right evidence.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "clarification"
+    },
+    {
+      "id": "G101",
+      "category": "numeric_table",
+      "question": "Among the ILSVRC'14 entries in the ResNet paper's ImageNet top-5 test error table, which method has the lower error, and what is it?",
+      "reference_answer": "GoogLeNet, with a top-5 test error of 6.66 (VGG: 7.32).",
+      "expected_doc_ids": [
+        "1512.03385v1"
+      ],
+      "expected_pages": [
+        6
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1512.03385v1",
+          "page_number": 6,
+          "quote": "| VGG [41] (ILSVRC’14)<br>GoogLeNet [44] (ILSVRC’14) | 7.32<br>6.66 |"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "6.66"
+      ],
+      "table_question_type": "best_of_column"
+    },
+    {
+      "id": "G102",
+      "category": "numeric_table",
+      "question": "On BSDS300, what VI score at the optimal dataset scale (ODS) does W-Net+ucm report?",
+      "reference_answer": "1.63 (VI ODS for W-Net+ucm on BSDS300).",
+      "expected_doc_ids": [
+        "1711.08506v1"
+      ],
+      "expected_pages": [
+        8
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 8,
+          "quote": "| W-Net+ucm (ours) | 0.60 | 0.65 | 0.82 | 0.86 | 1.63 | 1.45 |"
+        },
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 8,
+          "quote": "Table 1 and Table 2 summarize the performance of the proposed method noted as W-Net on BSDS300 and BSDS500 respectively"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "1.63"
+      ],
+      "table_question_type": "multi_hop"
+    },
+    {
+      "id": "G103",
+      "category": "numeric_table",
+      "question": "On BSDS500, which non-human methods share the best segmentation covering (SC) ODS score in W-Net's comparison, and what is it?",
+      "reference_answer": "gPb-owt-ucm, DC-Seg-full and W-Net+ucm all reach 0.59.",
+      "expected_doc_ids": [
+        "1711.08506v1"
+      ],
+      "expected_pages": [
+        8
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 8,
+          "quote": "| DC-Seg-full [11] | 0.59 | 0.64 | 0.82 | 0.85 | 1.68 | 1.54 |"
+        },
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 8,
+          "quote": "| W-Net+ucm (ours) | 0.59 | 0.64 | 0.82 | 0.85 | 1.67 | 1.47 |"
+        },
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 8,
+          "quote": "| gPb-owt-ucm [2] | 0.59 | 0.65 | 0.83 | 0.86 | 1.69 | 1.48 |"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
+      },
+      "required_numbers": [
+        "0.59"
+      ],
+      "table_question_type": "best_of_column"
+    },
+    {
+      "id": "G104",
+      "category": "numeric_table",
+      "question": "On BSDS300, does W-Net (without UCM) beat Mean Shift on PRI at the optimal dataset scale?",
+      "reference_answer": "Yes: W-Net reaches a PRI ODS of 0.81 versus 0.78 for Mean Shift.",
+      "expected_doc_ids": [
+        "1711.08506v1"
+      ],
+      "expected_pages": [
+        8
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 8,
+          "quote": "| Mean Shift [8] | 0.54 | 0.58 | 0.78 | 0.80 | 1.83 | 1.63 |"
+        },
+        {
+          "doc_id": "1711.08506v1",
+          "page_number": 8,
+          "quote": "| W-Net (ours) | 0.58 | 0.62 | 0.81 | 0.84 | 1.71 | 1.53 |"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "0.81",
+        "0.78"
+      ],
+      "table_question_type": "row_comparison"
+    },
+    {
+      "id": "G105",
+      "category": "numeric_table",
+      "question": "In the domain-adaptation study's dataset table, which dataset has the most classes, and how many images does it contain?",
+      "reference_answer": "MLRSNet, with 46 classes and 109,161 images.",
+      "expected_doc_ids": [
+        "2304.09874v1"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 2,
+          "quote": "| MLRSNet | 109,161 | 46 |"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "46",
+        "109,161"
+      ],
+      "table_question_type": "best_of_column"
+    },
+    {
+      "id": "G106",
+      "category": "numeric_table",
+      "question": "In the domain-adaptation study, what accuracy is reported when SIRI-WHU is both the pretext and the downstream dataset and only 10% of the downstream data is used?",
+      "reference_answer": "88.43% accuracy.",
+      "expected_doc_ids": [
+        "2304.09874v1"
+      ],
+      "expected_pages": [
+        4
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "| SIRI-WHU | SIRI-WHU | 100% | 99.68"
+        },
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "| 10% | 88.43 | 83.76 | 79.77 | 81.43 |"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "88.43"
+      ],
+      "table_question_type": "single_cell"
+    },
+    {
+      "id": "G107",
+      "category": "numeric_table",
+      "question": "With MLRSNet as the pretext dataset and 100% of the downstream data, which downstream dataset reaches higher accuracy in the domain-adaptation results: UC Merced or SIRI-WHU?",
+      "reference_answer": "UC Merced (98.50%) is higher than SIRI-WHU (97.50%).",
+      "expected_doc_ids": [
+        "2304.09874v1"
+      ],
+      "expected_pages": [
+        4
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "| MLRSNet | UC Merced | 100% | 98.50"
+        },
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "| MLRSNet | SIRI-WHU | 100% | 97.50"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "98.50",
+        "97.50"
+      ],
+      "table_question_type": "row_comparison"
+    },
+    {
+      "id": "G108",
+      "category": "numeric_table",
+      "question": "In the domain-adaptation study's comparison for 21-class UC Merced, which previously published method reports the highest accuracy, and does the paper's own result exceed it?",
+      "reference_answer": "SVM reports 98.8%. The paper's self-supervised same-dataset result (99.35%) exceeds it; its domain-adaptation result (98.75%) does not.",
+      "expected_doc_ids": [
+        "2304.09874v1"
+      ],
+      "expected_pages": [
+        4
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "TABLE VI: Comparative results of multi-class classiﬁcation 21 class UCMD"
+        },
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "| [23] | SVM | 98.8 |"
+        },
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "| Our Results | Self-supervised Domain Adaptation | 98.75 |"
+        },
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "Self-supervised Same Dataset | 99.35 |"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
+      },
+      "required_numbers": [
+        "98.8",
+        "99.35"
+      ],
+      "table_question_type": "best_of_column"
+    },
+    {
+      "id": "G109",
+      "category": "numeric_table",
+      "question": "For 12-class SIRI-WHU, does the domain-adaptation study's self-supervised same-dataset result beat every compared method?",
+      "reference_answer": "No. Inception-LSTM reports 99.73%, above the paper's 99.68%.",
+      "expected_doc_ids": [
+        "2304.09874v1"
+      ],
+      "expected_pages": [
+        4
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "TABLE VII: Comparative results for multi-class classiﬁcation 12 class SIRI-WHU"
+        },
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "| [29] | Inception-LSTM | 99.73 |"
+        },
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "Self-supervised Same Dataset | 99.68 |"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "99.73",
+        "99.68"
+      ],
+      "table_question_type": "best_of_column"
+    },
+    {
+      "id": "G110",
+      "category": "numeric_table",
+      "question": "For UC Merced with 100% of the data, how much higher is the self-supervised same-dataset accuracy than ResNet50 linear evaluation with ImageNet weights in the domain-adaptation study?",
+      "reference_answer": "99.35% versus 80.67%: 18.68 percentage points higher.",
+      "expected_doc_ids": [
+        "2304.09874v1"
+      ],
+      "expected_pages": [
+        4,
+        5
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 4,
+          "quote": "| UC Merced | UC Merced | 100% | 99.35"
+        },
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 5,
+          "quote": "TABLE X: Results for ResNet50 linear evaluation with Ima- genet weights"
+        },
+        {
+          "doc_id": "2304.09874v1",
+          "page_number": 5,
+          "quote": "| UCMD | 100% | 80.67 | 80.32 | 78.98 | 80.16 | 93.23 |"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "PDF page 5: the table with UCMD 100% = 80.67 is captioned TABLE X (linear evaluation); 99.35 from the same-dataset results",
+          "verdict": "ok"
+        }
+      },
+      "required_numbers": [
+        "99.35",
+        "80.67"
+      ],
+      "table_question_type": "multi_hop"
+    },
+    {
+      "id": "G111",
+      "category": "numeric_table",
+      "question": "In SegSort's unsupervised semantic segmentation results on Pascal VOC 2012 validation, what mIoU does unsupervised training on train_aug alone give, compared with the baseline?",
+      "reference_answer": "55.86 mIoU, up from 49.50 for the baseline of directly clustering pretrained features.",
+      "expected_doc_ids": [
+        "Reference 12 SegSort"
+      ],
+      "expected_pages": [
+        7
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 12 SegSort",
+          "page_number": 7,
+          "quote": "Table 3. Quantitative results related to unsupervised semantic seg- mentation on Pascal VOC 2012 validation set"
+        },
+        {
+          "doc_id": "Reference 12 SegSort",
+          "page_number": 7,
+          "quote": "|  |  |  | 49.50 | 40.86 |"
+        },
+        {
+          "doc_id": "Reference 12 SegSort",
+          "page_number": 7,
+          "quote": "| ✓ |  |  | 55.86 | 44.78 |"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "55.86",
+        "49.50"
+      ],
+      "table_question_type": "row_comparison"
+    },
+    {
+      "id": "G112",
+      "category": "numeric_table",
+      "question": "In the aerial-image ensemble paper's ISPRS test-set confusion matrices, how does adding the fully connected CRF change car accuracy and overall accuracy?",
+      "reference_answer": "Car accuracy drops from 74.8% (FCN) to 66.1% (FCN-FCRF) while overall accuracy rises slightly from 88.4% to 88.5%.",
+      "expected_doc_ids": [
+        "Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs"
+      ],
+      "expected_pages": [
+        6
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs",
+          "page_number": 6,
+          "quote": "| Car | 19.4 | 4.9 | 0.5 | 0.4 | 74.8 |"
+        },
+        {
+          "doc_id": "Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs",
+          "page_number": 6,
+          "quote": "| Overall Accuracy : 88.4 |"
+        },
+        {
+          "doc_id": "Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs",
+          "page_number": 6,
+          "quote": "| Car | 28.1 | 4.8 | 0.6 | 0.4 | 66.1 |"
+        },
+        {
+          "doc_id": "Reference 4 Semantic Segmentation of Aerial Images with an ensemble of CNNs",
+          "page_number": 6,
+          "quote": "| Overall Accuracy : 88.5 |"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
+      },
+      "required_numbers": [
+        "74.8",
+        "66.1"
+      ],
+      "table_question_type": "row_comparison"
+    },
+    {
+      "id": "G113",
+      "category": "numeric_table",
+      "question": "What validation NLL does VQ-VAE-2 report for its top prior?",
+      "reference_answer": "3.41 (train NLL 3.40).",
+      "expected_doc_ids": [
+        "1906.00446v1"
+      ],
+      "expected_pages": [
+        10
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1906.00446v1",
+          "page_number": 10,
+          "quote": "Train NLL Validation NLL Train MSE Validation MSE"
+        },
+        {
+          "doc_id": "1906.00446v1",
+          "page_number": 10,
+          "quote": "Top prior<br>Bottom prior | 3.40 3.41 - -<br>3.45 3.45 - -"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "3.41"
+      ],
+      "table_question_type": "single_cell"
+    },
+    {
+      "id": "G114",
+      "category": "numeric_table",
+      "question": "How many vehicles are annotated in the S split of the satellite vehicle-detection dataset?",
+      "reference_answer": "115,617 vehicles.",
+      "expected_doc_ids": [
+        "2210.11815v1"
+      ],
+      "expected_pages": [
+        7
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2210.11815v1",
+          "page_number": 7,
+          "quote": "Images Pos. tiles Neg. tiles Vehicles"
+        },
+        {
+          "doc_id": "2210.11815v1",
+          "page_number": 7,
+          "quote": "204 6,438 1,231 115,617"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "115,617"
+      ],
+      "table_question_type": "single_cell"
+    },
+    {
+      "id": "G115",
+      "category": "numeric_table_text",
+      "question": "What clustering accuracy does Deep Embedded Clustering report on MNIST?",
+      "reference_answer": "84.30%.",
+      "expected_doc_ids": [
+        "1511.06335v2"
+      ],
+      "expected_pages": [
+        5
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1511.06335v2",
+          "page_number": 5,
+          "quote": "DEC (ours) 84.30% 35.90% 72.17% 75.63%"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "84.30%"
+      ],
+      "table_question_type": "missed_table"
+    },
+    {
+      "id": "G116",
+      "category": "numeric_table_text",
+      "question": "On REUTERS-10k, how much does backpropagation fine-tuning improve DEC's clustering accuracy?",
+      "reference_answer": "From 70.05% (DEC without backprop) to 72.17%: 2.12 percentage points.",
+      "expected_doc_ids": [
+        "1511.06335v2"
+      ],
+      "expected_pages": [
+        5
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1511.06335v2",
+          "page_number": 5,
+          "quote": "Method MNIST STL-HOG REUTERS-10k REUTERS"
+        },
+        {
+          "doc_id": "1511.06335v2",
+          "page_number": 5,
+          "quote": "DEC w/o backprop 79.82% 34.06% 70.05% 69.62%"
+        },
+        {
+          "doc_id": "1511.06335v2",
+          "page_number": 5,
+          "quote": "DEC (ours) 84.30% 35.90% 72.17% 75.63%"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
+      },
+      "required_numbers": [
+        "70.05%",
+        "72.17%"
+      ],
+      "table_question_type": "missed_table"
+    },
+    {
+      "id": "G117",
+      "category": "numeric_table_text",
+      "question": "How many data points does the full REUTERS dataset used in the DEC experiments contain?",
+      "reference_answer": "685,071 points (4 classes, 2000 dimensions).",
+      "expected_doc_ids": [
+        "1511.06335v2"
+      ],
+      "expected_pages": [
+        4
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1511.06335v2",
+          "page_number": 4,
+          "quote": "REUTERS (Lewis et al., 2004) 685071 4 2000 43%"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "685071"
+      ],
+      "table_question_type": "missed_table"
+    },
+    {
+      "id": "G118",
+      "category": "numeric_table_text",
+      "question": "What unsupervised accuracy and mIoU does STEGO report on Cityscapes?",
+      "reference_answer": "73.2% unsupervised accuracy and 21.0 mIoU.",
+      "expected_doc_ids": [
+        "2203.08414v1"
+      ],
+      "expected_pages": [
+        9
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 9,
+          "quote": "Unsup. Model Acc. mIoU"
+        },
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 9,
+          "quote": "STEGO (Ours) 73.2 21.0"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "73.2",
+        "21.0"
+      ],
+      "table_question_type": "missed_table"
+    },
+    {
+      "id": "G119",
+      "category": "numeric_table_text",
+      "question": "On the 27-class CocoStuff validation set, what unsupervised accuracy and mIoU does STEGO report?",
+      "reference_answer": "56.9% unsupervised accuracy and 28.2 mIoU (linear probe: 76.1% and 41.0).",
+      "expected_doc_ids": [
+        "2203.08414v1"
+      ],
+      "expected_pages": [
+        7
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 7,
+          "quote": "Unsupervised Linear Probe Model Accuracy mIoU Accuracy mIoU"
+        },
+        {
+          "doc_id": "2203.08414v1",
+          "page_number": 7,
+          "quote": "STEGO (Ours) 56.9 28.2 76.1 41.0"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "required_numbers": [
+        "56.9",
+        "28.2"
+      ],
+      "table_question_type": "missed_table"
+    },
+    {
+      "id": "G120",
+      "category": "numeric_table_text",
+      "question": "What unsupervised segmentation accuracy does IIC report on the 6-label Potsdam variant, and how does it compare with its Potsdam-3 result?",
+      "reference_answer": "45.4% on Potsdam (6 labels) versus 65.1% on Potsdam-3.",
+      "expected_doc_ids": [
+        "1807.06653v4"
+      ],
+      "expected_pages": [
+        8
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1807.06653v4",
+          "page_number": 8,
+          "quote": "COCO-Stuff-3 COCO-Stuff Potsdam-3 Potsdam"
+        },
+        {
+          "doc_id": "1807.06653v4",
+          "page_number": 8,
+          "quote": "IIC 72.3 27.7 65.1 45.4"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
+      },
+      "required_numbers": [
+        "45.4",
+        "65.1"
+      ],
+      "table_question_type": "missed_table"
+    },
+    {
+      "id": "G121",
+      "category": "table_refusal",
+      "question": "In the domain-adaptation study, what accuracy is reported for SIRI-WHU when only 1% of the downstream data is used?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal",
+      "refusal_reason": "Tables report 100%, 50% and 10% of downstream data only; the paper's only '1%' is an improvement margin. Checked by search 2026-11-19.",
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
+      }
+    },
+    {
+      "id": "G122",
+      "category": "table_refusal",
+      "question": "What segmentation covering score does W-Net report on PASCAL VOC2012?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal",
+      "refusal_reason": "W-Net is trained on PASCAL VOC2012 but evaluated only on BSDS300 and BSDS500. Checked by search 2026-11-19.",
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G123",
+      "category": "table_refusal",
+      "question": "What inference time per image does W-Net report?",
+      "reference_answer": "I don't have enough evidence in the indexed papers to answer that reliably.",
+      "expected_doc_ids": [],
+      "expected_pages": [],
+      "expects_refusal": true,
+      "expected_outcome": "refusal",
+      "refusal_reason": "No timing appears in the W-Net paper's indexed text. Checked by search 2026-11-19.",
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      }
+    },
+    {
+      "id": "G124",
+      "category": "method",
+      "question": "What are the steps of the SLIC superpixel algorithm?",
+      "reference_answer": "SLIC initialises cluster centres on a regular grid, moves them to the lowest-gradient position in a small neighbourhood, then repeatedly assigns pixels in a 2S x 2S window to the best-matching centre and updates the centres.",
+      "expected_doc_ids": [
+        "Reference 18 SLIC"
+      ],
+      "expected_pages": [
+        6
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 18 SLIC",
+          "page_number": 6,
+          "quote": "Initialize cluster centers Ck = [lk, ak, bk, xk, yk]T by sampling pixels at regular grid steps S"
+        },
+        {
+          "doc_id": "Reference 18 SLIC",
+          "page_number": 6,
+          "quote": "Perturb cluster centers in an n × n neighborhood, to the lowest gradient position"
+        },
+        {
+          "doc_id": "Reference 18 SLIC",
+          "page_number": 6,
+          "quote": "Assign the best matching pixels from a 2S × 2S square"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "triggers_expansion": true
+    },
+    {
+      "id": "G125",
+      "category": "method",
+      "question": "What steps does the Felzenszwalb and Huttenlocher graph-based segmentation algorithm follow?",
+      "reference_answer": "It sorts edges by non-decreasing weight, starts with every vertex in its own component, and then processes the edges in order, merging components according to the boundary predicate.",
+      "expected_doc_ids": [
+        "efficient-graph-based-image-segmentation-tyi8hqdokm"
+      ],
+      "expected_pages": [
+        6
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "efficient-graph-based-image-segmentation-tyi8hqdokm",
+          "page_number": 6,
+          "quote": "Sort E into π = (o1, . . . , om), by non-decreasing edge weight"
+        },
+        {
+          "doc_id": "efficient-graph-based-image-segmentation-tyi8hqdokm",
+          "page_number": 6,
+          "quote": "Start with a segmentation S0, where each vertex vi is in its own component"
+        },
+        {
+          "doc_id": "efficient-graph-based-image-segmentation-tyi8hqdokm",
+          "page_number": 6,
+          "quote": "Repeat step 3 for q = 1, . . . , m"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "triggers_expansion": true
+    },
+    {
+      "id": "G126",
+      "category": "method",
+      "question": "After computing the top eigenvectors, what steps complete the Ng, Jordan and Weiss spectral clustering algorithm?",
+      "reference_answer": "Rows of the eigenvector matrix are renormalised to unit length, and each row is then treated as a point and clustered into k clusters with k-means.",
+      "expected_doc_ids": [
+        "Reference 6 spectral-clustering-analysis-and-an-algorithm-Paper"
+      ],
+      "expected_pages": [
+        2
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 6 spectral-clustering-analysis-and-an-algorithm-Paper",
+          "page_number": 2,
+          "quote": "Form the matrix Y from X by renormalizing each of X's rows to have unit length"
+        },
+        {
+          "doc_id": "Reference 6 spectral-clustering-analysis-and-an-algorithm-Paper",
+          "page_number": 2,
+          "quote": "Treating each row of Y as a point in Rk , cluster them into k clusters via K-means"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "triggers_expansion": true
+    },
+    {
+      "id": "G127",
+      "category": "method",
+      "question": "What process does DeepCluster repeat during training?",
+      "reference_answer": "It iteratively groups the network's features with k-means and uses the resulting assignments as supervision to update the network weights.",
+      "expected_doc_ids": [
+        "1807.05520v2"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1807.05520v2",
+          "page_number": 1,
+          "quote": "DeepCluster it- eratively groups the features with a standard clustering algorithm, k- means, and uses the subsequent assignments as supervision to update the weights of the network"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "triggers_expansion": true
+    },
+    {
+      "id": "G128",
+      "category": "unnamed_target",
+      "question": "How can a contrastive learner keep a large and consistent dictionary of negative keys without needing a very large batch?",
+      "reference_answer": "MoCo builds a dynamic dictionary as a queue of encoded keys, with keys produced by a slowly progressing, momentum-updated encoder.",
+      "expected_doc_ids": [
+        "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 8_Momentum_Contrast_for_Unsupervised_Visual_Representation_Learning_CVPR_2020_paper",
+          "page_number": 1,
+          "quote": "we build a dynamic dictionary with a queue and a moving-averaged encoder"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "variant_of": "G10"
+    },
+    {
+      "id": "G129",
+      "category": "unnamed_target",
+      "question": "Which self-supervised pre-training approach for vision transformers hides random image patches and learns by reconstructing the missing pixels?",
+      "reference_answer": "Masked autoencoders (MAE) mask random patches of the input image and reconstruct the missing pixels.",
+      "expected_doc_ids": [
+        "2111.06377v3"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2111.06377v3",
+          "page_number": 1,
+          "quote": "we mask random patches of the input image and reconstruct the missing pixels"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "variant_of": "G29"
+    },
+    {
+      "id": "G130",
+      "category": "unnamed_target",
+      "question": "Which method avoids pairwise feature comparisons by predicting the cluster code of one view from the representation of another view?",
+      "reference_answer": "SwAV, which uses a swapped prediction mechanism between cluster assignments (codes) of different views.",
+      "expected_doc_ids": [
+        "Reference 9 SwAV - Unsupervised learning of Visual features by contrasting cluster assignments"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 9 SwAV - Unsupervised learning of Visual features by contrasting cluster assignments",
+          "page_number": 1,
+          "quote": "we use a “swapped” prediction mechanism where we predict the code of a view from the representation of another view"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
+      },
+      "variant_of": "G11"
+    },
+    {
+      "id": "G131",
+      "category": "unnamed_target",
+      "question": "Which approach trains a convnet by repeatedly running k-means on its features and treating the cluster assignments as supervision?",
+      "reference_answer": "DeepCluster.",
+      "expected_doc_ids": [
+        "1807.05520v2"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "1807.05520v2",
+          "page_number": 1,
+          "quote": "DeepCluster it- eratively groups the features with a standard clustering algorithm, k- means, and uses the subsequent assignments as supervision"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "variant_of": "G26"
+    },
+    {
+      "id": "G132",
+      "category": "unnamed_target",
+      "question": "Which superpixel method clusters pixels using both colour and image-plane position to produce compact, nearly uniform regions?",
+      "reference_answer": "SLIC (simple linear iterative clustering).",
+      "expected_doc_ids": [
+        "Reference 18 SLIC"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "Reference 18 SLIC",
+          "page_number": 1,
+          "quote": "the combined ﬁve-dimensional color and image plane space to eﬃ- ciently generate compact, nearly uniform superpixels"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "variant_of": "G18"
+    },
+    {
+      "id": "G133",
+      "category": "unnamed_target",
+      "question": "Which self-supervised method learns without negative pairs by training one network to predict another network's representation of a differently augmented view?",
+      "reference_answer": "BYOL: its online network predicts the target network's representation of the same image under a different augmented view.",
+      "expected_doc_ids": [
+        "2006.07733v3"
+      ],
+      "expected_pages": [
+        1
+      ],
+      "expects_refusal": false,
+      "evidence": [
+        {
+          "doc_id": "2006.07733v3",
+          "page_number": 1,
+          "quote": "we train the online network to predict the target network representation of the same image under a different augmented view"
+        }
+      ],
+      "provenance": {
+        "authored_by": "claude-code",
+        "reviewed_by_owner": false
+      },
+      "variant_of": "G28"
+    }
+  ]
+}

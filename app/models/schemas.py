@@ -33,3 +33,5 @@ class AnswerResponse(BaseModel):
     # rejected by validation). Eval scripts copy these into every result record.
     prompt_version: str | None = None
     prompt_sha256: str | None = None
+    # Model configured for answer generation (LLM_MODEL); recorded in every eval result.
+    generator_model: str | None = None

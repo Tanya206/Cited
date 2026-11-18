@@ -26,3 +26,5 @@ jobs:
         run: python -m pytest -q
       - name: Validate golden dataset structure (no corpus in CI)
         run: python -m eval.validate_golden --structure-only
+      - name: Validate golden v2 structure
+        run: python -m eval.validate_golden --dataset eval/golden_v2.json --structure-only

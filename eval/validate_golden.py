@@ -55,6 +55,28 @@ def validate(dataset_path: Path, chunks_path: Path | None, strict: bool) -> int:
                 if page not in pages_by_doc[doc_id]:
                     errors.append(f"{item_id}: {doc_id} has no indexed chunk on page {page}")
 
+        # Golden v2: (doc_id, page) pairs, so a page of the wrong paper cannot count.
+        locations = item.get("expected_locations")
+        if locations is not None:
+            pairs = set()
+            for location in locations:
+                doc_id, page = location.get("doc_id"), location.get("page_number")
+                if doc_id not in item["expected_doc_ids"] or page not in item["expected_pages"]:
+                    errors.append(f"{item_id}: expected location {doc_id} p.{page} is outside expected docs/pages")
+                pairs.add((doc_id, page))
+            for source in item.get("evidence", []):
+                if (source.get("doc_id"), source.get("page_number")) not in pairs:
+                    errors.append(
+                        f"{item_id}: evidence {source.get('doc_id')} p.{source.get('page_number')} "
+                        "is not an expected location"
+                    )
+        provenance = item.get("provenance")
+        if provenance is not None:
+            if provenance.get("authored_by") not in {"owner", "claude-code"}:
+                errors.append(f"{item_id}: provenance.authored_by must be owner or claude-code")
+            if not isinstance(provenance.get("reviewed_by_owner"), bool):
+                errors.append(f"{item_id}: provenance.reviewed_by_owner must be true or false")
+
         evidence = item.get("evidence", [])
         if not item["expects_refusal"] and not evidence:
             pending += 1

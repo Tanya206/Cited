@@ -9,9 +9,12 @@ import argparse
 import json
 import re
 import time
+from datetime import date
 from pathlib import Path
 
 import requests
+
+from eval.golden import content_sha256
 
 
 def _rate_limit_wait_seconds(response: requests.Response) -> int | None:
@@ -71,9 +74,15 @@ def _single_line(value):
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-url", default="http://127.0.0.1:8000")
-    parser.add_argument("--dataset", type=Path, default=Path("eval/golden_dataset.json"))
+    parser.add_argument("--dataset", type=Path, default=Path("eval/golden_v2.json"))
     parser.add_argument("--chunks", type=Path, default=Path("data/chunks.jsonl"))
-    parser.add_argument("--out", type=Path, default=Path("eval/answer_runs.jsonl"))
+    # A new default file: the 2026-11-03 runs predate the index rebuild and record no config.
+    parser.add_argument("--out", type=Path, default=Path("eval/answer_runs_v2.jsonl"))
+    parser.add_argument("--ids", default="", help="comma-separated golden IDs to collect (for a pilot)")
+    # Served defaults (app/models/schemas.py). The old hard-coded 50/12 evaluated a
+    # configuration nobody serves (gap H3).
+    parser.add_argument("--retrieve-k", type=int, default=20)
+    parser.add_argument("--rerank-k", type=int, default=6)
     parser.add_argument(
         "--resume",
         action="store_true",
@@ -93,6 +102,8 @@ def main() -> None:
     args = parser.parse_args()
 
     dataset = json.loads(args.dataset.read_text(encoding="utf-8"))
+    dataset_sha256 = content_sha256(args.dataset)
+    wanted = {item_id.strip() for item_id in args.ids.split(",") if item_id.strip()}
     chunks = {
         row["chunk_id"]: row
         for row in (json.loads(line) for line in args.chunks.read_text(encoding="utf-8").splitlines())
@@ -106,6 +117,8 @@ def main() -> None:
         for item in dataset["items"]:
             if item.get("expects_refusal") or item.get("expected_outcome", "answer") != "answer":
                 continue
+            if wanted and item["id"] not in wanted:
+                continue
             if item["id"] in completed:
                 print(item["id"], "already collected; skipping")
                 continue
@@ -116,7 +129,7 @@ def main() -> None:
                 try:
                     response = requests.post(
                         f"{args.base_url}/answer",
-                        json={"query": item["question"], "retrieve_k": 50, "rerank_k": 12},
+                        json={"query": item["question"], "retrieve_k": args.retrieve_k, "rerank_k": args.rerank_k},
                         timeout=180,
                     )
                     if response.status_code in {500, 502, 503, 504} and attempt < 2:
@@ -169,6 +182,12 @@ def main() -> None:
                 # Which prompt produced this answer; carried into the Ragas results.
                 "prompt_version": payload.get("prompt_version"),
                 "prompt_sha256": payload.get("prompt_sha256"),
+                "generator_model": payload.get("generator_model"),
+                "retrieve_k": args.retrieve_k,
+                "rerank_k": args.rerank_k,
+                "dataset": str(args.dataset).replace("\\", "/"),
+                "dataset_sha256": dataset_sha256,
+                "collected_on": date.today().isoformat(),
             }
             handle.write(json.dumps(_single_line(record), ensure_ascii=True) + "\n")
             print(item["id"], "contexts=", len(contexts), "refused=", record["refused"])

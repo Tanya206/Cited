@@ -89,7 +89,7 @@ def check_against_baseline(per_item: list[dict], baseline_path: Path) -> dict:
 def markdown_summary(report: dict) -> str:
     meta = report["meta"]
     lines = [
-        f"# Retrieval comparison ladder, golden v1 ({meta['date']})",
+        f"# Retrieval comparison ladder, {Path(meta['dataset']).stem} ({meta['date']})",
         "",
         f"n={meta['n_items']} answerable items; pool {POOL} per retriever; RRF k={RRF_K}; "
         f"commit {meta['commit']}; no LLM calls.",
@@ -119,8 +119,8 @@ def markdown_summary(report: dict) -> str:
     expanded = meta["questions_changed_by_expansion"]
     lines += [
         "",
-        f"Query expansion changed {len(expanded)} of {meta['n_items']} questions ({', '.join(expanded) or 'none'}), "
-        "so the hybrid -> hybrid_expand row measures almost nothing about expansion.",
+        f"Query expansion changed {len(expanded)} of {meta['n_items']} questions ({', '.join(expanded) or 'none'}); "
+        "the hybrid -> hybrid_expand row can only move on those questions.",
         "",
         "Categories with n <= 3 are in the JSON but not quoted here.",
         "",

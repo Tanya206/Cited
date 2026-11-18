@@ -14,6 +14,7 @@ from sentence_transformers import SentenceTransformer
 from app.core.bm25_index import load_index
 from app.core.generation import GenerationError, ProviderRateLimitError, generate_cited_answer
 from app.core.observability import answer_trace, flush_traces
+from app.core.llm_client import get_llm_settings
 from app.core.prompts import load_prompt
 from app.core.query_validation import is_actionable_question
 from app.core.reranker import Reranker
@@ -159,7 +160,11 @@ def answer(payload: AnswerRequest, request: Request) -> AnswerResponse:
     trace.__enter__()
     try:
         prompt = load_prompt()
-        prompt_info = {"prompt_version": prompt.version, "prompt_sha256": prompt.sha256}
+        prompt_info = {
+            "prompt_version": prompt.version,
+            "prompt_sha256": prompt.sha256,
+            "generator_model": get_llm_settings().model,
+        }
         trace.update(metadata=prompt_info)
         services: Services = request.app.state.services
         retrieved = hybrid_retrieve(
