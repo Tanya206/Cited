@@ -2110,7 +2110,12 @@
       ],
       "provenance": {
         "authored_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "PDF page 5: the table with UCMD 100% = 80.67 is captioned TABLE X (linear evaluation); 99.35 from the same-dataset results",
+          "verdict": "ok"
+        }
       },
       "required_numbers": [
         "99.35",

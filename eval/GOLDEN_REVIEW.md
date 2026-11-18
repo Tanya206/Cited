@@ -82,3 +82,10 @@ right, and the quoted chunk really says it. Then set `provenance.reviewed_by_own
 | 10 | G120 (IIC Potsdam) | `python -m eval.review_golden G120 --dataset eval/golden_v2.json --grep "Potsdam-3"` |
 | 11 | G121 (refusal trap) | `python -m eval.review_golden G105 --dataset eval/golden_v2.json --grep "surpassed the existing results"` (G105 is from the same paper; the search tool ignores punctuation, so search a phrase, not "1%") |
 | 12 | G130 (unnamed SwAV) | `python -m eval.review_golden G130 --dataset eval/golden_v2.json --grep "swapped"` |
+
+## Owner spot-check log
+
+| Date | Item | Checked | Verdict |
+|---|---|---|---|
+| 2026-11-19 | G110 | PDF page 5 viewed by the owner: the table with UCMD 100% = 80.67 has the caption "TABLE X: Results for ResNet50 linear evaluation with Imagenet weights" directly below it; 99.35 appears in the same-dataset results | ok |
+| 2026-11-19 | G59, G26, G03, G01, G103, G108, G112, G116, G120, G121, G130 | Commands run by the owner; assistant's reading of each output given in chat; awaiting the owner's verdict | pending |
