@@ -19,7 +19,8 @@ __pycache__/
 .pip-cache/
 .pip-temp/
 eval/baseline_retrieval*.json
-eval/answer_runs.jsonl
+# answer runs contain excerpts of copyrighted papers
+eval/answer_runs*.jsonl
 eval/ragas_results.json
 
 # OS/editor cruft
