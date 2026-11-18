@@ -184,3 +184,41 @@ unchanged (no index rebuilt).
 - Judge: NVIDIA NIM (owner has an account; key goes in the local `.env` only, never in chat).
   One other free provider surveyed for the generator. Only the 5-item pilot runs until the
   owner approves more (G2).
+
+---
+
+## 2026-11-18: Workstream 5C, prompts as versioned configuration (branch `ws/5c-prompts`)
+
+ADR: `docs/decisions/001-prompts-as-versioned-config.md`. Walkthrough:
+`docs/walkthrough/5c-prompts.md`.
+
+### Decision: prompt in `prompts/answer_v1.yaml`, loaded by `app/core/prompts.py`
+- **Problem:** prompt, repair prompt, refusal and evidence format were f-strings in
+  `app/core/generation.py`; no result recorded which prompt produced it.
+- **Options:** Python constants module; YAML file in git with a loader; hosted prompt
+  registry (Langfuse/LangSmith). Constants do not force a new version on edit; a registry adds
+  a network dependency and a second source of truth. Chosen: YAML + loader.
+- **Verification:** answer and repair prompts snapshotted from the old code (2c61b69) match the
+  new rendering byte for byte, including `$`, braces and the 24,000-character cap (2 of 4
+  filler chunks kept in both). One-word mutation fails 2 tests. Prompt tests pass on a CRLF
+  copy. Suite 34 -> 40 passed.
+- **Invalidates:** nothing; the model receives identical text.
+
+### Decision: record prompt version and hash everywhere a result is produced
+- `/answer` response (`prompt_version`, `prompt_sha256`; `null` when validation rejected the
+  question), Langfuse metadata and output, `eval/answer_runs.jsonl`, `eval/ragas_results.json`
+  (with item `id`). `run_ragas.py` now passes only scored fields to Ragas.
+- **Verification:** 6 tests in `tests/test_prompt_version_recorded.py`; Ragas 0.3.9
+  `SingleTurnSample` accepts the filtered fields; the real app starts offline on the full index
+  (2,771 chunks) and answers a validation-rejected question with `prompt_version: null`. Suite
+  46 passed.
+- Old answer runs keep `prompt_version: null` (not relabelled).
+
+### Other
+- `PROMPT_VERSION=answer_v1` in `.env.example`; `pyyaml==6.0.3` declared in `requirements.in`
+  (already in the lock).
+- Provider research: `docs/research/llm-providers.md` (NVIDIA trial terms: evaluation only, not
+  production; prompts and outputs may be used to improve NVIDIA products).
+- Measured pace (git reflog and commit times): 5C ran 16:40 to about 16:55 on 2026-11-18,
+  including the NVIDIA research, against a half-day estimate. 5A ran 14:37 to 15:06 against
+  one day. These are assistant wall-clock times; owner review time is extra.

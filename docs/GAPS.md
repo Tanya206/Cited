@@ -31,3 +31,5 @@ Source: workstream 0 audit, 2026-11-14 (see `docs/CHANGES.md`).
 | S2 | Med | Deployment on AWS conflicts with rule 11 if sign-up needs a card | rule 11; to verify on AWS pages before 5G | 5G / owner | resolved 2026-11-18: rule 11 amended (AWS free trial, billing alarm, budget cap); terms verified before 5G |
 | S3 | Med | scikit-network 0.33.5 has no Linux cp314 wheel; CI builds it from source, unproven until the first run | PyPI file list for scikit-network 0.33.5 | 5A | resolved: CI run on 548832a passed (2026-11-18) |
 | S4 | Low | OpenAI SDK retries 429s up to 2 times by default before our handler sees them | openai SDK default `max_retries=2` | 5B | open |
+| S5 | Med | If `RAGAS_API_KEY` is set but `RAGAS_BASE_URL` is empty, `run_ragas.py` sends the judge key to the generator's base URL (Groq) | `eval/run_ragas.py` (`base_url=os.getenv("RAGAS_BASE_URL") or llm_settings.base_url`) | 5B | open; owner told to set all three RAGAS_* together |
+| S6 | Low | Unknown whether Langfuse merges or replaces metadata across `trace.update` calls; prompt version is therefore also written to the trace output | `app/api/routes.py` | 5D | open |
