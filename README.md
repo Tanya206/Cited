@@ -11,7 +11,7 @@ against retrieved evidence.
 ```powershell
 cd C:\Users\tanya\Desktop\Cited
 .\venv\Scripts\Activate.ps1
-pip install streamlit pytest
+pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu  # Python 3.14
 
 # Rebuild artifacts after adding or changing PDFs.
 python app\ingestion\extract.py
