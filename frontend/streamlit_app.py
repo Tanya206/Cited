@@ -6,6 +6,8 @@ from collections import defaultdict
 import requests
 import streamlit as st
 
+from render import answer_card_html  # streamlit puts this file's folder on sys.path
+
 API_URL = os.getenv("CITED_API_URL", "http://127.0.0.1:8000")
 
 st.set_page_config(page_title="Cited", page_icon="*", layout="wide")
@@ -48,7 +50,8 @@ if submitted and query.strip():
 data = st.session_state.get("answer_data")
 if data:
     st.markdown("<p class='section-label'>CITED ANSWER</p>", unsafe_allow_html=True)
-    st.markdown(f"<div class='answer-card'><p>{data['answer']}</p></div>", unsafe_allow_html=True)
+    # The answer is model output: escape it before it goes inside HTML (see render.py).
+    st.markdown(answer_card_html(data["answer"]), unsafe_allow_html=True)
     if data["refused"]:
         st.info("The corpus did not contain enough reliable evidence for this question.")
 

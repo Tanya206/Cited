@@ -30,3 +30,8 @@ eval/ragas_results.json
 *.log
 
 CLAUDE.md
+
+# local agent skills (third-party, not part of the project)
+.agents/
+.claude/
+skills-lock.json

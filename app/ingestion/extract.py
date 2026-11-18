@@ -79,6 +79,38 @@ def overlap_fraction(
         return 0.0
     return (width * height) / max((ax1 - ax0) * (ay1 - ay0), 1e-6)
 
+def is_header_numeric(header_row: list[Any]) -> bool:
+    """True when no header cell contains a word (two or more letters).
+
+    A real table has words in its header row (column names). A header made only
+    of numbers means detection captured the data columns but missed the labels.
+    """
+    return not any(re.search(r"[A-Za-z]{2,}", str(cell or "")) for cell in header_row)
+
+
+def remove_table_blocks(
+    blocks: list[tuple[Any, ...]],
+    tables: list[dict[str, Any]],
+) -> list[tuple[Any, ...]]:
+    """Drop text blocks that a usable table chunk will replace; keep everything else.
+
+    Only tables that passed the reliability checks remove text: suspicious tables are
+    never embedded, so their text must stay searchable in the body (decision D4). A block
+    is removed only if at least TABLE_BLOCK_INSIDE_RATIO of its area lies inside a usable
+    table box; blocks that merely touch a table (captions, neighbouring rows) stay.
+    """
+    table_bboxes = [table["bbox"] for table in tables if not table["is_suspicious"]]
+    return [
+        block
+        for block in blocks
+        if not any(
+            overlap_fraction((block[0], block[1], block[2], block[3]), table_bbox)
+            >= TABLE_BLOCK_INSIDE_RATIO
+            for table_bbox in table_bboxes
+        )
+    ]
+
+
 def clean_text(text: str) -> str:
     """Remove unprintable control characters while preserving line breaks."""
     return "".join(
@@ -257,11 +289,7 @@ def extract_tables(
             continue
 
         rows, row_repair_applied = expand_multiline_rows(rows)
-        # A real table has words in its header row (column names). A header made only
-        # of numbers means detection captured the data columns but missed the labels.
-        header_is_numeric = not any(
-            re.search(r"[A-Za-z]{2,}", str(cell or "")) for cell in rows[0]
-        )
+        header_is_numeric = is_header_numeric(rows[0])
 
 
 
@@ -316,49 +344,6 @@ def extract_tables(
         )
 
     return tables, warnings
-
-
-def extract_figures(
-    page: pymupdf.Page,
-    doc_id: str,
-    page_number: int,
-    crop_dir: str,
-) -> list[dict[str, Any]]:
-    """
-    Save crops of embedded raster images.
-
-    Vector-drawn figures are not captured by this method. Captions remain
-    separately retrievable even when a visual crop is unavailable.
-    """
-    figures: list[dict[str, Any]] = []
-
-    for extraction_index, image in enumerate(page.get_images(full=True), start=1): #finds embedded raster images in the PDF
-        xref = image[0]
-        rectangles = page.get_image_rects(xref)
-
-        if not rectangles:
-            continue
-
-        bbox = rectangles[0]
-        if bbox.width < 40 or bbox.height < 40:
-            continue
-
-        crop_path = os.path.join(
-            crop_dir,
-            f"{doc_id}_p{page_number}_figure{extraction_index}.png",
-        )
-        page.get_pixmap(clip=bbox, dpi=150).save(crop_path)
-
-        figures.append(
-            {
-                "element_type": "figure",
-                "extraction_index": extraction_index,
-                "bbox": list(bbox),
-                "source_image_path": crop_path,
-            }
-        )
-
-    return figures
 
 
 def extract_captions_and_body(
@@ -445,19 +430,7 @@ def extract_document(
                 page_number=page_number,
                 crop_dir=crop_dir,
             )
-            # Only remove text that a *usable* table chunk will replace. Suspicious
-            # tables are never embedded, so their text must stay in the body.
-            table_bboxes = [table["bbox"] for table in tables if not table["is_suspicious"]]
-            
-            non_table_blocks = [
-                block
-                for block in raw_blocks
-                if not any(
-                    overlap_fraction((block[0], block[1], block[2], block[3]), table_bbox)
-                    >= TABLE_BLOCK_INSIDE_RATIO
-                    for table_bbox in table_bboxes
-                )
-            ]
+            non_table_blocks = remove_table_blocks(raw_blocks, tables)
 
             captions, body_blocks = extract_captions_and_body(non_table_blocks)
             # Embedded image objects are often figure fragments, not logical figures.

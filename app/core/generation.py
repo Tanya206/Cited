@@ -1,22 +1,36 @@
 """Grounded answer generation with citation IDs validated in code."""
 
 import json
-import os
 import re
 
-from openai import OpenAI
+from openai import APIConnectionError, APIStatusError, BadRequestError, OpenAI, RateLimitError
 
 from app.core.llm_client import create_llm_client
 
 
-# Groq retired the previous Llama default for developer-tier accounts.
-# Keep this configurable via GROQ_MODEL for future provider changes.
-DEFAULT_MODEL = "openai/gpt-oss-20b"
+# The model is configured in app/core/llm_client.py (LLM_MODEL, legacy GROQ_MODEL).
 NO_ANSWER = "I don't have enough evidence in the indexed papers to answer that reliably."
 
 
 class GenerationError(RuntimeError):
     """Raised when the model response cannot be verified as a cited answer."""
+
+
+class ProviderRateLimitError(GenerationError):
+    """The provider refused the request with HTTP 429 (rate or daily quota limit)."""
+
+    def __init__(self, message: str, retry_after: int | None = None) -> None:
+        super().__init__(message)
+        self.retry_after = retry_after
+
+
+def _retry_after_seconds(error: APIStatusError) -> int | None:
+    """Read the provider's Retry-After header, if it sent one in seconds."""
+    value = error.response.headers.get("retry-after") if error.response is not None else None
+    try:
+        return max(1, int(float(value))) if value else None
+    except ValueError:
+        return None
 
 
 def _context(chunks: list[dict], max_characters: int = 24_000) -> str:
@@ -46,22 +60,33 @@ def _parse_json(content: str) -> dict:
     return payload
 
 
-def _request_payload(client: OpenAI, request: dict) -> dict:
-    """Call an OpenAI-compatible provider, with local JSON parsing fallback."""
-    try:
-        response = client.chat.completions.create(
-            **request,
-            response_format={"type": "json_object"},
+def _provider_error(error: Exception) -> GenerationError:
+    """Map an SDK error to ours, keeping the provider's message for the logs."""
+    if isinstance(error, RateLimitError):
+        return ProviderRateLimitError(
+            f"The answer provider is rate limited: {error}", _retry_after_seconds(error)
         )
-    except Exception:
-        # Some provider/model responses fail structured-output validation before
-        # returning content. Retry without response_format and parse locally.
+    return GenerationError(f"The answer provider failed: {error}")
+
+
+def _request_payload(client: OpenAI, request: dict) -> dict:
+    """Call an OpenAI-compatible provider in JSON mode, falling back to plain text.
+
+    Only HTTP 400 means JSON mode itself was rejected (for example Groq's
+    json_validate_failed), so only 400 earns the one retry without it. A 429
+    or a server error is not fixed by dropping JSON mode; retrying would add a
+    wasted call and hide the real cause, so it is raised at once.
+    """
+    try:
         try:
+            response = client.chat.completions.create(
+                **request,
+                response_format={"type": "json_object"},
+            )
+        except BadRequestError:
             response = client.chat.completions.create(**request)
-        except Exception as retry_error:
-            raise GenerationError(
-                f"The answer provider failed after a JSON retry: {retry_error}"
-            ) from retry_error
+    except (APIStatusError, APIConnectionError) as error:
+        raise _provider_error(error) from error
     return _parse_json(response.choices[0].message.content or "")
 
 

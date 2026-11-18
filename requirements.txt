@@ -1,139 +1,175 @@
-# Cited locked environment
+# Cited lock file: exact versions of every package, direct and transitive.
 #
-# This file contains exact versions for reproducible installs. The intentionally
-# selected direct dependencies are documented in requirements.in. Most entries
-# below are transitive dependencies pulled in by Chroma, SentenceTransformers,
-# FastAPI, Ragas, Langfuse, and their networking/runtime libraries.
+# How it was made (2026-11-18): `pip freeze --all` of the project venv
+# (Python 3.14.6, Windows) after `python -m pytest -q` passed, minus packages
+# the code does not import (groq, pdfplumber and their own dependencies) and
+# pip itself. Verified to resolve on Linux / CPython 3.14 with
+# `pip install --dry-run` (see docs/CHANGES.md, 2026-11-18).
 #
-# Direct groups: API/server, PDF ingestion, retrieval/ML, chunking, UI/HTTP,
-# testing/evaluation, and observability.
+# Direct dependencies and the reason for each are in requirements.in.
+# CI installs the CPU-only torch wheel with:
+#   pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+
 aiohappyeyeballs==2.7.1
-aiohttp==3.14.3
+aiohttp==3.14.5
 aiosignal==1.4.0
+altair==6.3.0
 annotated-doc==0.0.5
 annotated-types==0.8.0
-anyio==4.15.0
+anyio==4.15.1
+appdirs==1.4.4
 attrs==26.1.0
+backoff==2.2.1
 bcrypt==5.0.0
-bm25s==0.3.11 # BM25 lexical search for exact words, paper names, acronyms, and numbers.
+bm25s==0.3.11
 build==1.6.0
-certifi==2026.7.22
-cffi==2.1.1
-charset-normalizer==3.5.1
-chromadb==1.5.9 # Local vector database used to store and search document embeddings.
+certifi==2026.10.19
+charset-normalizer==3.5.2
+chromadb==1.5.9
 click==8.5.0
 cloudpickle==3.1.2
 colorama==0.4.6
-cryptography==50.0.1
+datasets==5.0.1
+dill==0.4.1
+diskcache==5.6.3
 distro==1.9.0
+docstring_parser==0.16
 durationpy==0.11
-fastapi==0.141.1 # Web API framework used to expose /answer, /health, paper, and evidence endpoints.
-filelock==3.32.5
+fastapi==0.141.1
+filelock==4.2.4
 flatbuffers==25.12.19
 frozenlist==1.8.0
-fsspec==2026.7.0
-googleapis-common-protos==1.75.3
-groq==1.7.0  # Python client used to call the Groq LLM for final cited-answer generation.
-grpcio==1.83.1
+fsspec==2026.6.0
+gitdb==4.0.12
+GitPython==3.2.1
+googleapis-common-protos==1.75.5
+grpcio==1.84.0
 h11==0.16.0
-hf-xet==1.6.0
+hf-xet==1.7.0
+httpcore2==2.15.1
 httpcore==1.0.9
-httpcore2==2.12.0
 httptools==0.8.0
+httpx-sse==0.4.3
+httpx2==2.15.1
 httpx==0.28.1
-httpx2==2.12.0
 huggingface_hub==1.30.0
-idna==3.19
+idna==3.20
 importlib_resources==7.1.0
+iniconfig==2.3.1
+instructor==1.3.2
+itsdangerous==2.2.0
 Jinja2==3.1.6
+jiter==0.17.0
 joblib==1.6.0
-jsonpatch==1.33
-jsonpointer==3.1.1
-jsonschema==4.26.0
+jsonpatch==1.36
+jsonpointer==3.4
 jsonschema-specifications==2025.9.1
+jsonschema==4.26.0
 kubernetes==36.0.3
-langchain-core==1.6.2
+langchain-classic==1.0.8
+langchain-community==0.4.2
+langchain-core==1.6.12
+langchain-openai==1.1.9
 langchain-protocol==0.0.19
-langchain-text-splitters==1.1.2 # Splits extracted paper text into overlapping retrieval chunks.
-langsmith==0.12.4
+langchain-text-splitters==1.1.3
+langchain==1.4.6
+langfuse==4.18.0
+langgraph-checkpoint==4.3.0
+langgraph-prebuilt==1.1.1
+langgraph-sdk==0.4.8
+langgraph==1.2.16
+langsmith==0.14.11
 markdown-it-py==4.2.0
 MarkupSafe==3.0.3
 mdurl==0.1.2
 mmh3==5.3.0
 mpmath==1.3.0
-multidict==6.7.1
+multidict==7.1.0
+multiprocess==0.70.19
 narwhals==2.25.0
-networkx==3.6.1
-numpy==2.5.2
+nest-asyncio==1.6.0
+networkx==3.7
+numpy==2.5.4
 oauthlib==3.3.1
 onnxruntime==1.29.0
+openai==1.109.1
 opentelemetry-api==1.45.1
+opentelemetry-exporter-http-transport==0.66b1
+opentelemetry-exporter-otlp-common==0.66b1
 opentelemetry-exporter-otlp-proto-common==1.45.1
 opentelemetry-exporter-otlp-proto-grpc==1.45.1
+opentelemetry-exporter-otlp-proto-http==1.45.1
 opentelemetry-proto==1.45.1
 opentelemetry-sdk==1.45.1
 opentelemetry-semantic-conventions==0.66b1
-orjson==3.12.0
+orjson==3.13.0
+ormsgpack==1.13.0
 overrides==7.7.0
 packaging==26.3
-pdfminer.six==20260107
-pdfplumber==0.11.10
+pandas==3.0.6
 pillow==12.3.0
-propcache==0.5.2
-protobuf==7.36.1
+pluggy==1.6.0
+propcache==0.5.4
+protobuf==7.36.2
+pyarrow==25.0.1
 pybase64==1.5.0
-pycparser==3.0
-pydantic==2.13.5
-pydantic-settings==2.15.0
-pydantic_core==2.46.5
+pydantic-settings==2.16.0
+pydantic==2.14.1
+pydantic_core==2.50.1
+pydeck==0.9.3
 Pygments==2.21.0
-pymupdf==1.28.2 # Reads PDF pages, extracts text, and renders highlighted evidence images.
-pypdfium2==5.13.0
+pymupdf==1.28.2
 PyPika==0.51.1
 pyproject_hooks==1.2.0
 PyStemmer==3.1.0
+pytest==9.1.1
 python-dateutil==2.9.0.post0
-python-dotenv==1.2.3 # Reads environment variables from the local .env file.
+python-dotenv==1.2.4
+python-multipart==0.0.32
 PyYAML==6.0.3
+ragas==0.3.9
 referencing==0.37.0
-regex==2026.9.3
-requests==2.34.2  # Sends requests from Streamlit to the FastAPI backend and from evaluation scripts to /answer.
+regex==2026.9.29
 requests-oauthlib==2.0.0
 requests-toolbelt==1.0.0
-rich==15.0.0
+requests==2.34.2
+rich==13.9.4
 rpds-py==2026.6.3
 safetensors==0.8.0
 scikit-learn==1.9.0
+scikit-network==0.33.5
 scipy==1.18.1
-sentence-transformers==6.0.1 # Provides SentenceTransformer embeddings and the CrossEncoder reranker.
+sentence-transformers==6.0.1
 setuptools==84.0.0
 shellingham==1.5.4
 six==1.17.0
+smmap==5.0.3
 sniffio==1.3.1
+SQLAlchemy==2.1.5
 starlette==1.6.0
+streamlit==1.65.0
 sympy==1.14.0
-tenacity==9.1.4
+tenacity==8.5.0
 threadpoolctl==3.6.0
+tiktoken==0.14.0
 tokenizers==0.23.2
-torch==2.14.0 # Provides the machine-learning runtime used by SentenceTransformers.
-tqdm==4.70.0
-transformers==5.16.1 # Provides the tokenizer used during chunking and model-related utilities.
-truststore==0.10.4
-typer==0.27.2
+toml==0.10.2
+torch==2.14.0
+tqdm==4.70.1
+transformers==5.16.1
+truststore==0.10.5
+typer==0.27.3
 typing-inspection==0.4.4
 typing_extensions==4.16.0
-urllib3==2.7.0
-uuid_utils==0.17.1
+tzdata==2026.5
+urllib3==2.8.0
+uuid_utils==0.18.0
 uvicorn==0.52.4
+watchdog==6.0.0
 watchfiles==1.2.0
 websocket-client==1.9.2
-websockets==17.1
-xxhash==4.0.1
-yarl==1.24.5
+websockets==16.1.1
+wrapt==2.5.1
+xxhash==4.0.2
+yarl==1.25.1
 zstandard==0.25.0
-streamlit>=1.40 # Provides the browser-based user interface
-pytest>=8.0 # Runs the automated test suite.
-langfuse>=4.7,<5 # Sends optional request traces to Langfuse.
-ragas>=0.3,<0.4 # Evaluates faithfulness, answer relevancy, context precision, and context recall.
-langchain-openai==1.1.9 # LangChain-compatible evaluator adapter for Ragas over Groq's OpenAI-compatible API.
-openai>=1,<3 # Provides the OpenAI-compatible client used by Ragas with the Groq endpoint.
