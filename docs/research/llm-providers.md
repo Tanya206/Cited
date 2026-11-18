@@ -27,8 +27,13 @@ Read 2026-11-18.
 - Data: the judge receives questions, answers and excerpts of the papers. No personal data is
   sent. NVIDIA may use this content to improve its products; acceptable for paper excerpts,
   noted here.
-- Owner to confirm from the build.nvidia.com account page: credit balance and per-model rate
-  limit. TODO(owner).
+- Owner's account page (read by the owner, 2026-11-18): **API rate limit 40 requests per
+  minute**. This matches the community reports. Credit balance and any daily cap: not shown on
+  the page. They will be measured in the 5-item pilot instead: count the calls, record every
+  HTTP status, and stop on the first 402/429 that is not a per-minute limit.
+- Planning consequence: Ragas makes several judge calls per item, so 40 RPM is a speed limit
+  rather than a hard blocker. The real calls per item are measured in the pilot before any
+  run is sized.
 - Judge model: picked by a head-to-head on the 5-item pilot (5B), not chosen from a name.
 
 ## Generator: second free provider
