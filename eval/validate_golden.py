@@ -1,4 +1,10 @@
-"""Validate golden-dataset provenance against the indexed JSONL chunks."""
+"""Validate the golden dataset.
+
+Full mode checks provenance against the indexed JSONL chunks (needs local data/).
+`--structure-only` checks the file alone, so CI can run it without the corpus:
+unique IDs, refusal fields, expected docs, evidence pages within expected pages,
+and required numbers present in the quotes.
+"""
 
 import argparse
 import json
@@ -15,9 +21,11 @@ def load_chunks(path: Path) -> dict[str, dict]:
     return chunks
 
 
-def validate(dataset_path: Path, chunks_path: Path, strict: bool) -> int:
+def validate(dataset_path: Path, chunks_path: Path | None, strict: bool) -> int:
+    """Return a process exit code. ``chunks_path=None`` skips index-dependent checks."""
     dataset = json.loads(dataset_path.read_text(encoding="utf-8"))
-    chunks = load_chunks(chunks_path)
+    check_index = chunks_path is not None
+    chunks = load_chunks(chunks_path) if check_index else {}
     pages_by_doc: dict[str, set[int]] = defaultdict(set)
     chunks_by_page: dict[tuple[str, int], list[dict]] = defaultdict(list)
     for chunk in chunks.values():
@@ -39,7 +47,7 @@ def validate(dataset_path: Path, chunks_path: Path, strict: bool) -> int:
         elif not item["expected_doc_ids"]:
             errors.append(f"{item_id}: answerable item has no expected_doc_ids")
 
-        for doc_id in item["expected_doc_ids"]:
+        for doc_id in item["expected_doc_ids"] if check_index else []:
             if doc_id not in pages_by_doc:
                 errors.append(f'{item_id}: unknown doc_id "{doc_id}"')
                 continue
@@ -64,6 +72,10 @@ def validate(dataset_path: Path, chunks_path: Path, strict: bool) -> int:
             if page_number not in item["expected_pages"]:
                 errors.append(f"{item_id}: evidence page is not expected: {page_number}")
             quote = match_key(source.get("quote", ""))
+            if not quote:
+                errors.append(f"{item_id}: empty evidence quote")
+            if not check_index:
+                continue
             hits = [
                 chunk for chunk in chunks_by_page.get((doc_id, page_number), [])
                 if quote and quote in match_key(chunk["text"])
@@ -86,6 +98,8 @@ def validate(dataset_path: Path, chunks_path: Path, strict: bool) -> int:
 
     for error in errors:
         print(f"ERROR: {error}")
+    mode = "full (against index)" if check_index else "structure only (no index)"
+    print(f"Mode: {mode}")
     print(f"Items: {len(dataset['items'])}; structural errors: {len(errors)}; pending evidence review: {pending}")
     return 1 if errors or (strict and pending) else 0
 
@@ -95,5 +109,10 @@ if __name__ == "__main__":
     parser.add_argument("--dataset", type=Path, default=Path("eval/golden_dataset.json"))
     parser.add_argument("--chunks", type=Path, default=Path("data/chunks.jsonl"))
     parser.add_argument("--strict", action="store_true", help="Fail until all answerable items contain verified evidence.")
+    parser.add_argument(
+        "--structure-only",
+        action="store_true",
+        help="Check the dataset file alone, without data/chunks.jsonl (used in CI).",
+    )
     args = parser.parse_args()
-    raise SystemExit(validate(args.dataset, args.chunks, args.strict))
+    raise SystemExit(validate(args.dataset, None if args.structure_only else args.chunks, args.strict))
