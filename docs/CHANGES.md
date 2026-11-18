@@ -96,3 +96,76 @@ Owner answers: end date 2026-11-19; hardware Ryzen 7 7735U, about 16 GB RAM, no 
 D3 confirmed; public deployment on AWS is must-have; no PDFs served publicly; rederive skill
 files ignored; NVIDIA NIM as judge candidate with a different free provider for the generator;
 MIT licence for the code.
+
+---
+
+## 2026-11-18: Workstream 5A, hygiene (branch `ws/5a-hygiene`)
+
+Walkthrough with commands: `docs/walkthrough/5a-hygiene.md`.
+
+### Decision: one Python version (3.14) and a real lock file (fixes H1)
+- **Problem:** every CI run failed at install. Reproduced with a Linux/3.11 pip dry run:
+  `No matching distribution found for numpy==2.5.2` (numpy 2.5 has no 3.11 wheels). The old
+  `requirements.txt` differed from the working venv on 39 versions, lacked 41 installed
+  packages, had ranges for 5 direct deps, and never declared PyStemmer (imported at
+  `app/core/bm25_index.py:12`). `pip check` in the venv: Pillow 13.0.0 and pyarrow 26.0.0
+  violate streamlit 1.65 (`<13`, `<26`).
+- **Options:** (a) CI on 3.14 with a lock frozen from the tested venv; (b) move local and CI
+  to 3.13, where every package has wheels, and re-resolve; (c) keep 3.11 in CI and re-resolve
+  older versions. (c) means testing a different environment than the one we run; (b) costs a
+  new venv and a re-test of everything on the last day before the end date.
+- **Decision:** (a). Lock = `pip freeze` of the venv minus unused `groq`, `pdfplumber`,
+  `pdfminer.six`, `pypdfium2`, `cryptography`, `cffi`, `pycparser`, plus `watchfiles` (needed
+  on Linux). Pillow 12.3.0 and pyarrow 25.0.1. CPU-only torch in CI via the PyTorch index.
+- **Verification:** `pip check` -> "No broken requirements found". Lock equals venv for all
+  163 pins. Linux/CPython 3.14 dry-run resolution succeeds; everything except scikit-network
+  has a cp314 wheel. Unused packages uninstalled from the venv; all modules still import and
+  the tests pass.
+- **Invalidates:** nothing measured. **Risk:** scikit-network 0.33.5 builds from source in
+  CI; unproven until the first run after push. Fallback: option (b).
+
+### Decision: golden validator `--structure-only` for CI
+- **Problem:** `eval/validate_golden.py` always read `data/chunks.jsonl`, absent in CI.
+- **Options:** drop the CI step; skip silently when the file is missing; explicit flag.
+  A silent skip would hide a misconfigured local run, so: explicit flag.
+- **Verification:** both modes report 68 items, 0 errors; 4 new tests (duplicate ID,
+  evidence outside expected pages, empty quote, valid file). A clean export of the branch with
+  no `data/` folder: 34 passed, structure check 0 errors.
+
+### Decision: escape model output in the UI (fixes H2)
+- **Problem:** `frontend/streamlit_app.py:51` rendered the answer with `unsafe_allow_html=True`.
+- **Options:** drop the styled card and use plain `st.markdown` (Markdown still renders links
+  and images from model output); escape into the card. Escaping keeps the design and renders
+  nothing from the model.
+- **Verification:** `tests/test_render.py` runs the real app with
+  `<img src=x onerror="alert(1)">` as the answer; the card contains `&lt;img ...` as text.
+
+### Decision: retry only JSON-mode rejections; 503 + Retry-After on 429 (fixes M1)
+- **Problem:** `generation.py` retried any exception without JSON mode. Measured on `main`
+  with a scripted 429: 2 provider calls and the error "failed after a JSON retry"; API 502.
+- **Options:** keep one broad retry; retry only HTTP 400 and map 429 to 503. Only a 400 means
+  JSON mode was rejected; retrying a 429 or 5xx cannot help.
+- **Verification:** 5 tests in `tests/test_provider_errors.py`: 429 -> 1 call and
+  `retry_after=7`; 400 -> second call without `response_format`; 500 -> 1 call; API 503 with
+  `Retry-After: 7` and the provider message in the body (parsed by
+  `eval/collect_answer_runs.py`); other failures 502.
+- Note: the OpenAI SDK itself still retries 429s up to 2 times by default. Revisit in 5B when
+  the provider is chosen.
+
+### Decision: tests for the extraction fixes (M9)
+- Moved the block filter and the header check into `remove_table_blocks` and
+  `is_header_numeric`. **Verification of no behaviour change:** all 44 papers re-extracted
+  into a scratch folder; JSON identical to `data/extracted_structured` (crop paths aside).
+  Indexes not touched (no G3). Mutation check: restoring "any table deletes text" fails
+  `test_suspicious_table_never_removes_body_text`.
+
+### Other changes
+- Removed empty `Dockerfile`, `docker-compose.yml`, `app/ingestion/ingest.py`; dead
+  `extract_figures`; unused `DEFAULT_MODEL` and `os` import.
+- `scripts/audit_overlap.py` imports `overlap_fraction` from `extract.py`; reports 30
+  partially overlapping blocks, all kept in the body.
+- MIT `LICENSE`. `.gitignore`: `.agents/`, `.claude/`, `skills-lock.json`.
+- README install line uses the lock.
+
+**Numbers:** tests 18 -> 34 passed. `pip check` 2 conflicts -> 0. Retrieval baseline
+unchanged (no index rebuilt).
