@@ -1,7 +1,6 @@
 """Grounded answer generation with citation IDs validated in code."""
 
 import json
-import os
 import re
 
 from openai import OpenAI
@@ -9,9 +8,7 @@ from openai import OpenAI
 from app.core.llm_client import create_llm_client
 
 
-# Groq retired the previous Llama default for developer-tier accounts.
-# Keep this configurable via GROQ_MODEL for future provider changes.
-DEFAULT_MODEL = "openai/gpt-oss-20b"
+# The model is configured in app/core/llm_client.py (LLM_MODEL, legacy GROQ_MODEL).
 NO_ANSWER = "I don't have enough evidence in the indexed papers to answer that reliably."
 
 

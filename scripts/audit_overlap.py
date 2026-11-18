@@ -1,18 +1,13 @@
+"""List text blocks that partly overlap a usable table box.
+
+Run from the repo root: python -m scripts.audit_overlap
+"""
 import glob
 import json
 
 import pymupdf
 
-
-def overlap_fraction(block, bbox) -> float:
-    """Share of the text block that lies inside the table box."""
-    ax0, ay0, ax1, ay1 = block[:4]
-    bx0, by0, bx1, by1 = bbox
-    width = min(ax1, bx1) - max(ax0, bx0)
-    height = min(ay1, by1) - max(ay0, by0)
-    if width <= 0 or height <= 0:
-        return 0.0
-    return (width * height) / max((ax1 - ax0) * (ay1 - ay0), 1e-6)
+from app.ingestion.extract import TABLE_BLOCK_INSIDE_RATIO, overlap_fraction
 
 
 risky = 0
@@ -28,10 +23,10 @@ for path in sorted(glob.glob("data/extracted_structured/*.json")):
             for block in blocks:
                 if block[6] != 0:          # skip image blocks
                     continue
-                fraction = overlap_fraction(block, table["bbox"])
-                if 0 < fraction < 0.8:     # removed, but mostly OUTSIDE the table
+                fraction = overlap_fraction(block[:4], table["bbox"])
+                if 0 < fraction < TABLE_BLOCK_INSIDE_RATIO:  # touches the table but is kept in the body
                     risky += 1
                     text = " ".join(block[4].split())[:110]
                     print(f"{doc['doc_id'][:30]:<30} p{page_data['page_number']:<3} "
                           f"{fraction:.2f}  {text}")
-print(f"\nPartially overlapping blocks currently deleted: {risky}")
+print(f"\nPartially overlapping blocks (kept in the body since the 2026-11-12 fix): {risky}")

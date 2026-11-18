@@ -318,49 +318,6 @@ def extract_tables(
     return tables, warnings
 
 
-def extract_figures(
-    page: pymupdf.Page,
-    doc_id: str,
-    page_number: int,
-    crop_dir: str,
-) -> list[dict[str, Any]]:
-    """
-    Save crops of embedded raster images.
-
-    Vector-drawn figures are not captured by this method. Captions remain
-    separately retrievable even when a visual crop is unavailable.
-    """
-    figures: list[dict[str, Any]] = []
-
-    for extraction_index, image in enumerate(page.get_images(full=True), start=1): #finds embedded raster images in the PDF
-        xref = image[0]
-        rectangles = page.get_image_rects(xref)
-
-        if not rectangles:
-            continue
-
-        bbox = rectangles[0]
-        if bbox.width < 40 or bbox.height < 40:
-            continue
-
-        crop_path = os.path.join(
-            crop_dir,
-            f"{doc_id}_p{page_number}_figure{extraction_index}.png",
-        )
-        page.get_pixmap(clip=bbox, dpi=150).save(crop_path)
-
-        figures.append(
-            {
-                "element_type": "figure",
-                "extraction_index": extraction_index,
-                "bbox": list(bbox),
-                "source_image_path": crop_path,
-            }
-        )
-
-    return figures
-
-
 def extract_captions_and_body(
     blocks: list[tuple[Any, ...]],
 ) -> tuple[list[dict[str, Any]], list[tuple[Any, ...]]]:
