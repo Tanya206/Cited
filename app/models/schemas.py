@@ -29,3 +29,7 @@ class AnswerResponse(BaseModel):
     refused: bool = False
     retrieved_chunk_ids: list[str] = Field(default_factory=list)
     reranked_chunk_ids: list[str] = Field(default_factory=list)
+    # Which prompt file produced the answer (None when no prompt was sent, e.g. a question
+    # rejected by validation). Eval scripts copy these into every result record.
+    prompt_version: str | None = None
+    prompt_sha256: str | None = None

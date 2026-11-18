@@ -166,6 +166,9 @@ def main() -> None:
                 "reference": item["reference_answer"],
                 "reference_contexts": expected_contexts,
                 "refused": payload.get("refused", False),
+                # Which prompt produced this answer; carried into the Ragas results.
+                "prompt_version": payload.get("prompt_version"),
+                "prompt_sha256": payload.get("prompt_sha256"),
             }
             handle.write(json.dumps(_single_line(record), ensure_ascii=True) + "\n")
             print(item["id"], "contexts=", len(contexts), "refused=", record["refused"])
