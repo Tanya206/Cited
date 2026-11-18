@@ -222,3 +222,44 @@ ADR: `docs/decisions/001-prompts-as-versioned-config.md`. Walkthrough:
 - Measured pace (git reflog and commit times): 5C ran 16:40 to about 16:55 on 2026-11-18,
   including the NVIDIA research, against a half-day estimate. 5A ran 14:37 to 15:06 against
   one day. These are assistant wall-clock times; owner review time is extra.
+
+---
+
+## 2026-11-18/19: Workstream 5B part 1, golden v1 and the retrieval ladder (branch `ws/5b-eval`)
+
+Walkthrough: `docs/walkthrough/5b-eval.md`. No LLM calls.
+
+### Decision: freeze golden v1
+- **Problem:** 5B task 7 requires a frozen v1; the baseline was measured on
+  `eval/golden_dataset.json` (last changed 2026-11-07, baseline 2026-11-12).
+- **Options:** rename the file (a tracked-file deletion, gate G4, and breaks five scripts'
+  defaults); byte copy to `eval/golden_v1.json` pinned by a hash. Chosen: copy plus hash.
+- **Verification:** `cmp` identical; content SHA-256 `e55b4060...` pinned in
+  `tests/test_golden_v1_frozen.py`; `validate_golden --dataset eval/golden_v1.json` 0 errors.
+
+### Decision: ladder design
+- **Problem:** H4. Nobody knew what each retrieval component adds; the only reranked number
+  (k=6) had been compared with a k=20 number.
+- **Options:** report point metrics per configuration; or paired per-item comparison with a
+  significance test. Chosen: both, at the same k and the same 20-candidate pool, because with
+  n=60 a single question is 1.7 points.
+- **Design notes:** rerank at k=6 calls the served reranker with `top_k=6` (its table
+  promotion depends on `top_k`). Exact McNemar for page-hit changes; paired bootstrap (10,000
+  resamples, seed 0) for page-MRR change. `hybrid_retrieve(expand=...)` added; served default
+  unchanged.
+- **Verification:** reproduces `eval/baseline_before_docling.json` item by item (60 items,
+  0 mismatches) for hybrid@20 and rerank@6; two runs gave identical results; tests 46 -> 55.
+
+### Results (golden v1, n=60, commit 68c2c6c, 2026-11-19)
+- Page hit @6: vector 41, BM25 42, hybrid 50, + expansion 50, + rerank 48 (of 60).
+- Hybrid vs vector @6: 11 gained / 2 lost, p=0.022. Hybrid vs BM25 @6: 10/2, p=0.039,
+  page-MRR change +0.100 [95% CI +0.014, +0.184]. Not significant after Bonferroni over 10
+  comparisons (threshold 0.005).
+- Rerank @6: 2 gained (G18, G42), 4 lost (G01, G14, G41, G48), p=0.69; page MRR +0.039
+  [-0.065, +0.143]; doc hit 59 -> 57.
+- Expansion fires on 1 of 60 questions (G07): untested.
+- **Invalidates:** nothing. The claim "reranking improves retrieval" is not supported by v1 and
+  must not be made.
+
+### Measured pace
+- 5B part 1: 23:53 to 00:05 (12 minutes, including two 3-minute ladder runs).
