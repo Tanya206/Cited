@@ -7,13 +7,22 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - run: python -m pip install --upgrade pip
-      - run: pip install -r requirements.txt
-      - run: python -m pytest -q
-      - name: Validate golden dataset structure
-        run: python -m eval.validate_golden
+          # Same version as the local venv; requirements.txt is locked on it.
+          python-version: "3.14"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install locked dependencies (CPU-only torch)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+      - name: Check dependency consistency
+        run: pip check
+      - name: Run tests
+        run: python -m pytest -q
+      - name: Validate golden dataset structure (no corpus in CI)
+        run: python -m eval.validate_golden --structure-only
