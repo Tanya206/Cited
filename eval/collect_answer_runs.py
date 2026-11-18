@@ -183,6 +183,7 @@ def main() -> None:
                 "prompt_version": payload.get("prompt_version"),
                 "prompt_sha256": payload.get("prompt_sha256"),
                 "generator_model": payload.get("generator_model"),
+                "generator_usage": payload.get("usage", {}),
                 "retrieve_k": args.retrieve_k,
                 "rerank_k": args.rerank_k,
                 "dataset": str(args.dataset).replace("\\", "/"),

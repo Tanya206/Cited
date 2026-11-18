@@ -180,8 +180,9 @@ def answer(payload: AnswerRequest, request: Request) -> AnswerResponse:
         reranked = services.reranker.rerank(payload.query, retrieved, payload.rerank_k)
         trace.update(metadata={"reranked_count": len(reranked), "chunk_ids": [c["chunk_id"] for c in reranked]})
 
+        usage: dict[str, int] = {}
         try:
-            answer_text, citation_ids, refused = generate_cited_answer(payload.query, reranked)
+            answer_text, citation_ids, refused = generate_cited_answer(payload.query, reranked, usage)
         except ProviderRateLimitError as error:
             # Our dependency is temporarily unavailable, not broken: 503, and pass on
             # the provider's Retry-After so clients wait instead of hammering it.
@@ -214,11 +215,13 @@ def answer(payload: AnswerRequest, request: Request) -> AnswerResponse:
             retrieved_chunk_ids=[chunk["chunk_id"] for chunk in retrieved],
             reranked_chunk_ids=[chunk["chunk_id"] for chunk in reranked],
             **prompt_info,
+            usage=usage,
         )
         # The prompt version is also in the output, so it is recorded even if the tracing
         # backend replaces rather than merges metadata between updates.
         trace.update(output={
             "answer": answer_text, "citation_ids": citation_ids, "refused": refused, **prompt_info,
+            "usage": usage,
         })
         return response
     finally:

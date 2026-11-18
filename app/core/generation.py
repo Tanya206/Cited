@@ -56,7 +56,27 @@ def _provider_error(error: Exception) -> GenerationError:
     return GenerationError(f"The answer provider failed: {error}")
 
 
-def _request_payload(client: OpenAI, request: dict) -> dict:
+def _add_usage(usage: dict | None, response) -> None:
+    """Add the provider-reported token counts of one response to ``usage``.
+
+    Reasoning models (gpt-oss) also spend hidden reasoning tokens; providers that report
+    them put the count in completion_tokens_details, and they are part of completion_tokens.
+    """
+    if usage is None:
+        return
+    reported = getattr(response, "usage", None)
+    usage["provider_calls"] = usage.get("provider_calls", 0) + 1
+    if reported is None:
+        usage["calls_without_usage"] = usage.get("calls_without_usage", 0) + 1
+        return
+    for field in ("prompt_tokens", "completion_tokens", "total_tokens"):
+        usage[field] = usage.get(field, 0) + int(getattr(reported, field, 0) or 0)
+    details = getattr(reported, "completion_tokens_details", None)
+    reasoning = int(getattr(details, "reasoning_tokens", 0) or 0) if details is not None else 0
+    usage["reasoning_tokens"] = usage.get("reasoning_tokens", 0) + reasoning
+
+
+def _request_payload(client: OpenAI, request: dict, usage: dict | None = None) -> dict:
     """Call an OpenAI-compatible provider in JSON mode, falling back to plain text.
 
     Only HTTP 400 means JSON mode itself was rejected (for example Groq's
@@ -74,11 +94,18 @@ def _request_payload(client: OpenAI, request: dict) -> dict:
             response = client.chat.completions.create(**request)
     except (APIStatusError, APIConnectionError) as error:
         raise _provider_error(error) from error
+    _add_usage(usage, response)
     return _parse_json(response.choices[0].message.content or "")
 
 
-def generate_cited_answer(query: str, chunks: list[dict]) -> tuple[str, list[str], bool]:
-    """Return an answer and only citation IDs that exist in ``chunks``."""
+def generate_cited_answer(
+    query: str, chunks: list[dict], usage: dict | None = None
+) -> tuple[str, list[str], bool]:
+    """Return an answer and only citation IDs that exist in ``chunks``.
+
+    If ``usage`` is given, provider token counts are added to it, summed over the answer
+    call and the repair call if one happens.
+    """
     if not chunks:
         return load_prompt().refusal, [], True
 
@@ -96,7 +123,7 @@ def generate_cited_answer(query: str, chunks: list[dict]) -> tuple[str, list[str
         "temperature": 0,
         "max_tokens": settings.max_tokens,
     }
-    payload = _request_payload(client, request)
+    payload = _request_payload(client, request, usage)
     answer = str(payload.get("answer", "")).strip()
     citation_ids = payload.get("citation_chunk_ids", [])
     valid_ids = {chunk["chunk_id"] for chunk in chunks}
@@ -118,7 +145,7 @@ def generate_cited_answer(query: str, chunks: list[dict]) -> tuple[str, list[str
                 "content": prompt_spec.render_repair(prompt, allowed_ids),
             }],
         }
-        repaired = _request_payload(client, repair_request)
+        repaired = _request_payload(client, repair_request, usage)
         repaired_answer = str(repaired.get("answer", "")).strip()
         repaired_ids = repaired.get("citation_chunk_ids", [])
         if repaired_answer == prompt_spec.refusal:

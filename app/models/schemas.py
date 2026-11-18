@@ -35,3 +35,7 @@ class AnswerResponse(BaseModel):
     prompt_sha256: str | None = None
     # Model configured for answer generation (LLM_MODEL); recorded in every eval result.
     generator_model: str | None = None
+    # Provider-reported tokens for this request, summed over the answer and any repair call
+    # (provider_calls, prompt_tokens, completion_tokens, total_tokens, reasoning_tokens).
+    # Empty when no provider call was made.
+    usage: dict[str, int] = Field(default_factory=dict)
