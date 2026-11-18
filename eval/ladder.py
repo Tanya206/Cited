@@ -22,7 +22,10 @@ METRICS = ("doc_hit", "page_hit", "doc_reciprocal_rank", "page_reciprocal_rank")
 def score_lists(lists_by_k: dict[int, list[dict]], item: dict) -> dict[int, dict]:
     """Score one item's ranked list at each k."""
     return {
-        k: score_query(ranked, item["expected_doc_ids"], item["expected_pages"], k)
+        k: score_query(
+            ranked, item["expected_doc_ids"], item["expected_pages"], k,
+            item.get("expected_locations"),
+        )
         for k, ranked in lists_by_k.items()
     }
 
