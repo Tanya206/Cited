@@ -12,7 +12,7 @@ import pymupdf
 from sentence_transformers import SentenceTransformer
 
 from app.core.bm25_index import load_index
-from app.core.generation import GenerationError, generate_cited_answer
+from app.core.generation import GenerationError, ProviderRateLimitError, generate_cited_answer
 from app.core.observability import answer_trace, flush_traces
 from app.core.query_validation import is_actionable_question
 from app.core.reranker import Reranker
@@ -173,6 +173,12 @@ def answer(payload: AnswerRequest, request: Request) -> AnswerResponse:
 
         try:
             answer_text, citation_ids, refused = generate_cited_answer(payload.query, reranked)
+        except ProviderRateLimitError as error:
+            # Our dependency is temporarily unavailable, not broken: 503, and pass on
+            # the provider's Retry-After so clients wait instead of hammering it.
+            trace.update(output={"error": str(error)}, level="ERROR")
+            headers = {"Retry-After": str(error.retry_after)} if error.retry_after else None
+            raise HTTPException(status_code=503, detail=str(error), headers=headers) from error
         except GenerationError as error:
             trace.update(output={"error": str(error)}, level="ERROR")
             raise HTTPException(status_code=502, detail=str(error)) from error
