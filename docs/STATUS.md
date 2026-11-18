@@ -3,26 +3,25 @@
 Rewritten at the end of every session. Read this first, then the last entries of
 `docs/CHANGES.md` and `docs/GAPS.md`.
 
-**Last updated:** 2026-11-19
-**Working branch:** `ws/5b-eval` (part 1 committed, not pushed; 5B continues on this branch)
-**Estimated build completion:** Tuesday 2026-11-24 (range: Sunday 22 to Wednesday 25 Nov;
-see the re-estimate below)
+**Last updated:** 2026-11-19 (part 2)
+**Working branch:** `ws/5b-eval-2` (committed, not pushed; 5B continues)
+**Estimated build completion:** Tuesday 2026-11-24 (unchanged; see the re-estimate below)
 
 ## Next step
 
-1. Owner: review and push `ws/5b-eval` (part 1), open the PR, merge when CI is green.
-2. Assistant, 5B part 2, in this order:
-   a. Golden review of the 60 v1 items into `eval/GOLDEN_REVIEW.md`; create `golden_v2`.
-   b. At least 20 table questions in v2, plus questions that trigger query expansion (S7).
-   c. Generator provider survey (one free provider allowed behind a public demo).
-   d. Resumable judge step; fix S5 (judge key sent to the generator URL).
-   e. 5-item pilot with the NIM judge (G2: tokens estimated first).
-3. Owner: spot-check at least 10 golden fixes; approve the pilot (G2).
+1. Owner: review and push `ws/5b-eval-2`; merge when CI is green.
+2. Owner, gate G2: approve the 5-item pilot and set `RAGAS_API_KEY`, `RAGAS_BASE_URL`,
+   `RAGAS_MODEL` together in `.env` (values in `docs/research/llm-providers.md`).
+3. Owner: spot-check at least 10 golden v2 items (`eval/GOLDEN_REVIEW.md`, last section).
+4. Owner, gate G6: decide the 5F decision rule (gap S9: tables are at the retrieval ceiling).
+5. Assistant after G2: pilot (answers + judge head-to-head), then size the full run from the
+   measured tokens, then refusal scoring.
 
 ## Done
 
 - Workstream 0, G1; 5A (PR #5); 5C (PR #6).
-- 5B part 1: golden v1 frozen; retrieval ladder on v1 (results in `eval/results/`).
+- 5B part 1: golden v1 frozen; retrieval ladder on v1 (PR #7).
+- 5B part 2: golden v2 (101 items), v2 ladder, provider survey, resumable Ragas runner.
 
 ## Measured pace (assistant wall-clock, from git)
 

@@ -263,3 +263,50 @@ Walkthrough: `docs/walkthrough/5b-eval.md`. No LLM calls.
 
 ### Measured pace
 - 5B part 1: 23:53 to 00:05 (12 minutes, including two 3-minute ladder runs).
+
+---
+
+## 2026-11-19: Workstream 5B part 2 (branch `ws/5b-eval-2`), no LLM calls
+
+Walkthrough: `docs/walkthrough/5b-eval.md` (part 2). Review: `eval/GOLDEN_REVIEW.md`.
+
+### Decision: golden v2
+- **Problem:** 5B task 7. All 60 answerable v1 items reviewed against the indexed text.
+- **Found:** 2 of 4 baseline page misses were label errors (G03, G26); G59 ambiguous between two
+  tables (BSDS300 0.58 vs BSDS500 0.57, captions read from the PDF); 4 reference answers claim
+  more than their quotes (G02, G08, G18, G37); 3 wrong categories; 3 title-answerable items.
+- **Options:** edit v1 (breaks the frozen baseline); v2 copy with declared fixes. Chosen: v2;
+  each change listed in `changed_in_v2`; a test fails if any v1 item changes undeclared.
+- **New items (33):** written from the extracted text and PDFs without an LLM; every quote passes
+  `validate_golden --dataset eval/golden_v2.json` (101 items, 0 errors). Refusal items checked
+  for absence by searching the index.
+- **Invalidates:** nothing in v1. v1 and v2 numbers are never compared directly.
+
+### Decision: (doc, page) pairs for multi-paper items
+- **Problem:** `expected_pages` is not tied to a paper; for G41-G45 a page from the wrong paper
+  counted as a page hit (now pinned by a test).
+- **Options:** fix `score_query` for all items (changes v1 numbers); opt-in `expected_locations`
+  used only by v2. Chosen: opt-in.
+
+### Results (no LLM, commit bb4cf42)
+- v2 ladder (n=90): page hit @6 vector 63, BM25 66, hybrid 76, +expansion 76, +rerank 74.
+  Hybrid vs vector @6 15/2 (p=0.002). Rerank @6 3/5 (p=0.73).
+- Tables (n=26): hybrid@6 26/26. Retrieval is at ceiling for tables (gap S9).
+- Unnamed paraphrases (n=6): right paper at rank 1 in all 6 (wording bias noted).
+- Expansion (n=5): first page rank better for G125 and G126, unchanged elsewhere.
+
+### Decision: generator stays on Groq; judge on NVIDIA NIM
+- Evidence and citations in `docs/research/llm-providers.md` (read 2026-11-19). Cerebras needs a
+  card (rule 11); Gemini free may not serve EEA users and allows human review of prompts; NIM
+  terms allow evaluation only.
+
+### Fixes
+- H3: collector uses the served 20/6 and records generator model, prompt, k, dataset hash, date.
+- S5: `run_ragas.py` refuses a partial `RAGAS_*` configuration.
+- M5: `run_ragas.py` rewritten: resumable per (item, metric), records judge, embedding model,
+  calls and tokens; refused answers listed, not silently dropped.
+- Bug in my own tooling: the ladder summary title was hard-coded to "golden v1"; fixed, test
+  added, v2 re-run (identical numbers).
+- Incident: `ollama --version` auto-started the Ollama app and server; both processes stopped.
+
+**Tests:** 55 -> 67 passed.

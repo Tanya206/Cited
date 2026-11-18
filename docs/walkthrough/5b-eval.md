@@ -76,3 +76,68 @@ The cross-encoder reranker, which I'd assumed was helping, showed no significant
 60-question set: it fixed two questions and broke four. I didn't rip it out on that evidence,
 because 60 author-written questions is a small sample, but I flagged it and planned a larger
 test that includes latency and answer quality."
+
+---
+
+# Part 2: golden v2, v2 ladder, providers, and the evaluation runner
+
+Branch `ws/5b-eval-2`. Still no LLM calls.
+
+## 6. The golden review
+
+Read `eval/GOLDEN_REVIEW.md` first. Headlines:
+
+- **2 of the 4 baseline page misses were label errors.** G03 and G26 are also answered on page 1,
+  which was not labelled. v1 slightly understated page hit. v1 stays frozen; v2 fixes the labels.
+- **G59 was ambiguous.** W-Net's page 8 has two tables: 0.58 on BSDS300, 0.57 on BSDS500.
+  Confirmed by reading the captions straight from the PDF:
+
+```powershell
+.\venv\Scripts\python.exe -m eval.review_golden G59 --dataset eval/golden_v2.json --grep "BSDS500"
+```
+
+- **Two-paper items were scored too leniently.** A page number from the wrong paper counted. See
+  the test that pins the old behaviour:
+
+```powershell
+.\venv\Scripts\python.exe -m pytest -q tests/test_retrieval_metrics.py -v
+```
+
+v2 = 60 v1 answerable items (19 with declared fixes) + 33 new: 23 table questions (14 from
+structured table chunks, 6 from table values that survive only as text, 3 that must be
+refused), 4 that trigger query expansion, 6 paraphrases that do not name the method.
+
+## 7. The ladder on v2 (n=90)
+
+```powershell
+Get-Content eval\results\ladder_golden_v2_2026-11-19.md
+```
+
+```powershell
+Get-Content eval\results\ladder_subsets_golden_v2_2026-11-19.md
+```
+
+- Hybrid beats vector at k=6 by 15 gained / 2 lost (p=0.002): this one survives a Bonferroni
+  correction over 10 comparisons.
+- The reranker still shows no measurable benefit (3 gained / 5 lost, p=0.73).
+- **Table questions: hybrid puts the right page in the top 6 for 26 of 26.** Retrieval is not
+  where tables fail. If tables fail, it is in reading the right number, which needs an
+  answer-level check. That changes how 5F (Docling) should be judged; see gap S9.
+
+## 8. Providers (`docs/research/llm-providers.md`)
+
+- Generator: stay on Groq, the only verified free option allowed behind a public demo.
+  Cerebras needs a card; Gemini's free tier may not serve EEA users and lets humans review prompts.
+- Judge: NVIDIA NIM, a separate budget; its terms allow evaluation, not production.
+
+## 9. The evaluation runner
+
+```powershell
+.\venv\Scripts\python.exe -m eval.run_ragas --help
+```
+
+- Answers are collected at the served configuration (20 retrieved, 6 reranked), not 50/12.
+- Every Ragas score is saved the moment it exists, one line per (item, metric), with the judge,
+  generator, prompt version, dataset hash, judge calls and tokens. A quota error loses nothing.
+- Setting only some of the `RAGAS_*` variables is now an error, so the judge key can never be
+  sent to the generator's address.
