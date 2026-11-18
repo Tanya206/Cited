@@ -62,3 +62,13 @@ def test_compare_lists_gained_and_lost_items():
     assert result["page_hit_gained"] == ["G1"]
     assert result["page_hit_lost"] == ["G2"]
     assert result["page_mrr_change"] == 0.0
+
+
+def test_exact_mcnemar_matches_known_binomial_values():
+    from eval.ladder import exact_mcnemar_p
+
+    assert exact_mcnemar_p(0, 0) == 1.0
+    assert exact_mcnemar_p(3, 3) == 1.0
+    # 11 vs 2 discordant: 2 * P(X <= 2 | n=13, p=0.5) = 2 * 92 / 8192
+    assert exact_mcnemar_p(11, 2) == round(2 * 92 / 8192, 4)
+    assert exact_mcnemar_p(2, 11) == exact_mcnemar_p(11, 2)

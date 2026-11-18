@@ -1,5 +1,6 @@
 """Pure helpers for the retrieval comparison ladder (no models, no index; unit-tested)."""
 
+import math
 import random
 from statistics import mean
 
@@ -58,6 +59,20 @@ def paired_bootstrap_ci(
     return round(mean(diffs), 4), round(low, 4), round(high, 4)
 
 
+def exact_mcnemar_p(gained: int, lost: int) -> float:
+    """Two-sided exact McNemar test on the items whose page hit changed.
+
+    Items that both configurations got right (or both wrong) carry no information about
+    which is better; only the discordant ones do. Under "no difference", each discordant
+    item is a fair coin flip, so this is a binomial test with p = 0.5.
+    """
+    n = gained + lost
+    if n == 0:
+        return 1.0
+    tail = sum(math.comb(n, i) for i in range(0, min(gained, lost) + 1)) / 2 ** n
+    return round(min(1.0, 2 * tail), 4)
+
+
 def compare(
     per_item: list[dict], before: str, after: str, k: int
 ) -> dict:
@@ -75,6 +90,7 @@ def compare(
         "k": k,
         "page_hit_gained": gained,
         "page_hit_lost": lost,
+        "page_hit_mcnemar_p": exact_mcnemar_p(len(gained), len(lost)),
         "page_mrr_change": mrr_diff,
         "page_mrr_change_ci95": [low, high],
         "ci_excludes_zero": low > 0 or high < 0,

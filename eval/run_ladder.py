@@ -22,7 +22,7 @@ from app.core import reranker as reranker_module
 from app.core.bm25_index import bm25_search, load_index
 from app.core.reranker import Reranker
 from app.core.retrieval import (
-    BM25_INDEX_DIR, CHROMA_PATH, COLLECTION_NAME, MODEL_NAME, hybrid_retrieve, vector_search,
+    BM25_INDEX_DIR, CHROMA_PATH, COLLECTION_NAME, MODEL_NAME, expand_query, hybrid_retrieve, vector_search,
 )
 from eval.golden import GOLDEN_V1, answerable_items, content_sha256
 from eval.ladder import STEP_NAMES, STEPS, aggregate, compare, score_lists
@@ -106,16 +106,25 @@ def markdown_summary(report: dict) -> str:
                 f"{agg['doc_reciprocal_rank']:.3f} | {agg['page_reciprocal_rank']:.3f} |"
             )
     lines += ["", "## Paired comparisons (page level)", "",
-              "| Before -> after | k | page hits gained | lost | page MRR change [95% CI] |",
-              "|---|---|---|---|---|"]
+              "| Before -> after | k | page hits gained | lost | exact McNemar p | page MRR change [95% CI] |",
+              "|---|---|---|---|---|---|"]
     for comparison in report["comparisons"]:
         low, high = comparison["page_mrr_change_ci95"]
         lines.append(
             f"| {comparison['before']} -> {comparison['after']} | {comparison['k']} | "
             f"{len(comparison['page_hit_gained'])} | {len(comparison['page_hit_lost'])} | "
+            f"{comparison['page_hit_mcnemar_p']:.3f} | "
             f"{comparison['page_mrr_change']:+.3f} [{low:+.3f}, {high:+.3f}] |"
         )
-    lines += ["", "Categories with n <= 3 are in the JSON but not quoted here.", ""]
+    expanded = meta["questions_changed_by_expansion"]
+    lines += [
+        "",
+        f"Query expansion changed {len(expanded)} of {meta['n_items']} questions ({', '.join(expanded) or 'none'}), "
+        "so the hybrid -> hybrid_expand row measures almost nothing about expansion.",
+        "",
+        "Categories with n <= 3 are in the JSON but not quoted here.",
+        "",
+    ]
     return "\n".join(lines)
 
 
@@ -170,6 +179,9 @@ def main() -> None:
             },
             "python": platform.python_version(),
             "llm_calls": 0,
+            "questions_changed_by_expansion": [
+                item["id"] for item in items if expand_query(item["question"]) != item["question"]
+            ],
             "steps": dict(STEPS),
         },
         "overall": overall,
