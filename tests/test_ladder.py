@@ -72,3 +72,36 @@ def test_exact_mcnemar_matches_known_binomial_values():
     # 11 vs 2 discordant: 2 * P(X <= 2 | n=13, p=0.5) = 2 * 92 / 8192
     assert exact_mcnemar_p(11, 2) == round(2 * 92 / 8192, 4)
     assert exact_mcnemar_p(2, 11) == exact_mcnemar_p(11, 2)
+
+
+def test_summary_title_names_the_dataset_that_was_run():
+    from eval.run_ladder import markdown_summary
+
+    report = {
+        "meta": {"date": "2026-11-19", "dataset": "eval/golden_v2.json", "n_items": 0, "commit": "abc",
+                 "questions_changed_by_expansion": []},
+        "overall": {step: {"6": {}, "20": {}} for step in ()},
+        "comparisons": [],
+    }
+    import eval.run_ladder as runner
+    original = runner.STEP_NAMES
+    runner.STEP_NAMES = ()
+    try:
+        assert markdown_summary(report).startswith("# Retrieval comparison ladder, golden_v2 (2026-11-19)")
+    finally:
+        runner.STEP_NAMES = original
+
+
+def test_named_vs_unnamed_pairs_use_variant_of():
+    from eval.ladder_subsets import named_vs_unnamed
+
+    def row(item_id, doc_rank, hit):
+        score = {"first_doc_rank": doc_rank, "page_hit": hit}
+        return {"id": item_id, "scores": {"hybrid_expand_rerank": {"6": score}}}
+
+    rows = {"G10": row("G10", 1, True), "G128": row("G128", 4, False)}
+    items = [{"id": "G10"}, {"id": "G128", "variant_of": "G10"}, {"id": "G129", "variant_of": "G99"}]
+    assert named_vs_unnamed(rows, items) == [{
+        "unnamed": "G128", "named": "G10", "named_first_doc_rank": 1, "unnamed_first_doc_rank": 4,
+        "named_page_hit": True, "unnamed_page_hit": False,
+    }]
