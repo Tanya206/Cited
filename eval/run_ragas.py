@@ -153,6 +153,7 @@ def main() -> None:
         from ragas.metrics import Faithfulness, LLMContextPrecisionWithoutReference, LLMContextRecall, ResponseRelevancy
         from ragas.run_config import RunConfig
         from langchain_openai import ChatOpenAI
+        import openai
     except ImportError as error:
         raise SystemExit("Ragas could not load its evaluator dependencies: " + str(error)) from error
 
@@ -210,11 +211,18 @@ def main() -> None:
                 counter.reset()
                 # raise_exceptions=True on purpose: a provider failure must stop the run, not
                 # become a NaN that looks like a score. Finished pairs are already saved.
-                result = evaluate(
-                    dataset=EvaluationDataset(samples=[sample]), metrics=[metrics[name]], llm=llm,
-                    embeddings=embeddings, run_config=run_config, raise_exceptions=True,
-                    show_progress=False,
-                )
+                try:
+                    result = evaluate(
+                        dataset=EvaluationDataset(samples=[sample]), metrics=[metrics[name]], llm=llm,
+                        embeddings=embeddings, run_config=run_config, raise_exceptions=True,
+                        show_progress=False,
+                    )
+                except openai.NotFoundError as error:
+                    raise SystemExit(
+                        f"Judge returned 404 at {judge['base_url']!r} for model {judge['model']!r}. "
+                        "Check RAGAS_BASE_URL (OpenAI-compatible URLs usually end in /v1) and RAGAS_MODEL. "
+                        f"Scores already saved in {args.output} are kept."
+                    ) from error
                 score = float(result.to_pandas()[name].iloc[0])
                 record = {
                     **{key: row.get(key) for key in RUN_METADATA_FIELDS},

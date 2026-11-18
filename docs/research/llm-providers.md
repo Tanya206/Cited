@@ -9,7 +9,7 @@ Read 2026-11-18.
 
 | Item | Finding | Source |
 |---|---|---|
-| Endpoint | OpenAI-compatible, base `https://integrate.api.nvidia.com`, path `/v1/chat/completions` | [NVIDIA LLM API reference](https://docs.api.nvidia.com/nim/reference/llm-apis) |
+| Endpoint | OpenAI-compatible. **Set `RAGAS_BASE_URL=https://integrate.api.nvidia.com/v1`** (the `/v1` is required; without it every call returns 404, as happened in the 2026-11-19 pilot). The client appends `/chat/completions` | [NVIDIA LLM API reference](https://docs.api.nvidia.com/nim/reference/llm-apis) |
 | Purpose allowed | Trial access "for limited trial purposes only and without use of the API Service or Generated Content in production" (s1.2); without a paid subscription, "internal testing and evaluation purposes, not in production" (s1.4) | [NVIDIA API Trial Terms of Service](https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf) (PDF metadata dated 2025-10-07) |
 | Data use | NVIDIA collects "User Content and Generated Content to improve NVIDIA products and services, including AI models" (s3.3(iv)); use is logged for security and abuse monitoring | same PDF |
 | Credits | Trial credits deducted per use; the amount is not stated in the terms | same PDF, s1.4 |
