@@ -79,6 +79,38 @@ def overlap_fraction(
         return 0.0
     return (width * height) / max((ax1 - ax0) * (ay1 - ay0), 1e-6)
 
+def is_header_numeric(header_row: list[Any]) -> bool:
+    """True when no header cell contains a word (two or more letters).
+
+    A real table has words in its header row (column names). A header made only
+    of numbers means detection captured the data columns but missed the labels.
+    """
+    return not any(re.search(r"[A-Za-z]{2,}", str(cell or "")) for cell in header_row)
+
+
+def remove_table_blocks(
+    blocks: list[tuple[Any, ...]],
+    tables: list[dict[str, Any]],
+) -> list[tuple[Any, ...]]:
+    """Drop text blocks that a usable table chunk will replace; keep everything else.
+
+    Only tables that passed the reliability checks remove text: suspicious tables are
+    never embedded, so their text must stay searchable in the body (decision D4). A block
+    is removed only if at least TABLE_BLOCK_INSIDE_RATIO of its area lies inside a usable
+    table box; blocks that merely touch a table (captions, neighbouring rows) stay.
+    """
+    table_bboxes = [table["bbox"] for table in tables if not table["is_suspicious"]]
+    return [
+        block
+        for block in blocks
+        if not any(
+            overlap_fraction((block[0], block[1], block[2], block[3]), table_bbox)
+            >= TABLE_BLOCK_INSIDE_RATIO
+            for table_bbox in table_bboxes
+        )
+    ]
+
+
 def clean_text(text: str) -> str:
     """Remove unprintable control characters while preserving line breaks."""
     return "".join(
@@ -257,11 +289,7 @@ def extract_tables(
             continue
 
         rows, row_repair_applied = expand_multiline_rows(rows)
-        # A real table has words in its header row (column names). A header made only
-        # of numbers means detection captured the data columns but missed the labels.
-        header_is_numeric = not any(
-            re.search(r"[A-Za-z]{2,}", str(cell or "")) for cell in rows[0]
-        )
+        header_is_numeric = is_header_numeric(rows[0])
 
 
 
@@ -402,19 +430,7 @@ def extract_document(
                 page_number=page_number,
                 crop_dir=crop_dir,
             )
-            # Only remove text that a *usable* table chunk will replace. Suspicious
-            # tables are never embedded, so their text must stay in the body.
-            table_bboxes = [table["bbox"] for table in tables if not table["is_suspicious"]]
-            
-            non_table_blocks = [
-                block
-                for block in raw_blocks
-                if not any(
-                    overlap_fraction((block[0], block[1], block[2], block[3]), table_bbox)
-                    >= TABLE_BLOCK_INSIDE_RATIO
-                    for table_bbox in table_bboxes
-                )
-            ]
+            non_table_blocks = remove_table_blocks(raw_blocks, tables)
 
             captions, body_blocks = extract_captions_and_body(non_table_blocks)
             # Embedded image objects are often figure fragments, not logical figures.
