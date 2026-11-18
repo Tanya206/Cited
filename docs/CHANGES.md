@@ -310,3 +310,45 @@ Walkthrough: `docs/walkthrough/5b-eval.md` (part 2). Review: `eval/GOLDEN_REVIEW
 - Incident: `ollama --version` auto-started the Ollama app and server; both processes stopped.
 
 **Tests:** 55 -> 67 passed.
+
+---
+
+## 2026-11-19: Workstream 5B pilot (branch `ws/5b-pilot`), gate G2 approved by the owner for 5 items
+
+Report: `eval/results/ragas_pilot_2026-11-19.md`.
+
+### Decision: return provider token usage from /answer
+- **Problem:** generation discarded the provider's usage numbers, so the pilot could not
+  measure generator cost (including reasoning tokens).
+- **Options:** estimate from character counts; read usage from the provider response.
+  Chosen: provider usage, summed over the answer and repair calls, returned by `/answer`, in the
+  trace output, and saved per answer run. Test: usage summed across a repair.
+
+### Bugs found by the pilot
+- Port 8000 is also used by a Docker container on the owner's laptop. The first health check
+  reached it; no questions were sent to it. Local runs now use port 8765 and check `/health`.
+- `collect_answer_runs` read Groq's "try again in 60ms" as 60 minutes. Fixed (units parsed,
+  Retry-After preferred, waits round up), tests added. An old test expected rounding down;
+  updated with the reason.
+- The owner's `RAGAS_BASE_URL` lacked `/v1` because my provider note split base and path.
+  The note now gives the full value; `run_ragas` names `RAGAS_BASE_URL` on a 404. The owner fixed
+  `.env`.
+
+### Decision: judge = nvidia/nemotron-3-ultra-550b-a55b
+- **Problem:** the planned judge, mistral-large-4, timed out (no score in 180 s).
+- **Options:** raise the timeout; pick a faster model by measurement. A 6-model probe and a
+  re-run with 4,096 output tokens: nemotron-3-ultra 16 s and valid JSON; gemma-4-31b 44 s and
+  valid JSON; kimi and glm timed out; mistral-large and nemotron-lightning ran out of tokens.
+- **Head-to-head:** faithfulness identical on 5/5 items (4 at ceiling). G09 checked by hand:
+  both judges correctly caught the one unsupported statement.
+- **Chosen:** nemotron-3-ultra as the main judge; gemma-4-31b as the second judge for an
+  agreement check. Owner to set `RAGAS_MODEL` in `.env` (G5).
+
+### Measured
+- Generator: 2,830 tokens per answer (mean of 5), 69% of output is reasoning, 0 repair calls.
+- Judge: 10 calls and 21,504 tokens per item for all four metrics; about 2 minutes per item.
+- Full run (90 items): about 255K Groq tokens (about 1.3 days at 200K/day), 900 judge calls,
+  about 1.94M judge tokens, about 3 hours.
+- Spend: Groq 14,151 tokens; NIM about 136K tokens plus one timed-out run.
+
+**Tests:** 67 -> 70 passed.

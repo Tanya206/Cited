@@ -39,3 +39,8 @@ Source: workstream 0 audit, 2026-11-14 (see `docs/CHANGES.md`).
 | S10 | Med | Selection bias: the 14 new structured-table questions were written from tables PyMuPDF detected; missed (booktabs) tables are covered only by 6 body-text items | `eval/GOLDEN_REVIEW.md` | 5F | open: add questions on missed tables before the Docling comparison |
 | S11 | Low | v1 page hit understates retrieval: 2 of the 4 baseline page misses (G03, G26) were label errors | `eval/GOLDEN_REVIEW.md` | 5B | fixed in v2 (v1 frozen) |
 | S12 | Low | `ollama --version` auto-starts the Ollama app and server on this laptop (started and then stopped by the assistant on 2026-11-19) | process list | note | closed |
+| S13 | Med | A Docker container on the owner's laptop also listens on port 8000; a health check hit it before Cited had started | pilot 2026-11-19: response with `resume_uploaded`, `telegram_configured`; `Get-NetTCPConnection -LocalPort 8000` | 5G | open: local runs use port 8765 and verify `/health` reports 2,771 chunks |
+| S14 | Med | Answer relevancy penalizes terse, correct numeric answers (G106 "88.43%" scored 0.49) | `eval/results/ragas_pilot_2026-11-19.md` | 5B | open: report answer relevancy separately for numeric items |
+| S15 | Med | The generator adds facts from its own knowledge ("NT-Xent" in G09 is in none of the 6 retrieved chunks), against the prompt rule | pilot, checked by hand | 5B / answer_v2 | open: measure how often in the full run before changing the prompt |
+| S16 | Med | NIM credit balance and daily cap are unknown; a full run needs about 1.94M judge tokens | pilot sizing | 5B | open: run is resumable, so a credit stop loses nothing |
+| S17 | Low | Rate-limit parser read "60ms" as 60 minutes | pilot 2026-11-19 | 5B | fixed (commit 51e3057) |

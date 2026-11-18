@@ -4,24 +4,26 @@ Rewritten at the end of every session. Read this first, then the last entries of
 `docs/CHANGES.md` and `docs/GAPS.md`.
 
 **Last updated:** 2026-11-19 (part 2)
-**Working branch:** `ws/5b-eval-2` (committed, not pushed; 5B continues)
-**Estimated build completion:** Tuesday 2026-11-24 (unchanged; see the re-estimate below)
+**Working branch:** `ws/5b-pilot` (committed, not pushed)
+**Estimated build completion:** Tuesday 2026-11-24 (the full Ragas run adds about 1.3 days of
+Groq budget; see `eval/results/ragas_pilot_2026-11-19.md`)
 
 ## Next step
 
-1. Owner: review and push `ws/5b-eval-2`; merge when CI is green.
-2. Owner, gate G2: approve the 5-item pilot and set `RAGAS_API_KEY`, `RAGAS_BASE_URL`,
-   `RAGAS_MODEL` together in `.env` (values in `docs/research/llm-providers.md`).
-3. Done 2026-11-19: owner spot-checked 12 golden v2 items, all ok (`eval/GOLDEN_REVIEW.md`).
-4. Owner, gate G6: decide the 5F decision rule (gap S9: tables are at the retrieval ceiling).
-5. Assistant after G2: pilot (answers + judge head-to-head), then size the full run from the
-   measured tokens, then refusal scoring.
+1. Owner: review and push `ws/5b-pilot`; merge when CI is green.
+2. Owner, G5: set `RAGAS_MODEL=nvidia/nemotron-3-ultra-550b-a55b` in `.env`.
+3. Owner, G2: approve the full run (90 answerable v2 items: about 255K Groq tokens over about
+   1.3 days, 900 judge calls, about 1.94M NIM tokens, about 3 hours of judging), plus a
+   second-judge faithfulness check on about 30 items.
+4. Owner, G6: decide the 5F decision rule (gap S9).
+5. Assistant after G2: collect answers (resumable, waits on rate limits), judge, refusal scoring.
 
 ## Done
 
 - Workstream 0, G1; 5A (PR #5); 5C (PR #6).
 - 5B part 1: golden v1 frozen; retrieval ladder on v1 (PR #7).
-- 5B part 2: golden v2 (101 items), v2 ladder, provider survey, resumable Ragas runner.
+- 5B part 2: golden v2 (101 items), v2 ladder, provider survey, resumable Ragas runner (PR #8).
+- 5B pilot: 5 items, measured costs, judge chosen (nemotron-3-ultra), 3 bugs fixed.
 
 ## Measured pace (assistant wall-clock, from git)
 
