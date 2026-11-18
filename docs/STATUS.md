@@ -4,35 +4,37 @@ Rewritten at the end of every session. Read this first, then the last entries of
 `docs/CHANGES.md` and `docs/GAPS.md`.
 
 **Last updated:** 2026-11-18
-**Working branch:** `ws/5a-hygiene` (complete, committed, not pushed)
-**Hard end date:** 2026-11-19 (`docs/DEFINITION_OF_DONE.md`)
+**Working branch:** `ws/5c-prompts` (complete, committed, not pushed)
+**End date:** none fixed. Re-estimate from measured pace after the retrieval ladder.
 
 ## Next step
 
-1. Owner: review and push `ws/5a-hygiene`, open the PR, and watch the first CI run. If it
-   fails at building scikit-network, the fallback is Python 3.13 locally and in CI (S3).
-2. Owner decision needed: scope for the remaining time (gap S1). About 11.5 working days of
-   planned work remain and the end date is tomorrow.
-3. Then 5C (prompt YAML) on `ws/5c-prompts`, followed by 5B starting with the retrieval
-   comparison ladder (no LLM spend).
+1. Owner: review and push `ws/5c-prompts`, open the PR, merge when CI is green.
+2. Owner: set the three judge variables in `.env` together (gap S5): `RAGAS_API_KEY`,
+   `RAGAS_BASE_URL=https://integrate.api.nvidia.com/v1`, and `RAGAS_MODEL` once the judge is
+   picked. Check credit balance and per-model rate limit on build.nvidia.com (TODO(owner)).
+3. Assistant: 5B on `ws/5b-eval`, starting with the retrieval comparison ladder (vector, BM25,
+   hybrid, + expansion, + rerank; k=6 and k=20; golden v1; no LLM calls). Then re-estimate the
+   remaining work and give a date.
 
 ## Done
 
-- Workstream 0 audit, G1 ratified (2026-11-18).
-- 5A: lock file and CI on Python 3.14, golden structure check without `data/`, H2 (HTML
-  escaping), M1 (429 handling), tests for the extraction fixes, dead code and empty files
-  removed, MIT licence. Tests: 34 passed, locally and in a clean export without `data/`.
+- Workstream 0, G1 (2026-11-18).
+- 5A (merged as PR #5, first green CI on 548832a).
+- 5C: prompt in `prompts/answer_v1.yaml`, byte-identical to the old f-strings; version and hash
+  in responses, traces, answer runs and Ragas results. 46 tests pass.
+
+## Measured pace
+
+| Workstream | Estimate | Measured (assistant wall-clock) |
+|---|---|---|
+| 5A | 1 day | 29 min (14:37-15:06) |
+| 5C | 0.5 day | about 15 min (16:40-16:55), plus NVIDIA research |
 
 ## Not verified
 
-- CI on GitHub (runs only after the push).
-- scikit-network building from source on Linux / Python 3.14.
-
-## Open decisions
-
-- S1: what to cut for the 2026-11-19 end date.
-- S2: AWS sign-up asks for a payment card, which conflicts with rule 11. Verify on AWS pages
-  and decide before 5G.
+- CI for `ws/5c-prompts` (runs after the push).
+- Whether Langfuse merges metadata across updates (S6); version is also written to the output.
 
 ## Session end checklist
 

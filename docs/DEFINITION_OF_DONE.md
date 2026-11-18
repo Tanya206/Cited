@@ -3,8 +3,8 @@
 Ratified by the owner at gate G1 on 2026-11-18. Proposed in the workstream 0 audit
 (`docs/CHANGES.md`, 2026-11-14 entry). Thresholds are set only after baselines exist.
 
-**Hard end date for the build:** Thursday 2026-11-19. At that date, unfinished items become
-documented limitations in `docs/GAPS.md` and the README, and workstream 5H starts.
+**End date:** the 2026-11-19 cut-off was dropped by the owner on 2026-11-18; scope is not cut
+for a date. A new date is estimated from measured pace after 5C and the retrieval ladder.
 
 ## Reproducibility rule (applies to every number below)
 
@@ -50,9 +50,9 @@ n, k and date. A v1 number is never compared with a v2 number. No accuracy claim
 - [ ] `docker build` and run work from a clean clone with documented steps.
 - [ ] **Public deployment (must-have, owner decision): on AWS**, with health check, rate limit
       and request cap, no secret exposure. Serves no PDFs: citations link out to arXiv or DOI
-      pages. Open point: AWS sign-up asks for a payment card, which conflicts with rule 11
-      ("no credit card"); to be verified from AWS's own pages and resolved with the owner
-      before 5G.
+      pages. Runs within the owner's AWS free trial with a billing alarm and a budget cap set
+      before deploying (rule 11 amended 2026-11-18). Free-trial terms and the instance size
+      the models need are verified from AWS's own pages, cited with date, before 5G.
 - [ ] No secrets in the repo or its history; `.gitignore` covers `data/`, `venv/`, `.env`.
 - [ ] Code licensed MIT. Papers are never committed.
 

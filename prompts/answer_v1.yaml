@@ -1,0 +1,42 @@
+# Answer prompt, version 1.
+#
+# Immutable once committed: any change, even whitespace, goes into a new file
+# (answer_v2.yaml) with a new version, so every saved trace and eval result names the
+# exact prompt that produced it. tests/test_prompts.py pins this file's hash.
+#
+# Placeholders use Python string.Template syntax: ${name}.
+# Transcribed from the f-strings in app/core/generation.py as of commit 2c61b69; the
+# rendered text is byte-identical (tests/test_prompts.py compares against that output).
+
+version: answer_v1
+
+refusal: I don't have enough evidence in the indexed papers to answer that reliably.
+
+evidence:
+  item: "[chunk_id=${chunk_id}; paper=${doc_id}; page=${page_number}]\n${text}"
+  separator: "\n\n---\n\n"
+  max_characters: 24000
+
+answer: |-
+  You answer questions only from the supplied research-paper evidence.
+  If the evidence does not support an answer, return the exact refusal text:
+  ${refusal}
+
+  Return JSON only, with this shape:
+  {"answer": "...", "citation_chunk_ids": ["chunk-id"]}
+
+  Rules:
+  - Do not use knowledge outside the evidence.
+  - Every factual sentence in the answer must be supported by one or more IDs in citation_chunk_ids.
+  - Use only chunk IDs that appear in the evidence.
+  - Do not invent numerical results, titles, or page numbers.
+
+  Question: ${question}
+
+  Evidence:
+  ${evidence}
+
+repair: |-
+  ${prompt}
+
+  Your previous response cited an unavailable chunk. Return JSON again and use only these allowed citation IDs: ${allowed_ids}. If the evidence is insufficient, return the exact refusal text: ${refusal}

@@ -16,6 +16,30 @@ from dotenv import load_dotenv
 from app.core.llm_client import get_llm_settings
 
 
+# Fields Ragas scores. Everything else in an answer-run record is metadata about the run.
+SAMPLE_FIELDS = ("user_input", "response", "retrieved_contexts", "reference", "reference_contexts")
+RUN_METADATA_FIELDS = ("id", "prompt_version", "prompt_sha256")
+
+
+def sample_fields(row: dict) -> dict:
+    """Keep only what Ragas scores, so run metadata never reaches the metric prompts."""
+    return {key: row[key] for key in SAMPLE_FIELDS if key in row}
+
+
+def attach_run_metadata(records: list[dict], rows: list[dict]) -> list[dict]:
+    """Copy the item ID and prompt version onto each result (Ragas keeps input order).
+
+    Answer runs collected before prompt versioning have no prompt_version; that stays
+    None in the result rather than being guessed.
+    """
+    if len(records) != len(rows):
+        raise ValueError(f"Ragas returned {len(records)} results for {len(rows)} samples")
+    return [
+        {**{key: row.get(key) for key in RUN_METADATA_FIELDS}, **record}
+        for record, row in zip(records, rows)
+    ]
+
+
 class _LangChainEmbeddingAdapter:
     """Bridge Ragas' current text API to its older LangChain metric API."""
 
@@ -107,7 +131,7 @@ def main() -> None:
     if not rows:
         raise SystemExit("No non-refusal answer runs with contexts were found.")
 
-    dataset = EvaluationDataset(samples=[SingleTurnSample(**row) for row in rows])
+    dataset = EvaluationDataset(samples=[SingleTurnSample(**sample_fields(row)) for row in rows])
     # An empty optional override must fall back to the shared model. Using
     # os.getenv(..., default) alone does not fall back when the variable exists
     # but is set to an empty string in .env.
@@ -149,6 +173,8 @@ def main() -> None:
         raise_exceptions=True,
     )
     payload = result.to_pandas().to_dict(orient="records") if hasattr(result, "to_pandas") else dict(result)
+    if isinstance(payload, list):
+        payload = attach_run_metadata(payload, rows)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
     print(json.dumps(payload, indent=2, default=str))

@@ -14,6 +14,7 @@ from sentence_transformers import SentenceTransformer
 from app.core.bm25_index import load_index
 from app.core.generation import GenerationError, ProviderRateLimitError, generate_cited_answer
 from app.core.observability import answer_trace, flush_traces
+from app.core.prompts import load_prompt
 from app.core.query_validation import is_actionable_question
 from app.core.reranker import Reranker
 from app.core.retrieval import (
@@ -157,6 +158,9 @@ def answer(payload: AnswerRequest, request: Request) -> AnswerResponse:
     trace = answer_trace(payload.query)
     trace.__enter__()
     try:
+        prompt = load_prompt()
+        prompt_info = {"prompt_version": prompt.version, "prompt_sha256": prompt.sha256}
+        trace.update(metadata=prompt_info)
         services: Services = request.app.state.services
         retrieved = hybrid_retrieve(
             payload.query,
@@ -176,11 +180,11 @@ def answer(payload: AnswerRequest, request: Request) -> AnswerResponse:
         except ProviderRateLimitError as error:
             # Our dependency is temporarily unavailable, not broken: 503, and pass on
             # the provider's Retry-After so clients wait instead of hammering it.
-            trace.update(output={"error": str(error)}, level="ERROR")
+            trace.update(output={"error": str(error), **prompt_info}, level="ERROR")
             headers = {"Retry-After": str(error.retry_after)} if error.retry_after else None
             raise HTTPException(status_code=503, detail=str(error), headers=headers) from error
         except GenerationError as error:
-            trace.update(output={"error": str(error)}, level="ERROR")
+            trace.update(output={"error": str(error), **prompt_info}, level="ERROR")
             raise HTTPException(status_code=502, detail=str(error)) from error
 
         by_id = {chunk["chunk_id"]: chunk for chunk in reranked}
@@ -204,8 +208,13 @@ def answer(payload: AnswerRequest, request: Request) -> AnswerResponse:
             refused=refused,
             retrieved_chunk_ids=[chunk["chunk_id"] for chunk in retrieved],
             reranked_chunk_ids=[chunk["chunk_id"] for chunk in reranked],
+            **prompt_info,
         )
-        trace.update(output={"answer": answer_text, "citation_ids": citation_ids, "refused": refused})
+        # The prompt version is also in the output, so it is recorded even if the tracing
+        # backend replaces rather than merges metadata between updates.
+        trace.update(output={
+            "answer": answer_text, "citation_ids": citation_ids, "refused": refused, **prompt_info,
+        })
         return response
     finally:
         trace.__exit__(None, None, None)

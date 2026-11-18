@@ -6,10 +6,12 @@ import re
 from openai import APIConnectionError, APIStatusError, BadRequestError, OpenAI, RateLimitError
 
 from app.core.llm_client import create_llm_client
+from app.core.prompts import load_prompt
 
 
 # The model is configured in app/core/llm_client.py (LLM_MODEL, legacy GROQ_MODEL).
-NO_ANSWER = "I don't have enough evidence in the indexed papers to answer that reliably."
+# The prompt and refusal text live in prompts/<version>.yaml (PROMPT_VERSION).
+NO_ANSWER = load_prompt().refusal
 
 
 class GenerationError(RuntimeError):
@@ -31,21 +33,6 @@ def _retry_after_seconds(error: APIStatusError) -> int | None:
         return max(1, int(float(value))) if value else None
     except ValueError:
         return None
-
-
-def _context(chunks: list[dict], max_characters: int = 24_000) -> str:
-    parts: list[str] = []
-    used = 0
-    for chunk in chunks:
-        part = (
-            f"[chunk_id={chunk['chunk_id']}; paper={chunk['doc_id']}; "
-            f"page={chunk['page_number']}]\n{chunk['text']}"
-        )
-        if used + len(part) > max_characters:
-            break
-        parts.append(part)
-        used += len(part)
-    return "\n\n---\n\n".join(parts)
 
 
 def _parse_json(content: str) -> dict:
@@ -93,30 +80,15 @@ def _request_payload(client: OpenAI, request: dict) -> dict:
 def generate_cited_answer(query: str, chunks: list[dict]) -> tuple[str, list[str], bool]:
     """Return an answer and only citation IDs that exist in ``chunks``."""
     if not chunks:
-        return NO_ANSWER, [], True
+        return load_prompt().refusal, [], True
 
     client, settings = create_llm_client()
     api_key = settings.api_key
     if not api_key:
         raise GenerationError("LLM_API_KEY is not configured.")
 
-    prompt = f"""You answer questions only from the supplied research-paper evidence.
-If the evidence does not support an answer, return the exact refusal text:
-{NO_ANSWER}
-
-Return JSON only, with this shape:
-{{"answer": "...", "citation_chunk_ids": ["chunk-id"]}}
-
-Rules:
-- Do not use knowledge outside the evidence.
-- Every factual sentence in the answer must be supported by one or more IDs in citation_chunk_ids.
-- Use only chunk IDs that appear in the evidence.
-- Do not invent numerical results, titles, or page numbers.
-
-Question: {query}
-
-Evidence:
-{_context(chunks)}"""
+    prompt_spec = load_prompt()
+    prompt = prompt_spec.render_answer(query, chunks)
 
     request = {
         "model": settings.model,
@@ -131,7 +103,7 @@ Evidence:
 
     if not answer:
         raise GenerationError("The model returned an empty answer.")
-    if answer == NO_ANSWER:
+    if answer == prompt_spec.refusal:
         return answer, [], True
     if not isinstance(citation_ids, list) or not citation_ids:
         raise GenerationError("The model returned an uncited answer.")
@@ -143,20 +115,14 @@ Evidence:
             **request,
             "messages": [{
                 "role": "user",
-                "content": (
-                    f"{prompt}\n\n"
-                    "Your previous response cited an unavailable chunk. "
-                    "Return JSON again and use only these allowed citation IDs: "
-                    f"{allowed_ids}. If the evidence is insufficient, return the "
-                    f"exact refusal text: {NO_ANSWER}"
-                ),
+                "content": prompt_spec.render_repair(prompt, allowed_ids),
             }],
         }
         repaired = _request_payload(client, repair_request)
         repaired_answer = str(repaired.get("answer", "")).strip()
         repaired_ids = repaired.get("citation_chunk_ids", [])
-        if repaired_answer == NO_ANSWER:
-            return NO_ANSWER, [], True
+        if repaired_answer == prompt_spec.refusal:
+            return prompt_spec.refusal, [], True
         if isinstance(repaired_ids, list):
             repaired_citations = [str(chunk_id) for chunk_id in repaired_ids]
             if repaired_answer and repaired_citations and all(
@@ -164,5 +130,5 @@ Evidence:
             ):
                 return repaired_answer, list(dict.fromkeys(repaired_citations)), False
         # A refusal is safer than returning an answer with unverifiable sources.
-        return NO_ANSWER, [], True
+        return prompt_spec.refusal, [], True
     return answer, list(dict.fromkeys(citations)), False
