@@ -12,7 +12,7 @@ Rewritten at the end of every session. Read this first, then the last entries of
 1. Owner: review and push `ws/5b-eval-2`; merge when CI is green.
 2. Owner, gate G2: approve the 5-item pilot and set `RAGAS_API_KEY`, `RAGAS_BASE_URL`,
    `RAGAS_MODEL` together in `.env` (values in `docs/research/llm-providers.md`).
-3. Owner: spot-check at least 10 golden v2 items (`eval/GOLDEN_REVIEW.md`, last section).
+3. Done 2026-11-19: owner spot-checked 12 golden v2 items, all ok (`eval/GOLDEN_REVIEW.md`).
 4. Owner, gate G6: decide the 5F decision rule (gap S9: tables are at the retrieval ceiling).
 5. Assistant after G2: pilot (answers + judge head-to-head), then size the full run from the
    measured tokens, then refusal scoring.

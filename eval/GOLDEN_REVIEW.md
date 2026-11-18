@@ -88,4 +88,6 @@ right, and the quoted chunk really says it. Then set `provenance.reviewed_by_own
 | Date | Item | Checked | Verdict |
 |---|---|---|---|
 | 2026-11-19 | G110 | PDF page 5 viewed by the owner: the table with UCMD 100% = 80.67 has the caption "TABLE X: Results for ResNet50 linear evaluation with Imagenet weights" directly below it; 99.35 appears in the same-dataset results | ok |
-| 2026-11-19 | G59, G26, G03, G01, G103, G108, G112, G116, G120, G121, G130 | Commands run by the owner; assistant's reading of each output given in chat; awaiting the owner's verdict | pending |
+| 2026-11-19 | G59, G26, G03, G01, G103, G108, G112, G116, G120, G121, G130 | Commands run by the owner; the assistant pointed to the confirming line in each output; the owner agreed with all 11 | ok |
+
+12 of 52 changed or new items (19 changed, 33 new) are owner-reviewed (target: at least 10). Report the owner-reviewed subset separately from the rest.

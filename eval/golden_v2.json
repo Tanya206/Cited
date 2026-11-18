@@ -49,7 +49,12 @@
       "provenance": {
         "authored_by": "owner",
         "fixed_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
       }
     },
     {
@@ -117,7 +122,12 @@
       "provenance": {
         "authored_by": "owner",
         "fixed_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
       }
     },
     {
@@ -704,7 +714,12 @@
       "provenance": {
         "authored_by": "owner",
         "fixed_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
       }
     },
     {
@@ -1594,7 +1609,12 @@
       "provenance": {
         "authored_by": "owner",
         "fixed_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
       }
     },
     {
@@ -1858,7 +1878,12 @@
       ],
       "provenance": {
         "authored_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
       },
       "required_numbers": [
         "0.59"
@@ -2031,7 +2056,12 @@
       ],
       "provenance": {
         "authored_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
       },
       "required_numbers": [
         "98.8",
@@ -2198,7 +2228,12 @@
       ],
       "provenance": {
         "authored_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
       },
       "required_numbers": [
         "74.8",
@@ -2331,7 +2366,12 @@
       ],
       "provenance": {
         "authored_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
       },
       "required_numbers": [
         "70.05%",
@@ -2461,7 +2501,12 @@
       ],
       "provenance": {
         "authored_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
       },
       "required_numbers": [
         "45.4",
@@ -2481,7 +2526,12 @@
       "refusal_reason": "Tables report 100%, 50% and 10% of downstream data only; the paper's only '1%' is an improvement margin. Checked by search 2026-11-19.",
       "provenance": {
         "authored_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
       }
     },
     {
@@ -2710,7 +2760,12 @@
       ],
       "provenance": {
         "authored_by": "claude-code",
-        "reviewed_by_owner": false
+        "reviewed_by_owner": true,
+        "owner_review": {
+          "date": "2026-11-19",
+          "checked": "review_golden output read by the owner against the assistant's cited lines",
+          "verdict": "ok"
+        }
       },
       "variant_of": "G11"
     },
