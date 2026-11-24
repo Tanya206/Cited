@@ -141,3 +141,27 @@ Get-Content eval\results\ladder_subsets_golden_v2_2026-11-19.md
   generator, prompt version, dataset hash, judge calls and tokens. A quota error loses nothing.
 - Setting only some of the `RAGAS_*` variables is now an error, so the judge key can never be
   sent to the generator's address.
+
+---
+
+# Part 3: the 5-item pilot
+
+Read `eval/results/ragas_pilot_2026-11-19.md`. What to take from it:
+
+1. **Measure before you spend.** The pilot replaced every estimate with a provider-reported
+   number: 2,830 Groq tokens per answer (69% of the output is hidden reasoning), 10 judge calls
+   and 21,504 judge tokens per item. That is what sizes the full run, not a guess.
+2. **Pick a judge by evidence, not by size.** The 1-trillion-parameter model timed out. The judge
+   is the model that finished every metric fast with valid JSON, and it agreed with a second
+   judge. Agreement on items at 1.0 proves little; the one item below 1.0 was checked by hand.
+3. **A low score is a question, not a verdict.** G09's 0.857 was a real faithfulness problem
+   (the answer added "NT-Xent", which no retrieved chunk contains). G106's 0.49 answer relevancy
+   was a metric artefact (a bare "88.43%" cannot regenerate the question).
+4. **Pilots find bugs.** A second server on port 8000, a "60ms" parsed as 60 minutes, and a
+   base URL without `/v1`: all three would have wasted the full run.
+
+See the generator's own token counts for one answer:
+
+```powershell
+Get-Content eval\results\ragas_pilot_nemotron-3-ultra_2026-11-19.jsonl | Select-Object -First 4
+```

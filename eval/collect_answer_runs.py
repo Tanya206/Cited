@@ -7,6 +7,7 @@ evaluator. It does not put corpus text into Git.
 
 import argparse
 import json
+import math
 import re
 import time
 from datetime import date
@@ -17,17 +18,30 @@ import requests
 from eval.golden import content_sha256
 
 
+_DURATION_PART = re.compile(r"(\d+(?:\.\d+)?)(ms|h|m|s)", re.I)
+_UNIT_SECONDS = {"ms": 0.001, "s": 1.0, "m": 60.0, "h": 3600.0}
+
+
 def _rate_limit_wait_seconds(response: requests.Response) -> int | None:
-    """Extract Groq's suggested retry delay from an error response."""
+    """Extract the provider's suggested retry delay from an error response.
+
+    Prefers the Retry-After header (the API passes on the provider's value with its 503),
+    then Groq's message text: "try again in 2m31.632s", "7.5s" or "60ms". "ms" must be
+    read before "m": reading "60ms" as 60 minutes once turned a 60 ms wait into an hour.
+    """
+    header = response.headers.get("Retry-After")
+    if header and header.strip().isdigit():
+        return max(1, int(header.strip()))
     body = response.text or ""
     if "rate_limit_exceeded" not in body and "Rate limit reached" not in body:
         return None
-    match = re.search(r"try again in (?:(\d+)m)?\s*(?:(\d+(?:\.\d+)?)s)?", body, re.I)
+    match = re.search(r"try again in ((?:\d+(?:\.\d+)?(?:ms|h|m|s))+)", body, re.I)
     if not match:
         return None
-    minutes = int(match.group(1) or 0)
-    seconds = float(match.group(2) or 0)
-    return max(1, int(minutes * 60 + seconds))
+    seconds = sum(
+        float(amount) * _UNIT_SECONDS[unit.lower()] for amount, unit in _DURATION_PART.findall(match.group(1))
+    )
+    return max(1, math.ceil(seconds))
 
 
 def _completed_ids(path: Path, retry_ids: set[str] | None = None) -> set[str]:
@@ -183,6 +197,7 @@ def main() -> None:
                 "prompt_version": payload.get("prompt_version"),
                 "prompt_sha256": payload.get("prompt_sha256"),
                 "generator_model": payload.get("generator_model"),
+                "generator_usage": payload.get("usage", {}),
                 "retrieve_k": args.retrieve_k,
                 "rerank_k": args.rerank_k,
                 "dataset": str(args.dataset).replace("\\", "/"),

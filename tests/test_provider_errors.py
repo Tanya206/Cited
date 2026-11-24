@@ -92,3 +92,29 @@ def test_api_returns_502_on_other_provider_failure(monkeypatch):
     client = _api(monkeypatch, GenerationError("The answer provider failed: HTTP 500"))
     response = client.post("/answer", json={"query": "What does SimCLR use?"})
     assert response.status_code == 502
+
+
+def _ok(content, prompt_tokens, completion_tokens, reasoning_tokens):
+    usage = SimpleNamespace(
+        prompt_tokens=prompt_tokens, completion_tokens=completion_tokens,
+        total_tokens=prompt_tokens + completion_tokens,
+        completion_tokens_details=SimpleNamespace(reasoning_tokens=reasoning_tokens),
+    )
+    return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content=content))], usage=usage)
+
+
+def test_usage_is_summed_over_answer_and_repair_calls(monkeypatch):
+    from app.core import generation
+
+    responses = iter([
+        _ok('{"answer": "A.", "citation_chunk_ids": ["missing"]}', 2000, 300, 120),
+        _ok('{"answer": "A.", "citation_chunk_ids": ["c1"]}', 2100, 250, 90),
+    ])
+    client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=lambda **_: next(responses))))
+    settings = SimpleNamespace(api_key="k", model="m", max_tokens=10)
+    monkeypatch.setattr(generation, "create_llm_client", lambda: (client, settings))
+    usage = {}
+    chunks = [{"chunk_id": "c1", "doc_id": "d", "page_number": 1, "text": "t"}]
+    assert generation.generate_cited_answer("q?", chunks, usage)[1] == ["c1"]
+    assert usage == {"provider_calls": 2, "prompt_tokens": 4100, "completion_tokens": 550,
+                     "total_tokens": 4650, "reasoning_tokens": 210}
